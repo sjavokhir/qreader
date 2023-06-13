@@ -32,21 +32,31 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clic
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.bottomNavigateTo
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @Destination
 @Composable
-fun HistoryScreen() {
+fun HistoryScreen(
+    navigator: DestinationsNavigator
+) {
     QRBackground {
-        HistoryScreenContent()
+        HistoryScreenContent(
+            onBottomNavigateTo = navigator::bottomNavigateTo
+        )
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HistoryScreenContent(
-    pageCount: Int = 2
+    pageCount: Int = 2,
+    onBottomNavigateTo: (DirectionDestination) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -97,9 +107,9 @@ private fun HistoryScreenContent(
                 )
 
                 if (page == 1) {
-                    HistoryNotFoundContent(false)
+                    HistoryNotFoundContent(false, onBottomNavigateTo)
                 } else {
-                    HistoryNotFoundContent(true)
+                    HistoryNotFoundContent(true, onBottomNavigateTo)
                 }
             }
         }
@@ -143,7 +153,8 @@ private fun RowScope.TabContent(
 
 @Composable
 private fun HistoryNotFoundContent(
-    isScannedHistory: Boolean
+    isScannedHistory: Boolean,
+    onBottomNavigateTo: (DirectionDestination) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -198,7 +209,13 @@ private fun HistoryNotFoundContent(
                     R.string.action_create
                 }
             ),
-            onClick = {}
+            onClick = {
+                if (isScannedHistory) {
+                    onBottomNavigateTo(ScannerScreenDestination)
+                } else {
+                    onBottomNavigateTo(CreatorScreenDestination)
+                }
+            }
         )
 
         Spacer(modifier = Modifier.weight(1f))

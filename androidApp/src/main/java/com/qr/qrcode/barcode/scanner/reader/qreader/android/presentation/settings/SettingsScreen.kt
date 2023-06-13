@@ -51,7 +51,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FeedbackScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LanguageScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ManagePermissionsScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ManageSubscriptionScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SoundEffectsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsEvent
@@ -223,12 +222,6 @@ private fun GetHelpContent(
 
         NavigateContent(title = R.string.manage_permissions) {
             onNavigate(ManagePermissionsScreenDestination)
-        }
-
-        DividerContent()
-
-        NavigateContent(title = R.string.manage_subscription) {
-            onNavigate(ManageSubscriptionScreenDestination)
         }
     }
 }
