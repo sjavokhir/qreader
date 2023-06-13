@@ -45,11 +45,13 @@ fun HistoryScreen() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun HistoryScreenContent() {
+private fun HistoryScreenContent(
+    pageCount: Int = 2
+) {
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState { 2 }
+    val pagerState = rememberPagerState { pageCount }
 
     val pages = remember {
         listOf(

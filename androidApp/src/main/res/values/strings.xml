@@ -44,7 +44,7 @@
     <string name="tell_friends">Tell friends</string>
     <string name="about_us">About us</string>
     <string name="update_new_version">Update new version</string>
-    <string name="you_agree_terms">You agree to our Terms of Use by using QR Code Scanner</string>
+    <string name="you_agree_terms">You agree to our Terms of Use by using QReader app.</string>
     <string name="terms_of_use">Terms of Use</string>
     <string name="share_description">Share app</string>
     <string name="welcome_to_premium">Welcome to Premium!</string>
@@ -54,7 +54,7 @@
     <string name="feature_2">Code Color Custom &amp; APP Lock</string>
     <string name="feature_3">Fast &amp; Secure Batch Scan</string>
     <string name="feature_4">No Ads!</string>
-    <string name="cancel_anytime">No commitments, cancel anytime</string>
+    <string name="cancel_anytime">No commitments, cancel anytime!</string>
     <string name="best_value">Best\nValue</string>
     <string name="most_popular">Most\nPopular</string>
     <string name="save_percent">Save\n50%</string>
@@ -68,7 +68,7 @@
     <string name="thank_you">Thank you!</string>
     <string name="thank_you_description">Thank you for sharing your thoughts. We appreciate your feedback.</string>
     <string name="help_us_improve">Help us improve!</string>
-    <string name="please_select_topic">Please select a topic below and let us know about your concern</string>
+    <string name="please_select_topic">Please select a topic below and let us know about your concern.</string>
     <string name="email_address">Email address</string>
     <string name="write_your_comments">Write your comments and complaints here.</string>
     <string name="feedback_topic_1">Failed to scan</string>
@@ -87,4 +87,10 @@
     <string name="action_create">Create</string>
     <string name="action_scan">Scan</string>
     <string name="align_qr_code">Align QR Code / Bardcode within frame to scan</string>
+    <string name="permissions_granted">Permission granted!</string>
+    <string name="permissions_granted_description">You now have complete access to our QReader app. Get ready to scan, generate and share QR codes with ease.</string>
+    <string name="allow_camera_access">Allow Camera Access</string>
+    <string name="allow_location_access">Allow Location Access</string>
+    <string name="grant_camera_permission">Grant Camera Permission for QR Codes.</string>
+    <string name="grant_location_permission">Grant Location permission for enhanced QR scanning accuracy.</string>
 </resources>
