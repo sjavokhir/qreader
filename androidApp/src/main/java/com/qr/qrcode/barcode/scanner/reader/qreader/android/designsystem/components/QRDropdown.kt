@@ -1,7 +1,11 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -11,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.TopicModel
 
@@ -34,7 +39,7 @@ fun QRDropdown(
             onValueChange = {},
             hint = hint,
             readOnly = true,
-            trailingIcon = painterResource(id = R.drawable.ic_arrow_down),
+            trailingIcon = painterResource(id = R.drawable.ic_arrow_down)
         )
 
         ExposedDropdownMenu(
@@ -45,16 +50,28 @@ fun QRDropdown(
                 .background(MaterialTheme.colorScheme.background)
         ) {
             options.forEach { option ->
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = option.title,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    },
-                    onClick = { onSelectedOption(option) },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                )
+                Column {
+                    DropdownMenuItem(
+                        text = {
+                            Column {
+                                Text(
+                                    text = option.title,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                        },
+                        onClick = { onSelectedOption(option) },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .padding(ExposedDropdownMenuDefaults.ItemContentPadding),
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+                    )
+                }
             }
         }
     }

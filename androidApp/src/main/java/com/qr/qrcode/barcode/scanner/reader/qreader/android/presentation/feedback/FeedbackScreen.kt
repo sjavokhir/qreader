@@ -27,16 +27,36 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRDropdown
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.TopicModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.feedback.FeedbackEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.feedback.FeedbackState
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.feedback.FeedbackViewModel
+import com.ramcosta.composedestinations.annotation.Destination
 
+@Destination
 @Composable
 fun FeedbackScreen(
+    viewModel: FeedbackViewModel = viewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    QRBackground {
+        FeedbackScreenContent(
+            state = state,
+            onEvent = viewModel::onEvent
+        )
+    }
+}
+
+@Composable
+private fun FeedbackScreenContent(
     state: FeedbackState,
     onEvent: (FeedbackEvent) -> Unit
 ) {
@@ -96,7 +116,7 @@ private fun FeedbackContent(
         }
         item {
             QRTextField(
-                modifier = Modifier.defaultMinSize(minHeight = 160.dp),
+                modifier = Modifier.defaultMinSize(minHeight = 120.dp),
                 value = state.comment,
                 onValueChange = { onEvent(FeedbackEvent.ChangeComment(it)) },
                 hint = stringResource(id = R.string.write_your_comments),

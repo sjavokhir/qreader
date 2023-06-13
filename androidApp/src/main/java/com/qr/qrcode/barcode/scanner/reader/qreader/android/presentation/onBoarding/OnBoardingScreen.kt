@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -25,24 +25,49 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.HorizontalPagerIndicator
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.NavigationTree
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.onBoarding.OnBoardingEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.onBoarding.OnBoardingState
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.onBoarding.OnBoardingViewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
+
+@Destination
+@Composable
+fun OnBoardingScreen(
+    viewModel: OnBoardingViewModel = viewModel(),
+    navigator: DestinationsNavigator
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    QRBackground {
+        OnBoardingScreenContent(
+            state = state,
+            onEvent = viewModel::onEvent,
+            onNavigate = navigator::navigate
+        )
+    }
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoardingScreen(
+private fun OnBoardingScreenContent(
+    pageCount: Int = 4,
     state: OnBoardingState,
     onEvent: (OnBoardingEvent) -> Unit,
-    onNavigate: (NavigationTree) -> Unit
+    onNavigate: (DirectionDestination) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState { pageCount }
 
     val isStart = remember(pagerState.currentPage) {
         pagerState.currentPage == 3
@@ -58,7 +83,7 @@ fun OnBoardingScreen(
 
     LaunchedEffect(state.isStart) {
         if (state.isStart) {
-            onNavigate(NavigationTree.Scanner)
+            onNavigate(ScannerScreenDestination)
             onEvent(OnBoardingEvent.Idle)
         }
     }
@@ -86,7 +111,6 @@ fun OnBoardingScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         HorizontalPager(
-            pageCount = 4,
             state = pagerState,
             userScrollEnabled = false
         ) {

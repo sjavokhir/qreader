@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.sound
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,13 +28,33 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.sound.SoundEffectsEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.sound.SoundEffectsState
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.sound.SoundEffectsViewModel
+import com.ramcosta.composedestinations.annotation.Destination
 
+@Destination
 @Composable
 fun SoundEffectsScreen(
+    viewModel: SoundEffectsViewModel = viewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    QRBackground {
+        SoundEffectsScreenContent(
+            state = state,
+            onEvent = viewModel::onEvent
+        )
+    }
+}
+
+@Composable
+private fun SoundEffectsScreenContent(
     state: SoundEffectsState,
     onEvent: (SoundEffectsEvent) -> Unit
 ) {

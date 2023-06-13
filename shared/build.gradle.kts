@@ -1,9 +1,10 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.cocoapods)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.sqlDelight)
+    alias(libs.plugins.sqldelight)
     alias(libs.plugins.kmm.coroutines)
 }
 
@@ -11,8 +12,12 @@ kotlin {
     android {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = JavaVersion.VERSION_17.toString()
             }
+        }
+
+        kotlin {
+            jvmToolchain(17)
         }
     }
     iosX64()
@@ -43,18 +48,18 @@ kotlin {
 
                 implementation(libs.koin.core)
 
-                implementation(libs.sqlDelight.runtime)
-                implementation(libs.sqlDelight.extensions)
+                implementation(libs.sqldelight.runtime)
+                implementation(libs.sqldelight.extensions)
 
-                implementation(libs.multiplatformSettings)
+                implementation(libs.multiplatformsettings)
                 implementation(libs.kmm.viewmodel)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                implementation(libs.androidx.lifecycle.viewModel)
-                implementation(libs.sqlDelight.android)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.sqldelight.android)
             }
         }
 
@@ -63,7 +68,7 @@ kotlin {
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
             dependencies {
-                implementation(libs.sqlDelight.native)
+                implementation(libs.sqldelight.native)
             }
         }
 

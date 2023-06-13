@@ -17,12 +17,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.HyperlinkText
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.Constants
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appVersion
+import com.ramcosta.composedestinations.annotation.Destination
 
+@Destination
 @Composable
 fun AboutScreen() {
+    QRBackground {
+        AboutScreenContent()
+    }
+}
+
+@Composable
+private fun AboutScreenContent() {
     Column(
         modifier = Modifier
             .padding(24.dp),

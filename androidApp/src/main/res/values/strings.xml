@@ -50,7 +50,6 @@
     <string name="welcome_to_premium">Welcome to Premium!</string>
     <string name="premium_description">You can be premium by choosing a package and you can create the qr code you want and customize it as you wish.</string>
     <string name="go_pro">Go Pro!</string>
-    <string name="pro">Pro</string>
     <string name="feature_1">Unlimited CSV Exports &amp; Folders</string>
     <string name="feature_2">Code Color Custom &amp; APP Lock</string>
     <string name="feature_3">Fast &amp; Secure Batch Scan</string>
@@ -79,4 +78,13 @@
     <string name="feedback_topic_5">Request a refund</string>
     <string name="feedback_topic_6">Other</string>
     <string name="topic">Topic</string>
+    <string name="scanned">Scanned</string>
+    <string name="created">Created</string>
+    <string name="search_qr_code">Search QR Code</string>
+    <string name="no_content_found">No content found!</string>
+    <string name="click_create_button">Click create button to start create QR Code.</string>
+    <string name="click_scan_button">Click scan button to start scan QR Code.</string>
+    <string name="action_create">Create</string>
+    <string name="action_scan">Scan</string>
+    <string name="align_qr_code">Align QR Code / Bardcode within frame to scan</string>
 </resources>

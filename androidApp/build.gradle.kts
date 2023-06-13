@@ -1,9 +1,12 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import java.io.FileInputStream
 import java.util.Properties
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
 }
@@ -36,6 +39,26 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
+    }
+
     buildFeatures {
         compose = true
     }
@@ -50,28 +73,11 @@ android {
         }
     }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            isShrinkResources = false
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
     applicationVariants.all {
         outputs
-            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+            .map { it as BaseVariantOutputImpl }
             .forEach { output ->
-                val outputFileName = "qreader-$versionName.apk"
-                output.outputFileName = outputFileName
+                output.outputFileName = "qreader-$versionName.apk"
             }
     }
 }
@@ -84,12 +90,14 @@ dependencies {
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.lifecycle.viewModel)
+    implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
 
     implementation(libs.compose.activity)
     implementation(libs.compose.lifecycle)
-    implementation(libs.compose.navigation)
     implementation(libs.compose.runtime)
     implementation(libs.compose.compiler)
     implementation(libs.compose.material3)
@@ -97,12 +105,17 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.accompanist.permissions)
 
     implementation(libs.google.material)
     implementation(libs.google.playservices.location)
+    implementation(libs.google.mlkit.barcodescanning)
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.crashlytics)
     implementation(libs.google.firebase.analytics)
+
+    implementation(libs.navigation.core)
+    ksp(libs.navigation.ksp)
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)
