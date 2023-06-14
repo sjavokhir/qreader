@@ -1,17 +1,24 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.datastore.AppStore
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.base.BaseViewModel
+import com.rickclephas.kmm.viewmodel.KMMViewModel
+import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmm.viewmodel.coroutineScope
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SettingsViewModel : BaseViewModel<SettingsState, SettingsEvent>(SettingsState()),
-    KoinComponent {
+class SettingsViewModel : KMMViewModel(), KoinComponent {
 
     private val appStore by inject<AppStore>()
+
+    private val stateData = MutableStateFlow(viewModelScope, SettingsState())
+
+    @NativeCoroutinesState
+    val state = stateData.asStateFlow()
 
     init {
         viewModelScope.coroutineScope.launch {
@@ -26,7 +33,7 @@ class SettingsViewModel : BaseViewModel<SettingsState, SettingsEvent>(SettingsSt
         }
     }
 
-    override fun onEvent(event: SettingsEvent) {
+    fun onEvent(event: SettingsEvent) {
         when (event) {
             is SettingsEvent.CheckAppLock -> onCheckedAppLock(event.isChecked)
             is SettingsEvent.CheckVibrate -> onCheckedVibrate(event.isChecked)

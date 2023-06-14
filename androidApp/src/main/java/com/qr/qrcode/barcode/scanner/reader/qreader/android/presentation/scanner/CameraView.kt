@@ -27,6 +27,7 @@ private val executor = Executors.newSingleThreadExecutor()
 @Composable
 fun CameraView(
     modifier: Modifier,
+    isFlashlightOn: Boolean,
     onResult: () -> Unit
 ) {
     val cameraPermissionState = rememberMultiplePermissionsState(
@@ -40,6 +41,7 @@ fun CameraView(
     if (cameraPermissionState.allPermissionsGranted) {
         CameraWithGrantedPermission(
             modifier = modifier,
+            isFlashlightOn = isFlashlightOn,
             onResult = onResult
         )
     } else {
@@ -53,10 +55,13 @@ fun CameraView(
 @Composable
 private fun CameraWithGrantedPermission(
     modifier: Modifier,
+    isFlashlightOn: Boolean,
     onResult: () -> Unit
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+
+    var camera by remember { mutableStateOf<Camera?>(null) }
 
     val preview = remember {
         Preview.Builder()
@@ -92,7 +97,7 @@ private fun CameraWithGrantedPermission(
         }
 
         cameraProvider.unbindAll()
-        cameraProvider.bindToLifecycle(
+        camera = cameraProvider.bindToLifecycle(
             lifecycleOwner,
             cameraSelector,
             preview,
@@ -100,6 +105,10 @@ private fun CameraWithGrantedPermission(
         )
 
         preview.setSurfaceProvider(previewView.surfaceProvider)
+    }
+
+    LaunchedEffect(isFlashlightOn) {
+        camera?.cameraControl?.enableTorch(isFlashlightOn)
     }
 
     Box(

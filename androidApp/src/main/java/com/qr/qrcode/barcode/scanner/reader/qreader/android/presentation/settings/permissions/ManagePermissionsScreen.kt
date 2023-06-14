@@ -1,4 +1,4 @@
-package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.managePermissions
+package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settings.permissions
 
 import android.Manifest
 import androidx.compose.foundation.Image

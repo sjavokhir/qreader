@@ -92,4 +92,9 @@
     <string name="allow_location_access">Allow Location Access</string>
     <string name="grant_camera_permission">Grant Camera Permission for QR Codes.</string>
     <string name="grant_location_permission">Grant Location permission for enhanced QR scanning accuracy.</string>
+    <string name="web">Web</string>
+    <string name="communication">Communication</string>
+    <string name="other">Other</string>
+    <string name="social_media">Social Media</string>
+    <string name="premium">Premium</string>
 </resources>

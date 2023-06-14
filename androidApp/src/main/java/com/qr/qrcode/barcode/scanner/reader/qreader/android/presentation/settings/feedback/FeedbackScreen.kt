@@ -1,4 +1,4 @@
-package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.feedback
+package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settings.feedback
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

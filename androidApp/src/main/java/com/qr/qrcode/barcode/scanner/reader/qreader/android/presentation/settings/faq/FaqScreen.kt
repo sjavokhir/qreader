@@ -1,4 +1,4 @@
-package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.faq
+package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settings.faq
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

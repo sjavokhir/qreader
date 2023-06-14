@@ -1,0 +1,27 @@
+package com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers
+
+object StringRes {
+    const val text = "Text"
+    const val weblink = "Weblink"
+    const val wifi = "Wi-Fi"
+    const val calendarEvent = "Calendar Event"
+    const val contactVCard = "Contact - vCard"
+    const val businessVCard = "Business - vCard"
+    const val driverLicense = "Driver License"
+    const val location = "Location"
+    const val phoneNumber = "Phone Number"
+    const val sms = "SMS"
+    const val emailAddress = "Email Address"
+    const val youtube = "YouTube"
+    const val whatsApp = "WhatsApp"
+    const val instagram = "Instagram"
+    const val facebook = "Facebook"
+    const val twitter = "Twitter"
+    const val tiktok = "TikTok "
+    const val telegram = "Telegram"
+    const val twitch = "Twitch"
+    const val linkedin = "LinkedIn"
+    const val github = "Github"
+    const val pinterest = "Pinterest"
+    const val tumblr = "Tumblr"
+}
