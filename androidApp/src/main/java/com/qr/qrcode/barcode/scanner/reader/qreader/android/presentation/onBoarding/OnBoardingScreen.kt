@@ -32,13 +32,13 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.onBoarding.OnBoardingEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.onBoarding.OnBoardingState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.onBoarding.OnBoardingViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.spec.Direction
 import kotlinx.coroutines.launch
 
 @Destination
@@ -64,7 +64,7 @@ private fun OnBoardingScreenContent(
     pageCount: Int = 4,
     state: OnBoardingState,
     onEvent: (OnBoardingEvent) -> Unit,
-    onNavigate: (DirectionDestination) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState { pageCount }

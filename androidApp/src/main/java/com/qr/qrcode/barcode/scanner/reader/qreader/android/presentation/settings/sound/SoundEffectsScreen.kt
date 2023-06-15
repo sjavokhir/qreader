@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.sound.SoundEffectsEvent
@@ -148,7 +149,7 @@ private fun SoundItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickableSingle(onClick = onClick)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)

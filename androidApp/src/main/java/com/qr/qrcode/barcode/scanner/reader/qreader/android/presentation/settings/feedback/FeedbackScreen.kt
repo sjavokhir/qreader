@@ -1,6 +1,7 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settings.feedback
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -96,7 +97,7 @@ private fun FeedbackContent(
             QRDropdown(
                 expanded = expanded,
                 onExpandedChange = { expanded = it },
-                hint = stringResource(id = R.string.topic),
+                hint = stringResource(id = R.string.select_topic),
                 selectedOption = selectedOption,
                 onSelectedOption = {
                     selectedOption = it
@@ -109,7 +110,7 @@ private fun FeedbackContent(
             QRTextField(
                 value = state.email,
                 onValueChange = { onEvent(FeedbackEvent.ChangeEmail(it)) },
-                hint = stringResource(id = R.string.email_address),
+                placeholder = stringResource(id = R.string.email_address),
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             )
@@ -119,9 +120,7 @@ private fun FeedbackContent(
                 modifier = Modifier.defaultMinSize(minHeight = 120.dp),
                 value = state.comment,
                 onValueChange = { onEvent(FeedbackEvent.ChangeComment(it)) },
-                hint = stringResource(id = R.string.write_your_comments),
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Default
+                placeholder = stringResource(id = R.string.write_your_comments)
             )
         }
         item {
@@ -172,6 +171,7 @@ private fun ThankYouContent() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)

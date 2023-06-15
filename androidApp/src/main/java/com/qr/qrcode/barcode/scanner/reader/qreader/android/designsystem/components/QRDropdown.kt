@@ -37,6 +37,7 @@ fun QRDropdown(
             modifier = Modifier.menuAnchor(),
             value = selectedOption.title,
             onValueChange = {},
+            placeholder = hint,
             hint = hint,
             readOnly = true,
             trailingIcon = painterResource(id = R.drawable.ic_arrow_down)

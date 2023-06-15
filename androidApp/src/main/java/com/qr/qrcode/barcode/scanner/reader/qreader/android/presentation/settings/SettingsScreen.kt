@@ -4,7 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -40,13 +39,13 @@ import androidx.core.graphics.toColorInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.gotoUrl
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.shareText
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AboutScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FaqScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FeedbackScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LanguageScreenDestination
@@ -59,6 +58,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.Settin
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.spec.Direction
 
 @Destination
 @Composable
@@ -81,7 +81,7 @@ fun SettingsScreen(
 private fun SettingsScreenContent(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
-    onNavigate: (DirectionDestination) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -103,7 +103,7 @@ private fun SettingsScreenContent(
 private fun CustomSettingContent(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
-    onNavigate: (DirectionDestination) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.custom_setting) {
         SwitchContent(
@@ -118,6 +118,8 @@ private fun CustomSettingContent(
                 }
             }
         )
+
+        return@HeaderContent
 
         DividerContent()
 
@@ -141,7 +143,7 @@ private fun CustomSettingContent(
 private fun ScanSettingContent(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
-    onNavigate: (DirectionDestination) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.scan_setting) {
         NavigateContent(
@@ -194,7 +196,7 @@ private fun ScanSettingContent(
 
 @Composable
 private fun ResultSettingContent(
-    onNavigate: (DirectionDestination) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.result_setting) {
         NavigateContent(title = R.string.language) {
@@ -205,7 +207,7 @@ private fun ResultSettingContent(
 
 @Composable
 private fun GetHelpContent(
-    onNavigate: (DirectionDestination) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.get_help) {
         NavigateContent(title = R.string.feedback) {
@@ -228,7 +230,7 @@ private fun GetHelpContent(
 
 @Composable
 private fun OthersContent(
-    onNavigate: (DirectionDestination) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -290,7 +292,7 @@ private fun NavigateContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickableSingle(onClick = onClick)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -386,9 +388,7 @@ private fun ColorContent(
             modifier = Modifier
                 .size(size = 24.dp)
                 .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = CircleShape
+                    width = 1.dp, color = MaterialTheme.colorScheme.outline, shape = CircleShape
                 )
         ) {
             drawCircle(color = Color(hexColor.toColorInt()))

@@ -103,7 +103,7 @@ private fun HistoryScreenContent(
                     modifier = Modifier.padding(horizontal = 20.dp),
                     value = "",
                     onValueChange = {},
-                    hint = stringResource(id = R.string.search_qr_code)
+                    placeholder = stringResource(id = R.string.search_qr_code)
                 )
 
                 if (page == 1) {
@@ -134,7 +134,10 @@ private fun RowScope.TabContent(
                     Color.Transparent
                 }
             )
-            .clickableSingle(onClick = onClick)
+            .clickableSingle(
+                onClick = onClick,
+                hasIndication = false
+            )
             .padding(vertical = 8.dp),
         style = MaterialTheme.typography.bodyLarge,
         fontWeight = if (isCurrentPage) {

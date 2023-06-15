@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.HyperlinkText
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
@@ -153,7 +154,7 @@ private fun HeaderContent(
                 .size(50.dp)
                 .clip(MaterialTheme.shapes.large)
                 .background(MaterialTheme.colorScheme.primaryContainer)
-                .clickable(onClick = onNavigateUp),
+                .clickableSingle(onClick = onNavigateUp),
             contentAlignment = Alignment.Center
         ) {
             QRIcon(
@@ -279,7 +280,7 @@ private fun PriceItem(
                 shape = MaterialTheme.shapes.medium
             )
             .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.07f))
-            .clickable(onClick = onClick)
+            .clickableSingle(onClick = onClick)
             .padding(12.dp)
     ) {
         Text(

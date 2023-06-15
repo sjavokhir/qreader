@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 
 @Composable
 fun GoProContent(
@@ -38,7 +39,7 @@ fun GoProContent(
                 shape = MaterialTheme.shapes.medium
             )
             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.07f))
-            .clickable(onClick = onClick)
+            .clickableSingle(onClick = onClick)
             .padding(vertical = 12.dp)
             .padding(end = 8.dp),
         verticalAlignment = Alignment.CenterVertically,

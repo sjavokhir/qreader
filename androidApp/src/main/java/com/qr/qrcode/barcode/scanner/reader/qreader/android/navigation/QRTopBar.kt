@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTopAppBar
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AboutScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.Destination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FaqScreenDestination
@@ -46,6 +47,7 @@ private fun Destination.topBarTitle(): Int {
         ScannerScreenDestination -> R.string.scanner
         SettingsScreenDestination -> R.string.settings
         SoundEffectsScreenDestination -> R.string.sound_effects
+        AddContentScreenDestination -> R.string.add_content
     }
 }
 

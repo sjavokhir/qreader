@@ -76,7 +76,7 @@
     <string name="feedback_topic_4">Cancel subscription</string>
     <string name="feedback_topic_5">Request a refund</string>
     <string name="feedback_topic_6">Other</string>
-    <string name="topic">Topic</string>
+    <string name="select_topic">Select a topic</string>
     <string name="scanned">Scanned</string>
     <string name="created">Created</string>
     <string name="search_qr_code">Search QR Code</string>
@@ -97,4 +97,7 @@
     <string name="other">Other</string>
     <string name="social_media">Social Media</string>
     <string name="premium">Premium</string>
+    <string name="add_content">Add content</string>
+    <string name="text">Text</string>
+    <string name="eg_text_placeholder">e.g. Discover the ancient Silk Road in Uzbekistan.</string>
 </resources>

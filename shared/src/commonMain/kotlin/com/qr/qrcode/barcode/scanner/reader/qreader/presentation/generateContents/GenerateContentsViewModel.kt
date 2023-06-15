@@ -18,13 +18,7 @@ class GenerateContentsViewModel : KMMViewModel(), KoinComponent {
     val state = stateData.asStateFlow()
 
     init {
-        onEvent(GenerateContentsEvent.GetGenerateContents)
-    }
-
-    fun onEvent(event: GenerateContentsEvent) {
-        when (event) {
-            GenerateContentsEvent.GetGenerateContents -> getGenerateContents()
-        }
+        getGenerateContents()
     }
 
     private fun getGenerateContents() {

@@ -3,8 +3,8 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creato
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,16 +34,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateHeaderType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.spec.Direction
 
 @Destination
 @Composable
@@ -55,7 +58,6 @@ fun CreatorScreen(
     QRBackground {
         GenerateContentsContent(
             state = state,
-            onEvent = viewModel::onEvent,
             onNavigate = navigator::navigate
         )
     }
@@ -64,35 +66,51 @@ fun CreatorScreen(
 @Composable
 private fun GenerateContentsContent(
     state: GenerateContentsState,
-    onEvent: (GenerateContentsEvent) -> Unit,
-    onNavigate: (DirectionDestination) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     val context = LocalContext.current
 
-    if (state.isLoading) {
-        CircularProgressIndicator()
-    } else {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            state.contents.forEach { content ->
-                item {
-                    Text(
-                        text = stringResource(id = content.key.headerTitle()),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp)
-                            .padding(top = 16.dp)
-                            .padding(bottom = 8.dp)
-                    )
-                }
-                itemsIndexed(content.value) { index, item ->
-                    GenerateContentItem(
-                        context = context,
-                        type = item,
-                        isLastItem = index == content.value.lastIndex
-                    )
+    Box {
+        if (state.isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(MaterialTheme.shapes.large)
+                    .align(Alignment.Center),
+                strokeCap = StrokeCap.Round
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.TopStart),
+            ) {
+                state.contents.forEach { content ->
+                    item {
+                        Text(
+                            text = stringResource(id = content.key.headerTitle()),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 16.dp)
+                                .padding(bottom = 8.dp)
+                        )
+                    }
+                    itemsIndexed(content.value) { index, item ->
+                        GenerateContentItem(
+                            context = context,
+                            type = item,
+                            isLastItem = index == content.value.lastIndex,
+                            onClick = {
+                                if (item.isPremium) {
+                                    onNavigate(PremiumScreenDestination)
+                                } else {
+                                    onNavigate(AddContentScreenDestination(type = item))
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -103,12 +121,13 @@ private fun GenerateContentsContent(
 private fun GenerateContentItem(
     context: Context,
     type: GenerateType,
-    isLastItem: Boolean
+    isLastItem: Boolean,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { }
+            .clickableSingle(onClick = onClick)
             .padding(horizontal = 20.dp)
             .padding(top = 16.dp)
     ) {

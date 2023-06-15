@@ -3,7 +3,6 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.scanne
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,14 +28,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.spec.Direction
 
 @RootNavGraph(start = true)
 @Destination
@@ -53,7 +53,7 @@ fun ScannerScreen(
 
 @Composable
 private fun ScannerScreenContent(
-    onNavigate: (DirectionDestination) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     var isFlashlightOn by remember { mutableStateOf(false) }
 
@@ -134,7 +134,7 @@ private fun ScannerActionsContent(
                     shape = MaterialTheme.shapes.medium
                 )
                 .background(Color.Black.copy(alpha = 0.1f))
-                .clickable(onClick = onGalleryClick),
+                .clickableSingle(onClick = onGalleryClick),
             contentAlignment = Alignment.Center
         ) {
             QRIcon(
@@ -153,7 +153,7 @@ private fun ScannerActionsContent(
                     shape = MaterialTheme.shapes.medium
                 )
                 .background(Color.Black.copy(alpha = 0.25f))
-                .clickable(onClick = onFlashlightClick),
+                .clickableSingle(onClick = onFlashlightClick),
             contentAlignment = Alignment.Center
         ) {
             QRIcon(

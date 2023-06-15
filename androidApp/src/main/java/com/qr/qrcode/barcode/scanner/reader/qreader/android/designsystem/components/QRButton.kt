@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +24,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun QRFilledButton(
-    modifier: Modifier = Modifier.fillMaxWidth(),
+    modifier: Modifier = Modifier,
     text: String,
     enabled: Boolean = true,
     small: Boolean = false,
@@ -44,9 +43,13 @@ fun QRFilledButton(
     Button(
         onClick = onClick,
         modifier = if (small) {
-            modifier.heightIn(min = QRButtonDefaults.SmallButtonHeight)
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = QRButtonDefaults.SmallButtonHeight)
         } else {
-            modifier.heightIn(min = QRButtonDefaults.NormalButtonHeight)
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = QRButtonDefaults.NormalButtonHeight)
         },
         enabled = enabled,
         colors = QRButtonDefaults.filledButtonColors(
@@ -110,58 +113,6 @@ fun QROutlinedButton(
             width = 1.dp,
             color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
         ),
-        contentPadding = QRButtonDefaults.buttonContentPadding(
-            small = small,
-            leadingIcon = leadingIcon != null,
-            trailingIcon = trailingIcon != null
-        ),
-        content = {
-            ProvideTextStyle(value = textStyle) {
-                ButtonContent(
-                    text = text,
-                    leadingIcon = leadingIcon,
-                    trailingIcon = trailingIcon
-                )
-            }
-        }
-    )
-}
-
-@Composable
-fun QRTextButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    enabled: Boolean = true,
-    small: Boolean = false,
-    containerColor: Color = Color.Transparent,
-    contentColor: Color = MaterialTheme.colorScheme.onBackground,
-    textStyle: TextStyle = if (small) {
-        MaterialTheme.typography.titleSmall
-    } else {
-        MaterialTheme.typography.titleMedium
-    },
-    shape: CornerBasedShape = MaterialTheme.shapes.large,
-    leadingIcon: ImageVector? = null,
-    trailingIcon: ImageVector? = null,
-    onClick: () -> Unit
-) {
-    TextButton(
-        onClick = onClick,
-        modifier = if (small) {
-            modifier
-                .fillMaxWidth()
-                .heightIn(min = QRButtonDefaults.SmallButtonHeight)
-        } else {
-            modifier
-                .fillMaxWidth()
-                .heightIn(min = QRButtonDefaults.NormalButtonHeight)
-        },
-        enabled = enabled,
-        colors = QRButtonDefaults.textButtonColors(
-            containerColor = containerColor,
-            contentColor = contentColor
-        ),
-        shape = shape,
         contentPadding = QRButtonDefaults.buttonContentPadding(
             small = small,
             leadingIcon = leadingIcon != null,
