@@ -9,7 +9,7 @@ enum class GenerateType(
     val headerType: GenerateHeaderType
 ) {
     Text(StringRes.text, "ic_qr_text", false, GenerateHeaderType.Web),
-    Weblink(StringRes.weblink, "ic_qr_website", false, GenerateHeaderType.Web),
+    Website(StringRes.website, "ic_qr_website", false, GenerateHeaderType.Web),
     Sms(StringRes.sms, "ic_qr_sms", false, GenerateHeaderType.Communication),
     PhoneNumber(StringRes.phoneNumber, "ic_qr_phone", false, GenerateHeaderType.Communication),
     EmailAddress(StringRes.emailAddress, "ic_qr_email", false, GenerateHeaderType.Communication),

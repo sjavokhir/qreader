@@ -1,8 +1,8 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers
 
 object StringRes {
-    const val text = "Text"
-    const val weblink = "Weblink"
+    const val text = "Simple Text"
+    const val website = "Website URL"
     const val wifi = "Wi-Fi"
     const val calendarEvent = "Calendar Event"
     const val contactVCard = "Contact - vCard"

@@ -1,4 +1,4 @@
-package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.text
+package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize

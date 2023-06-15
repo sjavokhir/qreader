@@ -34,7 +34,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.text.TextContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.TextContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WebsiteContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -112,12 +113,9 @@ private fun GenerateContent(
     onContent: (Boolean) -> Unit
 ) {
     when (type) {
-        GenerateType.Text -> {
-            TextContent(onContent = onContent)
-        }
-
-        else -> {
-        }
+        GenerateType.Text -> TextContent(onContent = onContent)
+        GenerateType.Website -> WebsiteContent(onContent = onContent)
+        else -> {}
     }
 }
 

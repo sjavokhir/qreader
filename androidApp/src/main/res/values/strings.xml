@@ -99,5 +99,7 @@
     <string name="premium">Premium</string>
     <string name="add_content">Add content</string>
     <string name="text">Text</string>
+    <string name="website_url">Website URL</string>
     <string name="eg_text_placeholder">e.g. Discover the ancient Silk Road in Uzbekistan.</string>
+    <string name="eg_website_placeholder">e.g. qreader.app</string>
 </resources>

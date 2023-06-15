@@ -27,7 +27,7 @@ class GenerateContentsViewModel : KMMViewModel(), KoinComponent {
         viewModelScope.coroutineScope.launch {
             val contents = buildList {
                 add(GenerateType.Text)
-                add(GenerateType.Weblink)
+                add(GenerateType.Website)
                 add(GenerateType.Sms)
                 add(GenerateType.PhoneNumber)
                 add(GenerateType.EmailAddress)
