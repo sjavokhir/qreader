@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,7 +34,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRDropdown
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.TopicModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.feedback.FeedbackEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.feedback.FeedbackState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.feedback.FeedbackViewModel
@@ -73,20 +71,7 @@ private fun FeedbackContent(
     state: FeedbackState,
     onEvent: (FeedbackEvent) -> Unit
 ) {
-    val context = LocalContext.current
-
-    val options = remember {
-        listOf(
-            TopicModel(1, context.getString(R.string.feedback_topic_1)),
-            TopicModel(2, context.getString(R.string.feedback_topic_2)),
-            TopicModel(3, context.getString(R.string.feedback_topic_3)),
-            TopicModel(4, context.getString(R.string.feedback_topic_4)),
-            TopicModel(5, context.getString(R.string.feedback_topic_5)),
-            TopicModel(6, context.getString(R.string.feedback_topic_6))
-        )
-    }
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(options[0]) }
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -98,12 +83,12 @@ private fun FeedbackContent(
                 expanded = expanded,
                 onExpandedChange = { expanded = it },
                 hint = stringResource(id = R.string.select_topic),
-                selectedOption = selectedOption,
+                selectedOption = state.selectedTopic,
                 onSelectedOption = {
-                    selectedOption = it
+                    onEvent(FeedbackEvent.SelectTopic(it))
                     expanded = false
                 },
-                options = options
+                options = state.topics
             )
         }
         item {
@@ -127,7 +112,7 @@ private fun FeedbackContent(
             QRFilledButton(
                 text = stringResource(id = R.string.action_submit),
                 enabled = state.isEnabled && !state.isLoading,
-                onClick = { onEvent(FeedbackEvent.Submit(selectedOption)) }
+                onClick = { onEvent(FeedbackEvent.Submit) }
             )
         }
     }

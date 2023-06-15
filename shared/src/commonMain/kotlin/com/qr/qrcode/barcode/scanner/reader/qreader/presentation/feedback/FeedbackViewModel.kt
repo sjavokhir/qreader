@@ -1,5 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.feedback
 
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.TopicModel
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -16,10 +17,15 @@ class FeedbackViewModel : KMMViewModel(), KoinComponent {
 
     fun onEvent(event: FeedbackEvent) {
         when (event) {
+            is FeedbackEvent.SelectTopic -> onTopicSelected(event.topic)
             is FeedbackEvent.ChangeEmail -> onValuesChanged(email = event.email)
             is FeedbackEvent.ChangeComment -> onValuesChanged(comment = event.comment)
-            is FeedbackEvent.Submit -> submitFeedback()
+            FeedbackEvent.Submit -> submitFeedback()
         }
+    }
+
+    private fun onTopicSelected(topic: TopicModel) {
+        stateData.update { it.copy(selectedTopic = topic) }
     }
 
     private fun onValuesChanged(

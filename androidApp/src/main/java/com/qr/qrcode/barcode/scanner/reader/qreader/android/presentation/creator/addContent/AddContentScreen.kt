@@ -34,8 +34,12 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.EmailContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.PhoneContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.SmsContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.TextContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WebsiteContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WifiContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -115,6 +119,10 @@ private fun GenerateContent(
     when (type) {
         GenerateType.Text -> TextContent(onContent = onContent)
         GenerateType.Website -> WebsiteContent(onContent = onContent)
+        GenerateType.Sms -> SmsContent(onContent = onContent)
+        GenerateType.PhoneNumber -> PhoneContent(onContent = onContent)
+        GenerateType.EmailAddress -> EmailContent(onContent = onContent)
+        GenerateType.Wifi -> WifiContent(onContent = onContent)
         else -> {}
     }
 }

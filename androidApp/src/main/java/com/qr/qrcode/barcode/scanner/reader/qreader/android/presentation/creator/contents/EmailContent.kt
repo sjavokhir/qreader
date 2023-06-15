@@ -9,12 +9,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website.WebsiteContentEvent
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website.WebsiteContentViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.email.EmailContentEvent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.email.EmailContentViewModel
 
 @Composable
-fun WebsiteContent(
-    viewModel: WebsiteContentViewModel = viewModel(),
+fun EmailContent(
+    viewModel: EmailContentViewModel = viewModel(),
     onContent: (Boolean) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -25,10 +25,10 @@ fun WebsiteContent(
 
     Column {
         QRTextField(
-            value = state.website,
-            onValueChange = { viewModel.onEvent(WebsiteContentEvent.WebsiteChanged(it)) },
-            placeholder = stringResource(id = R.string.eg_website_placeholder),
-            hint = stringResource(id = R.string.website)
+            value = state.email,
+            onValueChange = { viewModel.onEvent(EmailContentEvent.EmailChanged(it)) },
+            placeholder = stringResource(id = R.string.eg_email_placeholder),
+            hint = stringResource(id = R.string.email_address)
         )
     }
 }

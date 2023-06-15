@@ -5,9 +5,8 @@ import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import org.koin.core.component.KoinComponent
 
-class TextContentViewModel : KMMViewModel(), KoinComponent {
+class TextContentViewModel : KMMViewModel() {
 
     private val stateData = MutableStateFlow(viewModelScope, TextContentState())
 

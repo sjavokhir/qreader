@@ -70,12 +70,6 @@
     <string name="please_select_topic">Please select a topic below and let us know about your concern.</string>
     <string name="email_address">Email address</string>
     <string name="write_your_comments">Write your comments and complaints here.</string>
-    <string name="feedback_topic_1">Failed to scan</string>
-    <string name="feedback_topic_2">Suggest a feature</string>
-    <string name="feedback_topic_3">Report a bug</string>
-    <string name="feedback_topic_4">Cancel subscription</string>
-    <string name="feedback_topic_5">Request a refund</string>
-    <string name="feedback_topic_6">Other</string>
     <string name="select_topic">Select a topic</string>
     <string name="scanned">Scanned</string>
     <string name="created">Created</string>
@@ -99,7 +93,18 @@
     <string name="premium">Premium</string>
     <string name="add_content">Add content</string>
     <string name="text">Text</string>
-    <string name="website_url">Website URL</string>
+    <string name="website">Website</string>
+    <string name="phone_number">Phone number</string>
+    <string name="message">Message</string>
+    <string name="network_name">Network name</string>
+    <string name="password">Password</string>
+    <string name="encryption_type">Encryption type</string>
+    <string name="hidden_network">Hidden network</string>
     <string name="eg_text_placeholder">e.g. Discover the ancient Silk Road in Uzbekistan.</string>
     <string name="eg_website_placeholder">e.g. qreader.app</string>
+    <string name="eg_phone_placeholder">e.g. +1809999999</string>
+    <string name="eg_message_placeholder">e.g. Running late. Be there in 10 mins.</string>
+    <string name="eg_email_placeholder">e.g. name@email.com</string>
+    <string name="eg_network_name_placeholder">e.g. My Wi-Fi</string>
+    <string name="eg_password_placeholder">e.g. 11111111</string>
 </resources>
