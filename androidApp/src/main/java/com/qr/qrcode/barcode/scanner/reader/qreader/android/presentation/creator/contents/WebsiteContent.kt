@@ -26,8 +26,10 @@ fun WebsiteContent(
     Column {
         QRTextField(
             value = state.website,
-            onValueChange = { viewModel.onEvent(WebsiteContentEvent.WebsiteChanged(it)) },
-            placeholder = stringResource(id = R.string.eg_website_placeholder),
+            onValueChange = {
+                viewModel.onEvent(WebsiteContentEvent.WebsiteChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_website),
             hint = stringResource(id = R.string.website)
         )
     }

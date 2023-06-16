@@ -33,8 +33,10 @@ fun SmsContent(
     ) {
         QRTextField(
             value = state.phone,
-            onValueChange = { viewModel.onEvent(SmsContentEvent.PhoneChanged(it)) },
-            placeholder = stringResource(id = R.string.eg_phone_placeholder),
+            onValueChange = {
+                viewModel.onEvent(SmsContentEvent.PhoneChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_phone),
             hint = stringResource(id = R.string.phone_number),
             keyboardType = KeyboardType.Phone
         )
@@ -42,8 +44,10 @@ fun SmsContent(
         QRTextField(
             modifier = Modifier.defaultMinSize(minHeight = 120.dp),
             value = state.message,
-            onValueChange = { viewModel.onEvent(SmsContentEvent.MessageChanged(it)) },
-            placeholder = stringResource(id = R.string.eg_message_placeholder),
+            onValueChange = {
+                viewModel.onEvent(SmsContentEvent.MessageChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_sms_message),
             hint = stringResource(id = R.string.message),
         )
     }

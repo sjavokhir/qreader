@@ -94,7 +94,9 @@ private fun FeedbackContent(
         item {
             QRTextField(
                 value = state.email,
-                onValueChange = { onEvent(FeedbackEvent.ChangeEmail(it)) },
+                onValueChange = {
+                    onEvent(FeedbackEvent.ChangeEmail(it))
+                },
                 placeholder = stringResource(id = R.string.email_address),
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -104,7 +106,9 @@ private fun FeedbackContent(
             QRTextField(
                 modifier = Modifier.defaultMinSize(minHeight = 120.dp),
                 value = state.comment,
-                onValueChange = { onEvent(FeedbackEvent.ChangeComment(it)) },
+                onValueChange = {
+                    onEvent(FeedbackEvent.ChangeComment(it))
+                },
                 placeholder = stringResource(id = R.string.write_your_comments)
             )
         }

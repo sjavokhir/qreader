@@ -17,7 +17,7 @@ compose-activity = "1.7.2"
 compose-lifecycle = "2.6.1"
 compose-material3 = "1.1.0"
 compose-compiler = "1.4.7"
-compose-accompanist-permissions = "0.31.3-beta"
+compose-accompanist = "0.31.3-beta"
 
 google-material = "1.9.0"
 google-services = "4.3.14"
@@ -56,7 +56,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
-compose-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "compose-accompanist-permissions" }
+compose-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "compose-accompanist" }
 
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 google-playservices-location = { module = "com.google.android.gms:play-services-location", version.ref = "google-playservices-location" }

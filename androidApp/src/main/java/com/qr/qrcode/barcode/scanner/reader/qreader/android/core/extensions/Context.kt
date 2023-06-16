@@ -3,7 +3,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.tryCatch
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 
 fun Context.drawableId(name: String): Int? {
     return try {

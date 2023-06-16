@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -25,26 +24,6 @@ fun QRScaffold(
         ?: startRoute.startAppDestination
     val navBackStackEntry = navController.currentBackStackEntry
 
-    // 👇 only for debugging, you shouldn't use currentBackStack API as it is restricted by annotation
-    navController.currentBackStack.collectAsState().value.print()
-
-//    val bottomSheetNavigator = rememberBottomSheetNavigator()
-//    navController.navigatorProvider += bottomSheetNavigator
-//
-//    // 👇 ModalBottomSheetLayout is only needed if some destination is bottom sheet styled
-//    ModalBottomSheetLayout(
-//        bottomSheetNavigator = bottomSheetNavigator,
-//        sheetShape = RoundedCornerShape(16.dp)
-//    ) {
-//        Scaffold(
-//            topBar = { topBar(destination, navBackStackEntry) },
-//            bottomBar = { bottomBar(destination) },
-//            containerColor = Color.Transparent,
-//            contentColor = MaterialTheme.colorScheme.onBackground,
-//            content = content
-//        )
-//    }
-
     Scaffold(
         topBar = { topBar(destination, navBackStackEntry) },
         bottomBar = { bottomBar(destination) },
@@ -52,9 +31,4 @@ fun QRScaffold(
         contentColor = MaterialTheme.colorScheme.onBackground,
         content = content
     )
-}
-
-private fun Collection<NavBackStackEntry>.print(prefix: String = "stack") {
-    val stack = map { it.destination.route }.toTypedArray().contentToString()
-    println("$prefix = $stack")
 }

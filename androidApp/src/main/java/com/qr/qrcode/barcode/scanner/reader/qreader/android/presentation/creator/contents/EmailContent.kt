@@ -26,8 +26,10 @@ fun EmailContent(
     Column {
         QRTextField(
             value = state.email,
-            onValueChange = { viewModel.onEvent(EmailContentEvent.EmailChanged(it)) },
-            placeholder = stringResource(id = R.string.eg_email_placeholder),
+            onValueChange = {
+                viewModel.onEvent(EmailContentEvent.EmailChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_email),
             hint = stringResource(id = R.string.email_address)
         )
     }

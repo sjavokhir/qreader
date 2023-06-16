@@ -1,4 +1,4 @@
-package com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers
+package com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.currentTimestamp
 
@@ -6,7 +6,7 @@ fun Any?.log() {
     println("LOG_TAG: ${this?.toString()}")
 }
 
-inline fun tryCatch(onTryAction: () -> Unit) {
+fun tryCatch(onTryAction: () -> Unit) {
     try {
         onTryAction()
     } catch (_: Throwable) {

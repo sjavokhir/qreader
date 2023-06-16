@@ -34,19 +34,27 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.ContactContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.EmailContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.EventContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.PhoneContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.SmsContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.TextContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WebsiteContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WifiContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.result.ResultRecipient
+import com.ramcosta.composedestinations.spec.Direction
 
 @Destination
 @Composable
 fun AddContentScreen(
-    type: GenerateType
+    type: GenerateType,
+    navigator: DestinationsNavigator,
+    resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>
 ) {
     val context = LocalContext.current
     var isEnabled by remember { mutableStateOf(false) }
@@ -80,9 +88,14 @@ fun AddContentScreen(
                     }
                 }
                 item {
-                    GenerateContent(type) {
-                        isEnabled = it
-                    }
+                    GenerateContent(
+                        type = type,
+                        onContent = {
+                            isEnabled = it
+                        },
+                        onNavigate = navigator::navigate,
+                        resultTimestamp = resultTimestamp
+                    )
                 }
                 item {
                     Spacer(modifier = Modifier.height(70.dp))
@@ -114,7 +127,9 @@ fun AddContentScreen(
 @Composable
 private fun GenerateContent(
     type: GenerateType,
-    onContent: (Boolean) -> Unit
+    onContent: (Boolean) -> Unit,
+    onNavigate: (Direction) -> Unit,
+    resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>
 ) {
     when (type) {
         GenerateType.Text -> TextContent(onContent = onContent)
@@ -123,6 +138,14 @@ private fun GenerateContent(
         GenerateType.PhoneNumber -> PhoneContent(onContent = onContent)
         GenerateType.EmailAddress -> EmailContent(onContent = onContent)
         GenerateType.Wifi -> WifiContent(onContent = onContent)
+        GenerateType.CalendarEvent -> EventContent(
+            onContent = onContent,
+            onNavigate = onNavigate,
+            resultTimestamp = resultTimestamp
+        )
+
+        GenerateType.ContactVCard -> ContactContent(onContent = onContent)
+
         else -> {}
     }
 }

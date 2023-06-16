@@ -27,8 +27,10 @@ fun PhoneContent(
     Column {
         QRTextField(
             value = state.phone,
-            onValueChange = { viewModel.onEvent(PhoneContentEvent.PhoneChanged(it)) },
-            placeholder = stringResource(id = R.string.eg_phone_placeholder),
+            onValueChange = {
+                viewModel.onEvent(PhoneContentEvent.PhoneChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_phone),
             hint = stringResource(id = R.string.phone_number),
             keyboardType = KeyboardType.Phone
         )

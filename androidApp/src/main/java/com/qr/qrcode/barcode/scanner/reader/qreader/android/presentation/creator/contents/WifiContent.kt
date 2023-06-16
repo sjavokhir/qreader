@@ -36,15 +36,19 @@ fun WifiContent(
     ) {
         QRTextField(
             value = state.networkName,
-            onValueChange = { viewModel.onEvent(WifiContentEvent.NetworkNameChanged(it)) },
-            placeholder = stringResource(id = R.string.eg_network_name_placeholder),
+            onValueChange = {
+                viewModel.onEvent(WifiContentEvent.NetworkNameChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_wifi_name),
             hint = stringResource(id = R.string.network_name)
         )
 
         QRTextField(
             value = state.password,
-            onValueChange = { viewModel.onEvent(WifiContentEvent.PasswordChanged(it)) },
-            placeholder = stringResource(id = R.string.eg_password_placeholder),
+            onValueChange = {
+                viewModel.onEvent(WifiContentEvent.PasswordChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_wifi_password),
             hint = stringResource(id = R.string.password),
         )
 

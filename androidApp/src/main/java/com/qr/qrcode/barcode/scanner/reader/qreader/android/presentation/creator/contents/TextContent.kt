@@ -30,8 +30,10 @@ fun TextContent(
         QRTextField(
             modifier = Modifier.defaultMinSize(minHeight = 120.dp),
             value = state.text,
-            onValueChange = { viewModel.onEvent(TextContentEvent.TextChanged(it)) },
-            placeholder = stringResource(id = R.string.eg_text_placeholder),
+            onValueChange = {
+                viewModel.onEvent(TextContentEvent.TextChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_text),
             hint = stringResource(id = R.string.text),
         )
     }

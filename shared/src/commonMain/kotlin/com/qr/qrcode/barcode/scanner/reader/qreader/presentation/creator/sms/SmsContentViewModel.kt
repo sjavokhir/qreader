@@ -16,12 +16,12 @@ class SmsContentViewModel : KMMViewModel(), KoinComponent {
 
     fun onEvent(event: SmsContentEvent) {
         when (event) {
-            is SmsContentEvent.MessageChanged -> onValuesChanged(message = event.message)
-            is SmsContentEvent.PhoneChanged -> onValuesChanged(phone = event.phone)
+            is SmsContentEvent.MessageChanged -> onValueChanged(message = event.message)
+            is SmsContentEvent.PhoneChanged -> onValueChanged(phone = event.phone)
         }
     }
 
-    private fun onValuesChanged(
+    private fun onValueChanged(
         message: String? = null, phone: String? = null
     ) {
         stateData.update {

@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.camera.detector.QRDetector
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.tryCatch
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import java.util.*
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume

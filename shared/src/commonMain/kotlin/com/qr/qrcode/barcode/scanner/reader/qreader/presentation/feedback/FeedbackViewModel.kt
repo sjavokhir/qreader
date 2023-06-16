@@ -18,8 +18,8 @@ class FeedbackViewModel : KMMViewModel(), KoinComponent {
     fun onEvent(event: FeedbackEvent) {
         when (event) {
             is FeedbackEvent.SelectTopic -> onTopicSelected(event.topic)
-            is FeedbackEvent.ChangeEmail -> onValuesChanged(email = event.email)
-            is FeedbackEvent.ChangeComment -> onValuesChanged(comment = event.comment)
+            is FeedbackEvent.ChangeEmail -> onValueChanged(email = event.email)
+            is FeedbackEvent.ChangeComment -> onValueChanged(comment = event.comment)
             FeedbackEvent.Submit -> submitFeedback()
         }
     }
@@ -28,7 +28,7 @@ class FeedbackViewModel : KMMViewModel(), KoinComponent {
         stateData.update { it.copy(selectedTopic = topic) }
     }
 
-    private fun onValuesChanged(
+    private fun onValueChanged(
         email: String? = null,
         comment: String? = null
     ) {
