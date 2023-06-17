@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.google.mapsplatform.secrets)
 }
 
 android {
@@ -106,8 +107,10 @@ dependencies {
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.accompanist.permissions)
+    implementation(libs.compose.maps)
 
     implementation(libs.google.material)
+    implementation(libs.google.playservices.maps)
     implementation(libs.google.playservices.location)
     implementation(libs.google.mlkit.barcodescanning)
     implementation(platform(libs.google.firebase.bom))
@@ -119,4 +122,9 @@ dependencies {
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+}
+
+secrets {
+    defaultPropertiesFileName = "secrets.properties"
+    propertiesFileName = "local.properties"
 }

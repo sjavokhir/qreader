@@ -104,7 +104,7 @@ private fun GenerateContentsContent(
                             isLastItem = index == content.value.lastIndex,
                             onClick = {
                                 if (item.isPremium) {
-                                    onNavigate(PremiumScreenDestination)
+                                    onNavigate(AddContentScreenDestination(type = item))
                                 } else {
                                     onNavigate(AddContentScreenDestination(type = item))
                                 }

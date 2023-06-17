@@ -34,15 +34,19 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.BusinessContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.ContactContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.DriverLicenseContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.EmailContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.EventContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.LocationContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.PhoneContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.SmsContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.TextContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WebsiteContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WifiContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LocationPickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -54,9 +58,11 @@ import com.ramcosta.composedestinations.spec.Direction
 fun AddContentScreen(
     type: GenerateType,
     navigator: DestinationsNavigator,
-    resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>
+    resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
+    resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
 ) {
     val context = LocalContext.current
+
     var isEnabled by remember { mutableStateOf(false) }
 
     QRBackground {
@@ -94,7 +100,8 @@ fun AddContentScreen(
                             isEnabled = it
                         },
                         onNavigate = navigator::navigate,
-                        resultTimestamp = resultTimestamp
+                        resultTimestamp = resultTimestamp,
+                        resultLocation = resultLocation,
                     )
                 }
                 item {
@@ -129,7 +136,8 @@ private fun GenerateContent(
     type: GenerateType,
     onContent: (Boolean) -> Unit,
     onNavigate: (Direction) -> Unit,
-    resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>
+    resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
+    resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
 ) {
     when (type) {
         GenerateType.Text -> TextContent(onContent = onContent)
@@ -145,6 +153,13 @@ private fun GenerateContent(
         )
 
         GenerateType.ContactVCard -> ContactContent(onContent = onContent)
+        GenerateType.BusinessVCard -> BusinessContent(onContent = onContent)
+        GenerateType.DriverLicense -> DriverLicenseContent(onContent = onContent)
+        GenerateType.Location -> LocationContent(
+            onContent = onContent,
+            onNavigate = onNavigate,
+            resultLocation = resultLocation
+        )
 
         else -> {}
     }

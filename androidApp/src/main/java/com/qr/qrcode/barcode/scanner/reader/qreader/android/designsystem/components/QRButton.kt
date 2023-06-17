@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -36,8 +37,8 @@ fun QRFilledButton(
         MaterialTheme.typography.titleMedium
     },
     shape: CornerBasedShape = MaterialTheme.shapes.large,
-    leadingIcon: ImageVector? = null,
-    trailingIcon: ImageVector? = null,
+    leadingIcon: Painter? = null,
+    trailingIcon: Painter? = null,
     onClick: () -> Unit
 ) {
     Button(
@@ -88,8 +89,8 @@ fun QROutlinedButton(
         MaterialTheme.typography.titleMedium
     },
     shape: CornerBasedShape = MaterialTheme.shapes.large,
-    leadingIcon: ImageVector? = null,
-    trailingIcon: ImageVector? = null,
+    leadingIcon: Painter? = null,
+    trailingIcon: Painter? = null,
     onClick: () -> Unit
 ) {
     OutlinedButton(
@@ -133,12 +134,12 @@ fun QROutlinedButton(
 @Composable
 private fun RowScope.ButtonContent(
     text: String,
-    leadingIcon: ImageVector? = null,
-    trailingIcon: ImageVector? = null
+    leadingIcon: Painter? = null,
+    trailingIcon: Painter? = null
 ) {
     if (leadingIcon != null) {
         Box(Modifier.sizeIn(maxHeight = QRButtonDefaults.ButtonIconSize)) {
-            QRIcon(imageVector = leadingIcon)
+            QRIcon(painter = leadingIcon)
         }
     }
 
@@ -163,7 +164,7 @@ private fun RowScope.ButtonContent(
 
     if (trailingIcon != null) {
         Box(Modifier.sizeIn(maxHeight = QRButtonDefaults.ButtonIconSize)) {
-            QRIcon(imageVector = trailingIcon)
+            QRIcon(painter = trailingIcon)
         }
     }
 }

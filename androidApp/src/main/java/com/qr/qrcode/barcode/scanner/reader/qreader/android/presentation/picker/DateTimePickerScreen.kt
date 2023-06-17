@@ -47,8 +47,6 @@ fun DateTimePickerScreen(
         is24Hour = true
     )
 
-    datePickerState.selectedDateMillis
-
     QRBackground {
         Box(
             modifier = Modifier.fillMaxSize()

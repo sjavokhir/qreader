@@ -1,4 +1,4 @@
-package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.contact
+package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business
 
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
@@ -6,44 +6,46 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ContactContentViewModel : KMMViewModel() {
+class BusinessContentViewModel : KMMViewModel() {
 
-    private val stateData = MutableStateFlow(viewModelScope, ContactContentState())
+    private val stateData = MutableStateFlow(viewModelScope, BusinessContentState())
 
     @NativeCoroutinesState
     val state = stateData.asStateFlow()
 
-    fun onEvent(event: ContactContentEvent) {
+    fun onEvent(event: BusinessContentEvent) {
         when (event) {
-            is ContactContentEvent.FirstNameChanged -> onValueChanged(firstName = event.firstName)
-            is ContactContentEvent.LastNameChanged -> onValueChanged(lastName = event.lastName)
-            is ContactContentEvent.PhoneChanged -> onValueChanged(phone = event.phone)
-            is ContactContentEvent.EmailChanged -> onValueChanged(email = event.email)
-            is ContactContentEvent.WebsiteChanged -> onValueChanged(website = event.website)
-            is ContactContentEvent.AddressChanged -> onValueChanged(address = event.address)
+            is BusinessContentEvent.NameChanged -> onValueChanged(name = event.name)
+            is BusinessContentEvent.IndustryChanged -> onValueChanged(industry = event.industry)
+            is BusinessContentEvent.PhoneChanged -> onValueChanged(phone = event.phone)
+            is BusinessContentEvent.EmailChanged -> onValueChanged(email = event.email)
+            is BusinessContentEvent.WebsiteChanged -> onValueChanged(website = event.website)
+            is BusinessContentEvent.AddressChanged -> onValueChanged(address = event.address)
         }
     }
 
     private fun onValueChanged(
-        firstName: String? = null,
-        lastName: String? = null,
+        name: String? = null,
+        industry: String? = null,
         phone: String? = null,
         email: String? = null,
         website: String? = null,
         address: String? = null
     ) {
         stateData.update {
-            val mFirstName = firstName ?: it.firstName
+            val mName = name ?: it.name
+            val mIndustry = industry ?: it.industry
             val mPhone = phone ?: it.phone
 
             it.copy(
-                firstName = mFirstName,
-                lastName = lastName ?: it.lastName,
+                name = mName,
+                industry = mIndustry,
                 phone = mPhone,
                 email = email ?: it.email,
                 website = website ?: it.website,
                 address = address ?: it.address,
-                isEnabled = mFirstName.isNotEmpty() && mPhone.isNotEmpty()
+                isEnabled = (mName.isNotEmpty() || mIndustry.isNotEmpty()) &&
+                        mPhone.isNotEmpty()
             )
         }
     }
@@ -60,13 +62,9 @@ class ContactContentViewModel : KMMViewModel() {
 //            append("BEGIN:VCARD\n")
 //            append("VERSION:3.0\n")
 //
-//            // Name
-//            append("N:")
-//                .append(currentState.lastName).append(";")
-//                .append(currentState.firstName).append(";;;\n")
-//            append("FN:")
-//                .append(currentState.firstName).append(" ")
-//                .append(currentState.lastName).append("\n")
+//            // Organization
+//            append("ORG:").append(currentState.name).append("\n")
+//            append("INDUSTRY:").append(currentState.industry).append("\n")
 //
 //            // Phone
 //            append("TEL;TYPE=WORK,VOICE:").append(currentState.phone).append("\n")
@@ -78,7 +76,7 @@ class ContactContentViewModel : KMMViewModel() {
 //            append("URL:").append(currentState.website).append("\n")
 //
 //            // Address
-//            append("ADR;TYPE=WORK:").append(currentState.address).append(";")
+//            append("ADR;TYPE=WORK:").append(currentState.address).append("\n")
 //
 //            append("END:VCARD")
 //        }
@@ -86,8 +84,8 @@ class ContactContentViewModel : KMMViewModel() {
 //
 //    private fun buildFormattedContent(): String {
 //        return buildString {
-//            append("First Name: ${currentState.firstName}\n")
-//            append("Last Name: ${currentState.lastName}\n")
+//            append("Company Name: ${currentState.name}\n")
+//            append("Industry: ${currentState.industry}\n")
 //            append("Phone: ${currentState.phone}\n")
 //            append("Email: ${currentState.email}\n")
 //            append("Website: ${currentState.website}\n")
