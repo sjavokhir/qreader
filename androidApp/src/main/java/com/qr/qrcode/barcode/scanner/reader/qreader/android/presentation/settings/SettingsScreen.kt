@@ -4,7 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -24,29 +23,65 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.gotoUrl
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.shareText
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.NavigationTree
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AboutScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FaqScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FeedbackScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LanguageScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ManagePermissionsScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SoundEffectsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsState
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.spec.Direction
 
+@Destination
 @Composable
 fun SettingsScreen(
+    viewModel: SettingsViewModel = viewModel(),
+    navigator: DestinationsNavigator
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    QRBackground {
+        SettingsScreenContent(
+            state = state,
+            onEvent = viewModel::onEvent,
+            onNavigate = navigator::navigate
+        )
+    }
+}
+
+@Composable
+private fun SettingsScreenContent(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
-    onNavigate: (NavigationTree) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -55,7 +90,7 @@ fun SettingsScreen(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        item { GoProContent { onNavigate(NavigationTree.Premium) } }
+        item { GoProContent { onNavigate(PremiumScreenDestination) } }
         item { CustomSettingContent(state, onEvent, onNavigate) }
         item { ScanSettingContent(state, onEvent, onNavigate) }
         item { ResultSettingContent(onNavigate) }
@@ -68,7 +103,7 @@ fun SettingsScreen(
 private fun CustomSettingContent(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
-    onNavigate: (NavigationTree) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.custom_setting) {
         SwitchContent(
@@ -79,10 +114,12 @@ private fun CustomSettingContent(
                 if (state.hasSubscription) {
                     onEvent(SettingsEvent.CheckAppLock(it))
                 } else {
-                    onNavigate(NavigationTree.Premium)
+                    onNavigate(PremiumScreenDestination)
                 }
             }
         )
+
+        return@HeaderContent
 
         DividerContent()
 
@@ -106,7 +143,7 @@ private fun CustomSettingContent(
 private fun ScanSettingContent(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
-    onNavigate: (NavigationTree) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.scan_setting) {
         NavigateContent(
@@ -114,9 +151,9 @@ private fun ScanSettingContent(
             hasSubscription = state.hasSubscription
         ) {
             if (state.hasSubscription) {
-                onNavigate(NavigationTree.SoundEffects)
+                onNavigate(SoundEffectsScreenDestination)
             } else {
-                onNavigate(NavigationTree.Premium)
+                onNavigate(PremiumScreenDestination)
             }
         }
 
@@ -150,7 +187,7 @@ private fun ScanSettingContent(
                 if (state.hasSubscription) {
                     onEvent(SettingsEvent.CheckBatchScan(it))
                 } else {
-                    onNavigate(NavigationTree.Premium)
+                    onNavigate(PremiumScreenDestination)
                 }
             }
         )
@@ -159,63 +196,59 @@ private fun ScanSettingContent(
 
 @Composable
 private fun ResultSettingContent(
-    onNavigate: (NavigationTree) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.result_setting) {
         NavigateContent(title = R.string.language) {
-            onNavigate(NavigationTree.Language)
+            onNavigate(LanguageScreenDestination)
         }
     }
 }
 
 @Composable
 private fun GetHelpContent(
-    onNavigate: (NavigationTree) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.get_help) {
         NavigateContent(title = R.string.feedback) {
-            onNavigate(NavigationTree.Feedback)
+            onNavigate(FeedbackScreenDestination)
         }
 
         DividerContent()
 
         NavigateContent(title = R.string.frequently_asked_questions) {
-            onNavigate(NavigationTree.FrequentlyAskedQuestions)
+            onNavigate(FaqScreenDestination)
         }
 
         DividerContent()
 
         NavigateContent(title = R.string.manage_permissions) {
-            onNavigate(NavigationTree.ManagePermissions)
-        }
-
-        DividerContent()
-
-        NavigateContent(title = R.string.manage_subscription) {
-            onNavigate(NavigationTree.ManageSubscription)
+            onNavigate(ManagePermissionsScreenDestination)
         }
     }
 }
 
 @Composable
 private fun OthersContent(
-    onNavigate: (NavigationTree) -> Unit
+    onNavigate: (Direction) -> Unit
 ) {
+    val context = LocalContext.current
+
     HeaderContent(title = R.string.others) {
         NavigateContent(title = R.string.rate_us) {
-            onNavigate(NavigationTree.RateUs)
+            context.gotoUrl(appUrl)
         }
 
         DividerContent()
 
         NavigateContent(title = R.string.tell_friends) {
-            onNavigate(NavigationTree.TellFriends)
+            context.shareText("Share")
         }
 
         DividerContent()
 
         NavigateContent(title = R.string.about_us) {
-            onNavigate(NavigationTree.AboutUs)
+            onNavigate(AboutScreenDestination)
         }
     }
 }
@@ -259,7 +292,7 @@ private fun NavigateContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickableSingle(onClick = onClick)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -355,9 +388,7 @@ private fun ColorContent(
             modifier = Modifier
                 .size(size = 24.dp)
                 .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = CircleShape
+                    width = 1.dp, color = MaterialTheme.colorScheme.outline, shape = CircleShape
                 )
         ) {
             drawCircle(color = Color(hexColor.toColorInt()))

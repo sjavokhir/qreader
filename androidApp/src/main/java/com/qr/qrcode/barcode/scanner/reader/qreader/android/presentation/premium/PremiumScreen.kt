@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,17 +27,41 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.HyperlinkText
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.Constants
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.PriceType
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.premium.PremiumEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.premium.PremiumState
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.premium.PremiumViewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@Destination
 @Composable
 fun PremiumScreen(
+    viewModel: PremiumViewModel = viewModel(),
+    navigator: DestinationsNavigator
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    QRBackground {
+        PremiumScreenContent(
+            state = state,
+            onEvent = viewModel::onEvent,
+            onNavigateUp = navigator::navigateUp
+        )
+    }
+}
+
+@Composable
+private fun PremiumScreenContent(
     state: PremiumState,
     onEvent: (PremiumEvent) -> Unit,
     onNavigateUp: () -> Unit
@@ -129,7 +154,7 @@ private fun HeaderContent(
                 .size(50.dp)
                 .clip(MaterialTheme.shapes.large)
                 .background(MaterialTheme.colorScheme.primaryContainer)
-                .clickable(onClick = onNavigateUp),
+                .clickableSingle(onClick = onNavigateUp),
             contentAlignment = Alignment.Center
         ) {
             QRIcon(
@@ -186,7 +211,7 @@ private fun PricesContent(
     onEvent: (PremiumEvent) -> Unit
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         PriceItem(
             modifier = Modifier
@@ -255,7 +280,7 @@ private fun PriceItem(
                 shape = MaterialTheme.shapes.medium
             )
             .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.07f))
-            .clickable(onClick = onClick)
+            .clickableSingle(onClick = onClick)
             .padding(12.dp)
     ) {
         Text(

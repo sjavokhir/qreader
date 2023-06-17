@@ -1,5 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,9 +12,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults.windowInsets
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,51 +23,32 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.NavigationTree
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.navigationTree
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QRTopAppBar(
-    onNavigateUp: () -> Unit = {},
-    currentDestination: NavDestination?
+    @StringRes title: Int,
+    onNavigateUp: (() -> Unit)? = null
 ) {
-    val navigationTree = remember(currentDestination) {
-        currentDestination?.route.navigationTree()
-    }
-
-    when (navigationTree) {
-        NavigationTree.Scanner, NavigationTree.Creator,
-        NavigationTree.History, NavigationTree.Settings -> {
-            QRTopAppBarContent(
-                title = navigationTree.title
-            )
-        }
-
-        NavigationTree.OnBoarding, NavigationTree.Premium -> {
-            // Nothing
-        }
-
-        else -> {
-            QRTopAppBarContent(
-                title = navigationTree.title,
-                onNavigateUp = onNavigateUp
-            )
-        }
+    if (onNavigateUp != null) {
+        QRTopAppBarContent(
+            title = title,
+            onNavigateUp = onNavigateUp
+        )
+    } else {
+        QRTopAppBarContent(title = title)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QRTopAppBarContent(
-    title: Int,
+private fun QRTopAppBarContent(
+    @StringRes title: Int,
     onNavigateUp: (() -> Unit)? = null
 ) {
     Column(
         modifier = Modifier
-            .windowInsetsPadding(windowInsets)
+            .windowInsetsPadding(TopAppBarDefaults.windowInsets)
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
     ) {

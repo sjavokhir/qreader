@@ -63,7 +63,10 @@ fun RowScope.QRNavigationBarItem(
     Column(
         modifier = modifier
             .weight(1f)
-            .clickableSingle(onClick = onClick),
+            .clickableSingle(
+                onClick = onClick,
+                hasIndication = false
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {

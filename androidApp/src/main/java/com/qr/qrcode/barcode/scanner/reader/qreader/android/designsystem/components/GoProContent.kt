@@ -3,6 +3,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 
 @Composable
 fun GoProContent(
@@ -37,19 +39,18 @@ fun GoProContent(
                 shape = MaterialTheme.shapes.medium
             )
             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.07f))
+            .clickableSingle(onClick = onClick)
             .padding(vertical = 12.dp)
-            .padding(start = 8.dp, end = 16.dp),
+            .padding(end = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_remove_ads_2),
             contentDescription = null
         )
 
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
+        Column {
             Text(
                 text = stringResource(id = R.string.go_pro),
                 style = MaterialTheme.typography.bodyLarge,
@@ -63,12 +64,6 @@ fun GoProContent(
             Spacer(modifier = Modifier.height(4.dp))
             FeatureItem(feature = R.string.feature_4)
         }
-
-        QRFilledButton(
-            text = stringResource(id = R.string.pro),
-            onClick = onClick,
-            modifier = Modifier
-        )
     }
 }
 

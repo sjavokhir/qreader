@@ -12,7 +12,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.tryCatch
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 
 @Composable
 fun HyperlinkText(
