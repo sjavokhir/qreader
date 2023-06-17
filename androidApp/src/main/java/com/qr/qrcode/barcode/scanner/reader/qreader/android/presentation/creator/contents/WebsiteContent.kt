@@ -15,12 +15,12 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website
 @Composable
 fun WebsiteContent(
     viewModel: WebsiteContentViewModel = viewModel(),
-    onContent: (Boolean) -> Unit
+    onContent: (Boolean, String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled)
+        onContent(state.isEnabled, state.generateText)
     }
 
     Column {

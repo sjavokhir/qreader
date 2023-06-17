@@ -21,14 +21,14 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.Wi
 @Composable
 fun WifiContent(
     viewModel: WifiContentViewModel = viewModel(),
-    onContent: (Boolean) -> Unit
+    onContent: (Boolean, String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var expanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled)
+        onContent(state.isEnabled, state.generateText)
     }
 
     Column(

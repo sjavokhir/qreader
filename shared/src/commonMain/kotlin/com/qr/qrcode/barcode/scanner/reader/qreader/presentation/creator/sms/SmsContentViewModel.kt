@@ -31,18 +31,13 @@ class SmsContentViewModel : KMMViewModel(), KoinComponent {
             it.copy(
                 message = mMessage,
                 phone = mPhone,
-                isEnabled = mMessage.isNotEmpty() && mPhone.isNotEmpty()
+                isEnabled = mMessage.isNotEmpty() && mPhone.isNotEmpty(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = "sms:" + currentState.phoneNumber + "?body=" + currentState.message,
-//            formattedContent = """
-//                ${AppStrings.message}: ${currentState.message}
-//                ${AppStrings.phoneNumber}: ${currentState.phoneNumber}
-//            """.trimIndent()
-//        )
-//    }
+    private fun SmsContentState.generateText(): String {
+        return "sms:$phone?body=$message"
+    }
 }

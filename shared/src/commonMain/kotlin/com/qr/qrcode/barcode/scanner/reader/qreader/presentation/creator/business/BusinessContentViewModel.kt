@@ -45,51 +45,23 @@ class BusinessContentViewModel : KMMViewModel() {
                 website = website ?: it.website,
                 address = address ?: it.address,
                 isEnabled = (mName.isNotEmpty() || mIndustry.isNotEmpty()) &&
-                        mPhone.isNotEmpty()
+                        mPhone.isNotEmpty(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = buildQrContent(),
-//            formattedContent = buildFormattedContent()
-//        )
-//    }
-//
-//    private fun buildQrContent(): String {
-//        return buildString {
-//            append("BEGIN:VCARD\n")
-//            append("VERSION:3.0\n")
-//
-//            // Organization
-//            append("ORG:").append(currentState.name).append("\n")
-//            append("INDUSTRY:").append(currentState.industry).append("\n")
-//
-//            // Phone
-//            append("TEL;TYPE=WORK,VOICE:").append(currentState.phone).append("\n")
-//
-//            // Email
-//            append("EMAIL;TYPE=PREF,INTERNET:").append(currentState.email).append("\n")
-//
-//            // Website
-//            append("URL:").append(currentState.website).append("\n")
-//
-//            // Address
-//            append("ADR;TYPE=WORK:").append(currentState.address).append("\n")
-//
-//            append("END:VCARD")
-//        }
-//    }
-//
-//    private fun buildFormattedContent(): String {
-//        return buildString {
-//            append("Company Name: ${currentState.name}\n")
-//            append("Industry: ${currentState.industry}\n")
-//            append("Phone: ${currentState.phone}\n")
-//            append("Email: ${currentState.email}\n")
-//            append("Website: ${currentState.website}\n")
-//            append("Address: ${currentState.address}")
-//        }
-//    }
+    private fun BusinessContentState.generateText(): String {
+        return buildString {
+            append("BEGIN:VCARD\n")
+            append("VERSION:3.0\n")
+            append("ORG:").append(name).append("\n")
+            append("INDUSTRY:").append(industry).append("\n")
+            append("TEL;TYPE=WORK,VOICE:").append(phone).append("\n")
+            append("EMAIL;TYPE=PREF,INTERNET:").append(email).append("\n")
+            append("URL:").append(website).append("\n")
+            append("ADR;TYPE=WORK:").append(address).append("\n")
+            append("END:VCARD")
+        }
+    }
 }

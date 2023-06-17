@@ -7,5 +7,6 @@ data class BusinessContentState(
     val email: String = "",
     val website: String = "",
     val address: String = "",
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
+    val generateText: String = ""
 )

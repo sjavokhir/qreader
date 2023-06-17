@@ -26,11 +26,13 @@ enum class GenerateType(
     Twitter(StringRes.twitter, "ic_qr_twitter", true, GenerateHeaderType.SocialMedia),
     TikTok(StringRes.tiktok, "ic_qr_tiktok", true, GenerateHeaderType.SocialMedia),
     Telegram(StringRes.telegram, "ic_qr_telegram", true, GenerateHeaderType.SocialMedia),
+    VKontakte(StringRes.vkontakte, "ic_qr_vkontakte", true, GenerateHeaderType.SocialMedia),
     Twitch(StringRes.twitch, "ic_qr_twitch", true, GenerateHeaderType.SocialMedia),
     LinkedIn(StringRes.linkedin, "ic_qr_linkedin", true, GenerateHeaderType.SocialMedia),
     Github(StringRes.github, "ic_qr_github", true, GenerateHeaderType.SocialMedia),
-    Pinterest(StringRes.pinterest, "ic_qr_pinterest", true, GenerateHeaderType.SocialMedia),
-    Tumblr(StringRes.tumblr, "ic_qr_tumblr", true, GenerateHeaderType.SocialMedia),
+    Medium(StringRes.medium, "ic_qr_medium", true, GenerateHeaderType.SocialMedia),
+    Dribbble(StringRes.dribbble, "ic_qr_dribbble", true, GenerateHeaderType.SocialMedia),
+    Behance(StringRes.behance, "ic_qr_behance", true, GenerateHeaderType.SocialMedia),
 }
 
 enum class GenerateHeaderType {

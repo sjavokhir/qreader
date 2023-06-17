@@ -116,6 +116,7 @@ dependencies {
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.crashlytics)
     implementation(libs.google.firebase.analytics)
+    implementation(libs.google.zxing.embedded)
 
     implementation(libs.navigation.core)
     ksp(libs.navigation.ksp)

@@ -6,7 +6,8 @@ data class WifiContentState(
     val networkName: String = "",
     val password: String = "",
     val selectedType: TopicModel = TopicModel(2, "WPA"),
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
+    val generateText: String = ""
 ) {
     val encryptionTypes: List<TopicModel>
         get() = listOf(

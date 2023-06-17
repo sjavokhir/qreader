@@ -23,15 +23,11 @@ class PhoneContentViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 phone = phone,
-                isEnabled = phone.isNotEmpty()
+                isEnabled = phone.isNotEmpty(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = (if (isWhatsApp) "https://wa.me/" else "tel:") + currentState.phone,
-//            formattedContent = "${AppStrings.phoneNumber}: " + currentState.phone
-//        )
-//    }
+    private fun PhoneContentState.generateText(): String = "tel:$phone"
 }

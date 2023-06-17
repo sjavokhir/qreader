@@ -42,11 +42,13 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.LocationContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.PhoneContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.SmsContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.SocialMediaContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.TextContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WebsiteContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WifiContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LocationPickerScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -64,9 +66,12 @@ fun AddContentScreen(
     val context = LocalContext.current
 
     var isEnabled by remember { mutableStateOf(false) }
+    var generateText by remember { mutableStateOf("") }
 
     QRBackground {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
             LazyColumn(
                 contentPadding = PaddingValues(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -96,8 +101,9 @@ fun AddContentScreen(
                 item {
                     GenerateContent(
                         type = type,
-                        onContent = {
-                            isEnabled = it
+                        onContent = { isReady, text ->
+                            isEnabled = isReady
+                            generateText = text
                         },
                         onNavigate = navigator::navigate,
                         resultTimestamp = resultTimestamp,
@@ -120,7 +126,9 @@ fun AddContentScreen(
                 QRFilledButton(
                     text = stringResource(id = R.string.action_next),
                     enabled = isEnabled,
-                    onClick = {},
+                    onClick = {
+                        navigator.navigate(QRCodeScreenDestination(generateText))
+                    },
                     modifier = Modifier.padding(
                         horizontal = 20.dp,
                         vertical = 16.dp
@@ -134,7 +142,7 @@ fun AddContentScreen(
 @Composable
 private fun GenerateContent(
     type: GenerateType,
-    onContent: (Boolean) -> Unit,
+    onContent: (Boolean, String) -> Unit,
     onNavigate: (Direction) -> Unit,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
@@ -161,7 +169,12 @@ private fun GenerateContent(
             resultLocation = resultLocation
         )
 
-        else -> {}
+        else -> {
+            SocialMediaContent(
+                type = type,
+                onContent = onContent
+            )
+        }
     }
 }
 

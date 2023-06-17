@@ -97,16 +97,16 @@ private fun GenerateContentsContent(
                                 .padding(bottom = 8.dp)
                         )
                     }
-                    itemsIndexed(content.value) { index, item ->
+                    itemsIndexed(content.value) { index, type ->
                         GenerateContentItem(
                             context = context,
-                            type = item,
+                            type = type,
                             isLastItem = index == content.value.lastIndex,
                             onClick = {
-                                if (item.isPremium) {
-                                    onNavigate(AddContentScreenDestination(type = item))
+                                if (type.isPremium) {
+                                    onNavigate(PremiumScreenDestination)
                                 } else {
-                                    onNavigate(AddContentScreenDestination(type = item))
+                                    onNavigate(AddContentScreenDestination(type = type))
                                 }
                             }
                         )

@@ -43,55 +43,23 @@ class ContactContentViewModel : KMMViewModel() {
                 email = email ?: it.email,
                 website = website ?: it.website,
                 address = address ?: it.address,
-                isEnabled = mFirstName.isNotEmpty() && mPhone.isNotEmpty()
+                isEnabled = mFirstName.isNotEmpty() && mPhone.isNotEmpty(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = buildQrContent(),
-//            formattedContent = buildFormattedContent()
-//        )
-//    }
-//
-//    private fun buildQrContent(): String {
-//        return buildString {
-//            append("BEGIN:VCARD\n")
-//            append("VERSION:3.0\n")
-//
-//            // Name
-//            append("N:")
-//                .append(currentState.lastName).append(";")
-//                .append(currentState.firstName).append(";;;\n")
-//            append("FN:")
-//                .append(currentState.firstName).append(" ")
-//                .append(currentState.lastName).append("\n")
-//
-//            // Phone
-//            append("TEL;TYPE=WORK,VOICE:").append(currentState.phone).append("\n")
-//
-//            // Email
-//            append("EMAIL;TYPE=PREF,INTERNET:").append(currentState.email).append("\n")
-//
-//            // Website
-//            append("URL:").append(currentState.website).append("\n")
-//
-//            // Address
-//            append("ADR;TYPE=WORK:").append(currentState.address).append(";")
-//
-//            append("END:VCARD")
-//        }
-//    }
-//
-//    private fun buildFormattedContent(): String {
-//        return buildString {
-//            append("First Name: ${currentState.firstName}\n")
-//            append("Last Name: ${currentState.lastName}\n")
-//            append("Phone: ${currentState.phone}\n")
-//            append("Email: ${currentState.email}\n")
-//            append("Website: ${currentState.website}\n")
-//            append("Address: ${currentState.address}")
-//        }
-//    }
+    private fun ContactContentState.generateText(): String {
+        return buildString {
+            append("BEGIN:VCARD\n")
+            append("VERSION:3.0\n")
+            append("N:").append(lastName).append(";").append(firstName).append(";;;").append("\n")
+            append("FN:").append(firstName).append(" ").append(lastName).append("\n")
+            append("TEL;TYPE=WORK,VOICE:").append(phone).append("\n")
+            append("EMAIL;TYPE=PREF,INTERNET:").append(email).append("\n")
+            append("URL:").append(website).append("\n")
+            append("ADR;TYPE=WORK:").append(address).append(";").append("\n")
+            append("END:VCARD")
+        }
+    }
 }

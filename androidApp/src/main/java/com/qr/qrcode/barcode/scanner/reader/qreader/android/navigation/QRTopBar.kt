@@ -7,6 +7,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AboutScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CustomizeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.Destination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FaqScreenDestination
@@ -17,6 +18,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ManagePermissionsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.OnBoardingScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SettingsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SoundEffectsScreenDestination
@@ -52,6 +54,8 @@ private fun Destination.topBarTitle(): Int {
         AddContentScreenDestination -> R.string.add_content
         DateTimePickerScreenDestination -> R.string.select_date_and_time
         LocationPickerScreenDestination -> R.string.action_select_location
+        QRCodeScreenDestination -> R.string.qr_code
+        CustomizeScreenDestination -> R.string.customize_qr
     }
 }
 

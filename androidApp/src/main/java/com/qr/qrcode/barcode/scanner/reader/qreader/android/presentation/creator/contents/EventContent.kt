@@ -25,7 +25,7 @@ import com.ramcosta.composedestinations.spec.Direction
 @Composable
 fun EventContent(
     viewModel: EventContentViewModel = viewModel(),
-    onContent: (Boolean) -> Unit,
+    onContent: (Boolean, String) -> Unit,
     onNavigate: (Direction) -> Unit,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>
 ) {
@@ -41,7 +41,7 @@ fun EventContent(
     }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled)
+        onContent(state.isEnabled, state.generateText)
     }
 
     Column(

@@ -2,5 +2,6 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.websit
 
 data class WebsiteContentState(
     val website: String = "",
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
+    val generateText: String = ""
 )

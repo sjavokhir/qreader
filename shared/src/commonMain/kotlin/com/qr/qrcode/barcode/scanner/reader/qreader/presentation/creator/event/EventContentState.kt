@@ -4,10 +4,11 @@ data class EventContentState(
     val name: String = "",
     val location: String = "",
     val description: String = "",
-    val isEnabled: Boolean = false,
     val isStart: Boolean = true,
     val startTimestamp: Long = 0L,
     val startDateTime: String = "",
     val endTimestamp: Long = 0L,
-    val endDateTime: String = ""
+    val endDateTime: String = "",
+    val isEnabled: Boolean = false,
+    val generateText: String = ""
 )

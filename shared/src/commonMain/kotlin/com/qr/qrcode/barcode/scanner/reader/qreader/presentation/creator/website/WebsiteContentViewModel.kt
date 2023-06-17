@@ -24,15 +24,11 @@ class WebsiteContentViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 website = website,
-                isEnabled = website.isUrlValid()
+                isEnabled = website.isUrlValid(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = currentState.website,
-//            formattedContent = "${AppStrings.website}: ${currentState.website}"
-//        )
-//    }
+    private fun WebsiteContentState.generateText(): String = website
 }

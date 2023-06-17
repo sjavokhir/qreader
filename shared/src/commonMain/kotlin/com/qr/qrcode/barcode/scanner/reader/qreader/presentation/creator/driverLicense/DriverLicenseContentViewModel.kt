@@ -81,33 +81,27 @@ class DriverLicenseContentViewModel : KMMViewModel() {
                         mAddressCity.isNotEmpty() && mAddressZip.isNotEmpty() &&
                         mLicenseNumber.isNotEmpty() && mIssueDate.isNotEmpty() &&
                         mExpiryDate.isNotEmpty() && mBirthDate.isNotEmpty() &&
-                        mIssuingCountry.isNotEmpty()
+                        mIssuingCountry.isNotEmpty(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = buildQrContent(),
-//            formattedContent = buildQrContent()
-//        )
-//    }
-//
-//    private fun buildQrContent(): String {
-//        return buildString {
-//            append("Document Type: ${currentState.documentType}\n")
-//            append("First Name: ${currentState.firstName}\n")
-//            append("Middle Name: ${currentState.middleName}\n")
-//            append("Last Name: ${currentState.lastName}\n")
-//            append("Gender: ${currentState.gender}\n")
-//            append("Address Street: ${currentState.addressStreet}\n")
-//            append("Address City: ${currentState.addressCity}\n")
-//            append("Address Zip: ${currentState.addressZip}\n")
-//            append("License Number: ${currentState.licenseNumber}\n")
-//            append("Issue Date: ${currentState.issueDate}\n")
-//            append("Expiry Date: ${currentState.expiryDate}\n")
-//            append("Birth Date: ${currentState.birthDate}\n")
-//            append("Issuing Country: ${currentState.issuingCountry}")
-//        }
-//    }
+    private fun DriverLicenseContentState.generateText(): String {
+        return buildString {
+            append("Document Type: $documentType\n")
+            append("First Name: $firstName\n")
+            append("Middle Name: $middleName\n")
+            append("Last Name: $lastName\n")
+            append("Gender: $gender\n")
+            append("Address Street: $street\n")
+            append("Address City: $city\n")
+            append("Address Zip: ${zip}\n")
+            append("License Number: $licenseNumber\n")
+            append("Issue Date: $issueDate\n")
+            append("Expiry Date: $expiryDate\n")
+            append("Birth Date: $birthDate\n")
+            append("Issuing Country: $issuingCountry}")
+        }
+    }
 }

@@ -1,6 +1,8 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDateTime
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToString
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.location.LocationContentState
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -36,12 +38,14 @@ class EventContentViewModel : KMMViewModel() {
             if (currentState.isStart) {
                 it.copy(
                     startTimestamp = timestamp,
-                    startDateTime = timestamp.timestampToDateTime().defaultDateTime
+                    startDateTime = timestamp.timestampToDateTime().defaultDateTime,
+                    generateText = it.generateText()
                 )
             } else {
                 it.copy(
                     endTimestamp = timestamp,
-                    endDateTime = timestamp.timestampToDateTime().defaultDateTime
+                    endDateTime = timestamp.timestampToDateTime().defaultDateTime,
+                    generateText = it.generateText()
                 )
             }
         }
@@ -59,36 +63,21 @@ class EventContentViewModel : KMMViewModel() {
                 name = mName,
                 location = location ?: it.location,
                 description = description ?: it.description,
-                isEnabled = mName.isNotEmpty()
+                isEnabled = mName.isNotEmpty(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = buildQrContent(), formattedContent = buildFormattedContent()
-//        )
-//    }
-
-//    private fun buildQrContent(): String {
-//        return buildString {
-//            append("BEGIN:VEVENT\n")
-//            append("SUMMARY:${currentState.name}\n")
-//            append("DTSTART:${currentState.startDate.timestampToString(currentState.startTime)}\n")
-//            append("DTEND:${currentState.endDate.timestampToString(currentState.endTime)}\n")
-//            append("LOCATION:${currentState.location}\n")
-//            append("DESCRIPTION:${currentState.description}\n")
-//            append("END:VEVENT")
-//        }
-//    }
-//
-//    private fun buildFormattedContent(): String {
-//        return buildString {
-//            append("Event Name: ${currentState.name}\n")
-//            append("Start Date and Time: ${currentState.startDateTime}\n")
-//            append("End Date and Time: ${currentState.endDateTime}\n")
-//            append("Event Location: ${currentState.location}\n")
-//            append("Description: ${currentState.description}")
-//        }
-//    }
+    private fun EventContentState.generateText(): String {
+        return buildString {
+            append("BEGIN:VEVENT\n")
+            append("SUMMARY:$name\n")
+            append("DTSTART:${startTimestamp.timestampToString()}\n")
+            append("DTEND:${endTimestamp.timestampToString()}\n")
+            append("LOCATION:$location\n")
+            append("DESCRIPTION:$description\n")
+            append("END:VEVENT")
+        }
+    }
 }

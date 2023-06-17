@@ -3,5 +3,6 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.locati
 data class LocationContentState(
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
+    val generateText: String = ""
 )
