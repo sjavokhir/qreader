@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
@@ -68,7 +67,8 @@ fun QRFilledButton(
                 ButtonContent(
                     text = text,
                     leadingIcon = leadingIcon,
-                    trailingIcon = trailingIcon
+                    trailingIcon = trailingIcon,
+                    contentColor = contentColor
                 )
             }
         }
@@ -124,7 +124,8 @@ fun QROutlinedButton(
                 ButtonContent(
                     text = text,
                     leadingIcon = leadingIcon,
-                    trailingIcon = trailingIcon
+                    trailingIcon = trailingIcon,
+                    contentColor = contentColor
                 )
             }
         }
@@ -135,16 +136,22 @@ fun QROutlinedButton(
 private fun RowScope.ButtonContent(
     text: String,
     leadingIcon: Painter? = null,
-    trailingIcon: Painter? = null
+    trailingIcon: Painter? = null,
+    contentColor: Color
 ) {
     if (leadingIcon != null) {
-        Box(Modifier.sizeIn(maxHeight = QRButtonDefaults.ButtonIconSize)) {
-            QRIcon(painter = leadingIcon)
+        Box(
+            modifier = Modifier.sizeIn(maxHeight = QRButtonDefaults.ButtonIconSize)
+        ) {
+            QRIcon(
+                painter = leadingIcon,
+                color = contentColor
+            )
         }
     }
 
     Box(
-        Modifier
+        modifier = Modifier
             .weight(1f, fill = false)
             .padding(
                 start = if (leadingIcon != null) {
@@ -163,8 +170,13 @@ private fun RowScope.ButtonContent(
     }
 
     if (trailingIcon != null) {
-        Box(Modifier.sizeIn(maxHeight = QRButtonDefaults.ButtonIconSize)) {
-            QRIcon(painter = trailingIcon)
+        Box(
+            modifier = Modifier.sizeIn(maxHeight = QRButtonDefaults.ButtonIconSize)
+        ) {
+            QRIcon(
+                painter = trailingIcon,
+                color = contentColor
+            )
         }
     }
 }

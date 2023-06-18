@@ -16,12 +16,12 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.phone.P
 @Composable
 fun PhoneContent(
     viewModel: PhoneContentViewModel = viewModel(),
-    onContent: (Boolean) -> Unit
+    onContent: (Boolean, String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled)
+        onContent(state.isEnabled, state.generateText)
     }
 
     Column {

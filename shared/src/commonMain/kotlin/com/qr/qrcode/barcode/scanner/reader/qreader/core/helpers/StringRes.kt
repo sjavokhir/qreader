@@ -19,9 +19,11 @@ object StringRes {
     const val twitter = "Twitter"
     const val tiktok = "TikTok "
     const val telegram = "Telegram"
+    const val vkontakte = "ВКонтакте"
     const val twitch = "Twitch"
     const val linkedin = "LinkedIn"
     const val github = "Github"
-    const val pinterest = "Pinterest"
-    const val tumblr = "Tumblr"
+    const val medium = "Medium"
+    const val dribbble = "Dribbble"
+    const val behance = "Behance"
 }

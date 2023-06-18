@@ -41,7 +41,8 @@ class LocationContentViewModel : KMMViewModel() {
                 it.copy(
                     latitude = mLatitude,
                     longitude = mLongitude,
-                    isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0
+                    isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0,
+                    generateText = it.generateText()
                 )
             }
         }
@@ -58,18 +59,13 @@ class LocationContentViewModel : KMMViewModel() {
             it.copy(
                 latitude = mLatitude,
                 longitude = mLongitude,
-                isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0
+                isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0,
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = "geo:${currentState.latitude},${currentState.longitude}",
-//            formattedContent = """
-//                ${AppStrings.latitude}: ${currentState.latitude}
-//                ${AppStrings.longitude}: ${currentState.longitude}
-//            """.trimIndent()
-//        )
-//    }
+    private fun LocationContentState.generateText(): String {
+        return "geo:$latitude,$longitude"
+    }
 }

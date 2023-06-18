@@ -3,6 +3,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creato
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event.EventContentEvent
@@ -25,7 +27,7 @@ import com.ramcosta.composedestinations.spec.Direction
 @Composable
 fun EventContent(
     viewModel: EventContentViewModel = viewModel(),
-    onContent: (Boolean) -> Unit,
+    onContent: (Boolean, String) -> Unit,
     onNavigate: (Direction) -> Unit,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>
 ) {
@@ -41,7 +43,7 @@ fun EventContent(
     }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled)
+        onContent(state.isEnabled, state.generateText)
     }
 
     Column(
@@ -61,7 +63,12 @@ fun EventContent(
             onValueChange = {},
             placeholder = stringResource(id = R.string.eg_placeholder_date_time),
             hint = stringResource(id = R.string.start_date_time),
-            trailingIcon = painterResource(id = R.drawable.ic_today),
+            trailingIcon = {
+                QRIcon(
+                    painter = painterResource(id = R.drawable.ic_today),
+                    color = MaterialTheme.colorScheme.outline
+                )
+            },
             readOnly = true,
             modifier = Modifier.clickableSingle(
                 onClick = {
@@ -77,7 +84,12 @@ fun EventContent(
             onValueChange = {},
             placeholder = stringResource(id = R.string.eg_placeholder_date_time),
             hint = stringResource(id = R.string.end_date_time),
-            trailingIcon = painterResource(id = R.drawable.ic_today),
+            trailingIcon = {
+                QRIcon(
+                    painter = painterResource(id = R.drawable.ic_today),
+                    color = MaterialTheme.colorScheme.outline
+                )
+            },
             readOnly = true,
             modifier = Modifier.clickableSingle(
                 onClick = {

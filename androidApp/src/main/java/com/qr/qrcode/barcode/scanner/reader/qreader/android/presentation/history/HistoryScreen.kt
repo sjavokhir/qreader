@@ -38,6 +38,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.spec.Direction
 import kotlinx.coroutines.launch
 
 @Destination
@@ -56,7 +57,7 @@ fun HistoryScreen(
 @Composable
 private fun HistoryScreenContent(
     pageCount: Int = 2,
-    onBottomNavigateTo: (DirectionDestination) -> Unit
+    onBottomNavigateTo: (Direction) -> Unit
 ) {
     val context = LocalContext.current
 

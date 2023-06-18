@@ -28,6 +28,7 @@ google-playservices-location = "21.0.1"
 google-firebase-bom = "32.1.0"
 google-firebase-crashlytics = "2.9.2"
 google-mlkit-barcodescanning = "17.1.0"
+google-zxing = "3.4.1"
 
 navigation = "1.9.42-beta"
 koin = "3.4.2"
@@ -60,6 +61,7 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "compose-accompanist" }
+compose-accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "compose-accompanist" }
 compose-maps = { module = "com.google.maps.android:maps-compose", version.ref = "compose-maps" }
 
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
@@ -69,6 +71,7 @@ google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-mlkit-barcodescanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "google-mlkit-barcodescanning" }
+google-zxing = { module = "com.google.zxing:core", version.ref = "google-zxing" }
 
 navigation-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "navigation" }
 navigation-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "navigation" }

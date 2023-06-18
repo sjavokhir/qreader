@@ -7,6 +7,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.navigation.popBackStack
 import com.ramcosta.composedestinations.navigation.popUpTo
+import com.ramcosta.composedestinations.spec.Direction
 
 fun NavHostController.bottomNavigateTo(
     isCurrentDestOnBackStack: Boolean,
@@ -36,7 +37,7 @@ fun NavHostController.bottomNavigateTo(
 }
 
 fun DestinationsNavigator.bottomNavigateTo(
-    direction: DirectionDestination
+    direction: Direction
 ) {
     navigate(direction) {
         // Pop up to the root of the graph to

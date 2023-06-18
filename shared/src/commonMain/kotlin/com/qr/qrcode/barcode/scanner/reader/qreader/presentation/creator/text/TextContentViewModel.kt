@@ -23,15 +23,11 @@ class TextContentViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 text = text,
-                isEnabled = text.isNotEmpty()
+                isEnabled = text.isNotEmpty(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = currentState.text,
-//            formattedContent = currentState.text
-//        )
-//    }
+    private fun TextContentState.generateText(): String = text
 }

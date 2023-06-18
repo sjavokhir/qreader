@@ -85,6 +85,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(project(":qr-generator"))
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kmm.viewmodel)
@@ -107,6 +108,7 @@ dependencies {
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.accompanist.permissions)
+    implementation(libs.compose.accompanist.drawablepainter)
     implementation(libs.compose.maps)
 
     implementation(libs.google.material)
@@ -116,6 +118,7 @@ dependencies {
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.crashlytics)
     implementation(libs.google.firebase.analytics)
+    implementation(libs.google.zxing)
 
     implementation(libs.navigation.core)
     ksp(libs.navigation.ksp)

@@ -43,11 +43,13 @@ class GenerateContentsViewModel : KMMViewModel() {
                 add(GenerateType.Twitter)
                 add(GenerateType.TikTok)
                 add(GenerateType.Telegram)
+                add(GenerateType.VKontakte)
                 add(GenerateType.Twitch)
                 add(GenerateType.LinkedIn)
                 add(GenerateType.Github)
-                add(GenerateType.Pinterest)
-                add(GenerateType.Tumblr)
+                add(GenerateType.Medium)
+                add(GenerateType.Dribbble)
+                add(GenerateType.Behance)
             }.groupBy {
                 it.headerType
             }

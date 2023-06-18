@@ -24,7 +24,7 @@ import com.ramcosta.composedestinations.spec.Direction
 @Composable
 fun LocationContent(
     viewModel: LocationContentViewModel = viewModel(),
-    onContent: (Boolean) -> Unit,
+    onContent: (Boolean, String) -> Unit,
     onNavigate: (Direction) -> Unit,
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>
 ) {
@@ -40,7 +40,7 @@ fun LocationContent(
     }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled)
+        onContent(state.isEnabled, state.generateText)
     }
 
     Column(
@@ -69,7 +69,7 @@ fun LocationContent(
             onClick = {
                 onNavigate(LocationPickerScreenDestination)
             },
-            trailingIcon = painterResource(id = R.drawable.ic_select_location)
+            leadingIcon = painterResource(id = R.drawable.ic_select_location)
         )
     }
 }

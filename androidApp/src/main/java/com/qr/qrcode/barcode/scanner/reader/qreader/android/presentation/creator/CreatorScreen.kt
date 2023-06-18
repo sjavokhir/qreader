@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
@@ -97,16 +97,16 @@ private fun GenerateContentsContent(
                                 .padding(bottom = 8.dp)
                         )
                     }
-                    itemsIndexed(content.value) { index, item ->
+                    itemsIndexed(content.value) { index, type ->
                         GenerateContentItem(
                             context = context,
-                            type = item,
+                            type = type,
                             isLastItem = index == content.value.lastIndex,
                             onClick = {
-                                if (item.isPremium) {
-                                    onNavigate(AddContentScreenDestination(type = item))
+                                if (type.isPremium) {
+                                    onNavigate(PremiumScreenDestination)
                                 } else {
-                                    onNavigate(AddContentScreenDestination(type = item))
+                                    onNavigate(AddContentScreenDestination(type = type))
                                 }
                             }
                         )
@@ -185,16 +185,6 @@ private fun GenerateContentItem(
             DividerContent()
         }
     }
-}
-
-@Composable
-private fun DividerContent() {
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp),
-        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
-    )
 }
 
 private fun GenerateHeaderType.headerTitle(): Int {

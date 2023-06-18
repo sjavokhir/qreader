@@ -14,5 +14,6 @@ data class DriverLicenseContentState(
     val expiryDate: String = "",
     val birthDate: String = "",
     val issuingCountry: String = "",
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
+    val generateText: String = ""
 )

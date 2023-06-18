@@ -23,7 +23,12 @@ class WifiContentViewModel : KMMViewModel() {
     }
 
     private fun onTypeSelected(type: TopicModel) {
-        stateData.update { it.copy(selectedType = type) }
+        stateData.update {
+            it.copy(
+                selectedType = type,
+                generateText = it.generateText()
+            )
+        }
     }
 
     private fun onValueChanged(
@@ -36,18 +41,13 @@ class WifiContentViewModel : KMMViewModel() {
             it.copy(
                 networkName = mNetworkName,
                 password = password ?: it.password,
-                isEnabled = mNetworkName.isNotEmpty()
+                isEnabled = mNetworkName.isNotEmpty(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = "WIFI:S:${currentState.networkName}" + ";P:" + currentState.password + ";;",
-//            formattedContent = """
-//                ${AppStrings.network}: ${currentState.networkName}
-//                ${AppStrings.password}: ${currentState.password}
-//            """.trimIndent()
-//        )
-//    }
+    private fun WifiContentState.generateText(): String {
+        return "WIFI:S:$networkName;P:$password;;"
+    }
 }

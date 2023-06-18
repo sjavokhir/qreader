@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -33,6 +32,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -90,7 +90,9 @@ private fun ManagePermissionsScreenContent() {
                 }
 
                 if (!locationPermissionState.allPermissionsGranted) {
-                    DividerContent()
+                    DividerContent(
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
 
                     SwitchContent(
                         title = R.string.allow_location_access,
@@ -183,15 +185,4 @@ private fun SwitchContent(
                 .scale(.85f)
         )
     }
-}
-
-@Composable
-private fun DividerContent() {
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .padding(horizontal = 16.dp),
-        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
-    )
 }

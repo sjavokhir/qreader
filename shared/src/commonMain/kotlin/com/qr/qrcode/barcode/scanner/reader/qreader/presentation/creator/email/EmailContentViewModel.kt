@@ -24,15 +24,11 @@ class EmailContentViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 email = email,
-                isEnabled = email.isEmailValid()
+                isEnabled = email.isEmailValid(),
+                generateText = it.generateText()
             )
         }
     }
 
-//    fun getContent(): QrGenerateContent {
-//        return QrGenerateContent(
-//            qrContent = "mailto:" + currentState.email,
-//            formattedContent = "${AppStrings.email}: " + currentState.email
-//        )
-//    }
+    private fun EmailContentState.generateText(): String = "mailto:$email"
 }

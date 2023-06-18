@@ -10,10 +10,6 @@ fun currentTimestamp(): Long {
     return Clock.System.now().toEpochMilliseconds()
 }
 
-fun now(): DateTimeModel {
-    return Clock.System.now().toDateTimeModel()
-}
-
 fun Long?.actualDateMillis(hour: Int, minute: Int): Long {
     this ?: return currentTimestamp()
 
@@ -22,6 +18,10 @@ fun Long?.actualDateMillis(hour: Int, minute: Int): Long {
     val millisecondsPerHour = 60 * millisecondsPerMinute
 
     return this + hour * millisecondsPerHour + minute * millisecondsPerMinute
+}
+
+fun Long.timestampToString(): String {
+    return Instant.fromEpochMilliseconds(this).toString()
 }
 
 fun Long.timestampToDateTime(): DateTimeModel {
