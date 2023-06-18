@@ -1,5 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,15 +30,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@SuppressLint("ModifierParameter")
 @Composable
 fun QRTextField(
+    baseModifier: Modifier = Modifier,
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    placeholder: String,
+    placeholder: String = "",
     hint: String? = null,
-    leadingIcon: Painter? = null,
-    trailingIcon: Painter? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Default,
     singleLine: Boolean = false,
@@ -48,7 +49,7 @@ fun QRTextField(
     var isFocused by remember { mutableStateOf(false) }
 
     BasicTextField(
-        modifier = Modifier
+        modifier = baseModifier
             .fillMaxWidth()
             .onFocusChanged {
                 isFocused = it.isFocused
@@ -97,22 +98,17 @@ fun QRTextField(
                             shape = MaterialTheme.shapes.medium
                         )
                         .background(MaterialTheme.colorScheme.background)
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 14.dp
-                        ),
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    leadingIcon?.let {
-                        QRIcon(
-                            painter = it,
-                            color = MaterialTheme.colorScheme.outline,
-                            modifier = Modifier.size(21.dp)
-                        )
-                    }
+                    leadingIcon?.invoke()
 
                     Box(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .align(Alignment.Top)
+                            .padding(vertical = 14.dp),
                         contentAlignment = Alignment.TopStart
                     ) {
                         if (value.isEmpty()) {
@@ -127,13 +123,7 @@ fun QRTextField(
                         innerTextField()
                     }
 
-                    trailingIcon?.let {
-                        QRIcon(
-                            painter = it,
-                            color = MaterialTheme.colorScheme.outline,
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
+                    trailingIcon?.invoke()
                 }
             }
         }

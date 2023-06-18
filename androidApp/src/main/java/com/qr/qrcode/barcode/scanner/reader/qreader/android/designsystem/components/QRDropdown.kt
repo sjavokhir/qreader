@@ -40,7 +40,12 @@ fun QRDropdown(
             placeholder = hint,
             hint = hint,
             readOnly = true,
-            trailingIcon = painterResource(id = R.drawable.ic_arrow_down)
+            trailingIcon = {
+                QRIcon(
+                    painter = painterResource(id = R.drawable.ic_arrow_down),
+                    color = MaterialTheme.colorScheme.outline
+                )
+            }
         )
 
         ExposedDropdownMenu(

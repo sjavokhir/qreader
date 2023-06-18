@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="about_us">About us</string>
+    <string name="action_cancel">Cancel</string>
     <string name="action_continue">Continue</string>
     <string name="action_create">Create</string>
     <string name="action_finish">Finish</string>
     <string name="action_next">Next</string>
+    <string name="action_preview">Preview</string>
     <string name="action_save">Save</string>
     <string name="action_scan">Scan</string>
     <string name="action_select">Select</string>
@@ -31,9 +33,10 @@
     <string name="cancel_anytime">No commitments, cancel anytime!</string>
     <string name="click_create_button">Click create button to start create QR Code.</string>
     <string name="click_scan_button">Click scan button to start scan QR Code.</string>
+    <string name="color">Color</string>
     <string name="communication">Communication</string>
     <string name="company_name">Company name</string>
-    <string name="corner_dots_color">Corner dots color</string>
+    <string name="corner_dots_color">Dots color</string>
     <string name="corner_dots_type">Corner dots type</string>
     <string name="corner_style">Corner style</string>
     <string name="created">Created</string>
@@ -76,10 +79,8 @@
     <string name="feedback">Feedback</string>
     <string name="first_name">Name</string>
     <string name="foreground_color">Foreground Color</string>
-    <string name="frame_around_corner_dots_color">Frame around corner dots color</string>
+    <string name="frame_around_corner_dots_color">Corner color</string>
     <string name="frame_around_corner_dots_style">Frame around corner dots style</string>
-    <string name="frame_color">Frame color</string>
-    <string name="frame_text">Frame text</string>
     <string name="free">Free</string>
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
     <string name="gender">Gender</string>
@@ -96,6 +97,7 @@
     <string name="language">Language</string>
     <string name="last_name">Last name</string>
     <string name="latitude">Latitude</string>
+    <string name="library">Library</string>
     <string name="license_number">License number</string>
     <string name="lifetime">Lifetime</string>
     <string name="location">Location</string>
@@ -107,7 +109,6 @@
     <string name="most_popular">Most\nPopular</string>
     <string name="network_name">Network name</string>
     <string name="no_content_found">No content found!</string>
-    <string name="no_frame">No frame</string>
     <string name="on_boarding">On Boarding</string>
     <string name="onboarding_description_1">Scan QR codes for instant product information. Effortlessly find what you need in seconds.</string>
     <string name="onboarding_description_2">Effortlessly organize and access various QR code types in one place. Keep track of websites, contact details, and more with ease.</string>
@@ -132,7 +133,6 @@
     <string name="premium_description">You can be premium by choosing a package and you can create the qr code you want and customize it as you wish.</string>
     <string name="privacy">Privacy</string>
     <string name="qr_code">QR Code</string>
-    <string name="qr_code_frame">QR code frame</string>
     <string name="qr_code_pattern">QR code pattern</string>
     <string name="rate_us">Rate us</string>
     <string name="restore_purchase">Restore Purchase</string>
@@ -161,7 +161,6 @@
     <string name="terms">Terms</string>
     <string name="terms_of_use">Terms of Use</string>
     <string name="text">Text</string>
-    <string name="text_color">Text color</string>
     <string name="thank_you">Thank you!</string>
     <string name="thank_you_description">Thank you for sharing your thoughts. We appreciate your feedback.</string>
     <string name="update_new_version">Update new version</string>

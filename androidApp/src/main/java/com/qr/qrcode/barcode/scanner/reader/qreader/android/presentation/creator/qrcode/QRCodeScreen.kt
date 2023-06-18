@@ -155,7 +155,7 @@ private fun ActionsContent(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(24.dp)
+        horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         QROutlinedButton(
             text = stringResource(id = R.string.action_save),

@@ -2,7 +2,6 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -32,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.sound.SoundEffectsEvent
@@ -86,7 +85,11 @@ private fun SoundEffectsScreenContent(
             }
 
             if (state.isSoundEffectsChecked) {
-                item { DividerContent() }
+                item {
+                    DividerContent(
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
 
                 items(state.soundEffects) { sound ->
                     Column {
@@ -98,7 +101,9 @@ private fun SoundEffectsScreenContent(
                             }
                         )
 
-                        DividerContent()
+                        DividerContent(
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
                     }
                 }
             }
@@ -177,15 +182,4 @@ private fun SoundItem(
             )
         }
     }
-}
-
-@Composable
-private fun DividerContent() {
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .padding(horizontal = 16.dp),
-        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
-    )
 }
