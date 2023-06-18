@@ -18,5 +18,6 @@ data class CustomizeState(
     val cornerHex: String = "FF000000",
     val cornerDotHex: String = "FF000000",
     val logos: List<String> = emptyList(),
-    val selectedLogo: String = ""
+    val selectedLogo: String = "",
+    val showPreview: Boolean = false,
 )

@@ -95,6 +95,15 @@ private fun CustomizeScreenContent(
         )
     }
 
+    if (state.showPreview) {
+        QRPreviewDialog(
+            state = state,
+            onDismissRequest = {
+                onEvent(CustomizeEvent.ShowHidePreview(false))
+            }
+        )
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -158,6 +167,7 @@ private fun CustomizeScreenContent(
                 QROutlinedButton(
                     text = stringResource(id = R.string.action_preview),
                     onClick = {
+                        onEvent(CustomizeEvent.ShowHidePreview(true))
                     },
                     modifier = Modifier.weight(1f)
                 )

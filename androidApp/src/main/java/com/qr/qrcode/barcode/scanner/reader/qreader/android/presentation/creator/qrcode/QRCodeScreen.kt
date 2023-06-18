@@ -1,5 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode
 
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,12 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
@@ -54,11 +55,7 @@ private fun QRCodeScreenContent(
     generateText: String,
     onNavigate: (Direction) -> Unit
 ) {
-    val imageBitmap = rememberQrImage(
-        content = generateText,
-        size = 512,
-        padding = 2
-    )
+    val qrDrawable = rememberQrDrawable(content = generateText)
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(24.dp),
@@ -71,7 +68,7 @@ private fun QRCodeScreenContent(
             )
         }
         item {
-            QrImageContent(imageBitmap)
+            QrImageContent(qrDrawable)
         }
         item {
             ActionsContent(
@@ -138,9 +135,9 @@ private fun CustomizeContent(
 }
 
 @Composable
-private fun QrImageContent(imageBitmap: ImageBitmap) {
+private fun QrImageContent(qrDrawable: Drawable?) {
     Image(
-        bitmap = imageBitmap,
+        painter = rememberDrawablePainter(drawable = qrDrawable),
         contentDescription = null,
         modifier = Modifier
             .aspectRatio(1f)

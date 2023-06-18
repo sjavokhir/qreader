@@ -13,6 +13,8 @@ sealed class CustomizeEvent {
 
     data class ShowColorPicker(val colorPickerType: ColorPickerType) : CustomizeEvent()
     object DismissColorPicker : CustomizeEvent()
+
+    data class ShowHidePreview(val show: Boolean): CustomizeEvent()
 }
 
 enum class ColorPickerType {

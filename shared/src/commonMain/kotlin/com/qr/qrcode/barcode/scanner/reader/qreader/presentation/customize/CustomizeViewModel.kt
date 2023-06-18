@@ -30,6 +30,7 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
             is CustomizeEvent.SelectLogo -> onLogoSelected(event.logo)
             is CustomizeEvent.ShowColorPicker -> onColorPickerShowed(event.colorPickerType)
             CustomizeEvent.DismissColorPicker -> onColorPickerDismissed()
+            is CustomizeEvent.ShowHidePreview -> onPreviewShowed(event.show)
         }
     }
 
@@ -121,6 +122,10 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 
     private fun onColorPickerDismissed() {
         stateData.update { it.copy(showColorPicker = false) }
+    }
+
+    private fun onPreviewShowed(show: Boolean) {
+        stateData.update { it.copy(showPreview = show) }
     }
 }
 

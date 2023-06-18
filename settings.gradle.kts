@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "qreader"
 include(":androidApp")
 include(":shared")
+include(":qr-generator")
