@@ -84,7 +84,8 @@ private fun QRCodeScreenContent(
     val context = LocalContext.current
     val qrDrawable = rememberQrDrawable(
         content = generateText,
-        model = model
+        model = model,
+        ownLogo = ImageUtils.getDrawableFromPath(context, model.ownLogoPath)
     )
 
     val storagePermissionsState = rememberMultiplePermissionsState(storagePermissions)
@@ -132,8 +133,8 @@ private fun QRCodeScreenContent(
 
 @Composable
 private fun CustomizeContent(
-    hasSubscription: Boolean,
     model: QRCustomizeModel,
+    hasSubscription: Boolean,
     onNavigate: (Direction) -> Unit
 ) {
     Box(

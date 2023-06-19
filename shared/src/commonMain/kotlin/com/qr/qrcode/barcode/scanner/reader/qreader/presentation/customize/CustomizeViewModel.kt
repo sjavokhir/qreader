@@ -63,7 +63,8 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
                 patternBackgroundHex = state.patternBackgroundHex,
                 frameHex = state.frameHex,
                 frameDotHex = state.frameDotHex,
-                selectedLogo = state.selectedLogo
+                selectedLogo = state.selectedLogo,
+                ownLogoPath = state.ownLogoPath
             )
         }
     }

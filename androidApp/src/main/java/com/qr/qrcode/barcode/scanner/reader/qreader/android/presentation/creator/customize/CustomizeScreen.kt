@@ -68,6 +68,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.extensions.toColor
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.extensions.toHex
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.pickers.ColorPickerDialog
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.log
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize.ColorPickerType
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize.CustomizeEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize.CustomizeState
@@ -112,6 +114,16 @@ private fun CustomizeScreenContent(
         contract = ActivityResultContracts.GetContent()
     ) { logoUri = it }
 
+    LaunchedEffect(state.ownLogoPath) {
+        state.ownLogoPath.log()
+
+        if (!state.ownLogoPath.isNullOrEmpty()) {
+            tryCatch {
+                logoUri = Uri.parse(state.ownLogoPath)
+            }
+        }
+    }
+
     if (state.showColorPicker) {
         ColorPickerDialog(
             onDismissRequest = {
@@ -126,7 +138,7 @@ private fun CustomizeScreenContent(
     if (state.showPreview) {
         QRPreviewDialog(
             ownLogo = ImageUtils.getDrawableFromUri(context, logoUri),
-            model = state.toModel(),
+            model = state.toModel(logoUri),
             onDismissRequest = {
                 onEvent(CustomizeEvent.ShowHidePreview(false))
             }
@@ -211,7 +223,7 @@ private fun CustomizeScreenContent(
                 QRFilledButton(
                     text = stringResource(id = R.string.customize),
                     onClick = {
-                        resultNavigator.navigateBack(state.toModel())
+                        resultNavigator.navigateBack(state.toModel(logoUri))
                     },
                     modifier = Modifier.weight(1f)
                 )

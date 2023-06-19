@@ -1,5 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode
 
+import android.net.Uri
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRCornerType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternType
@@ -14,10 +15,11 @@ data class QRCustomizeModel(
     val patternBackgroundHex: String = "FFFFFFFF",
     val frameHex: String = "FF000000",
     val frameDotHex: String = "FF000000",
-    val selectedLogo: String = ""
+    val selectedLogo: String = "",
+    val ownLogoPath: String? = null
 ) : Serializable
 
-fun CustomizeState.toModel(): QRCustomizeModel {
+fun CustomizeState.toModel(uri: Uri? = null): QRCustomizeModel {
     return QRCustomizeModel(
         selectedPattern = selectedPattern,
         selectedCorner = selectedCorner,
@@ -26,7 +28,8 @@ fun CustomizeState.toModel(): QRCustomizeModel {
         patternBackgroundHex = patternBackgroundHex,
         frameHex = frameHex,
         frameDotHex = frameDotHex,
-        selectedLogo = selectedLogo
+        selectedLogo = selectedLogo,
+        ownLogoPath = uri?.toString()
     )
 }
 
@@ -39,6 +42,7 @@ fun QRCustomizeModel.toState(): CustomizeState {
         patternBackgroundHex = patternBackgroundHex,
         frameHex = frameHex,
         frameDotHex = frameDotHex,
-        selectedLogo = selectedLogo
+        selectedLogo = selectedLogo,
+        ownLogoPath = ownLogoPath
     )
 }

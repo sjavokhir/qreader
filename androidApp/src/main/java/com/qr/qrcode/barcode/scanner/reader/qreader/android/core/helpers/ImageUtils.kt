@@ -21,18 +21,12 @@ import java.io.OutputStream
 
 object ImageUtils {
 
-    fun saveDrawableToGallery(
-        context: Context,
-        drawable: Drawable
-    ) {
+    fun saveDrawableToGallery(context: Context, drawable: Drawable) {
         val bitmap = drawable.toBitmap(1024, 1024)
         saveBitmapToGallery(context, bitmap)
     }
 
-    fun shareDrawable(
-        context: Context,
-        drawable: Drawable
-    ) {
+    fun shareDrawable(context: Context, drawable: Drawable) {
         val bitmap = drawable.toBitmap(1024, 1024)
         val uri = saveBitmapToGallery(context, bitmap, false)
 
@@ -99,10 +93,7 @@ object ImageUtils {
         return Uri.fromFile(imageFile)
     }
 
-    fun getDrawableFromUri(
-        context: Context,
-        uri: Uri?
-    ): Drawable? {
+    fun getDrawableFromUri(context: Context, uri: Uri?): Drawable? {
         uri ?: return null
 
         try {
@@ -112,5 +103,11 @@ object ImageUtils {
         } catch (_: Throwable) {
         }
         return null
+    }
+
+    fun getDrawableFromPath(context: Context, path: String?): Drawable? {
+        path ?: return null
+
+        return getDrawableFromUri(context, Uri.parse(path))
     }
 }
