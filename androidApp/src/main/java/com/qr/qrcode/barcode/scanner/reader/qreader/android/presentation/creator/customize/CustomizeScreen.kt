@@ -302,20 +302,12 @@ private fun SelectPatternContent(
             .clickableSingle(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
-        if (icon.isEmpty()) {
+        context.drawableId(icon)?.let {
             Image(
-                painter = painterResource(id = R.drawable.ic_none),
+                painter = painterResource(id = it),
                 contentDescription = icon,
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outline)
             )
-        } else {
-            context.drawableId(icon)?.let {
-                Image(
-                    painter = painterResource(id = it),
-                    contentDescription = icon,
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outline)
-                )
-            }
         }
     }
 }
@@ -340,7 +332,7 @@ private fun CornerStyleContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.frame_around_corner_dots_style),
+                text = stringResource(id = R.string.frame_style),
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
@@ -369,7 +361,7 @@ private fun CornerStyleContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.corner_dots_type),
+                text = stringResource(id = R.string.dots_style),
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
@@ -402,13 +394,13 @@ private fun CornerStyleContent(
                 baseModifier = Modifier.weight(1f),
                 modifier = Modifier.clickableSingle(
                     onClick = {
-                        onEvent(CustomizeEvent.ShowColorPicker(ColorPickerType.CornerColor))
+                        onEvent(CustomizeEvent.ShowColorPicker(ColorPickerType.FrameColor))
                     },
                     hasIndication = false
                 ),
-                value = "#${state.cornerHex}",
+                value = "#${state.frameHex}",
                 onValueChange = {},
-                hint = stringResource(id = R.string.frame_around_corner_dots_color),
+                hint = stringResource(id = R.string.frame_color),
                 trailingIcon = {
                     Box(
                         modifier = Modifier
@@ -419,7 +411,7 @@ private fun CornerStyleContent(
                                 color = MaterialTheme.colorScheme.outline,
                                 shape = CircleShape
                             )
-                            .background(state.cornerHex.toColor())
+                            .background(state.frameHex.toColor())
                     )
                 },
                 readOnly = true
@@ -429,13 +421,13 @@ private fun CornerStyleContent(
                 baseModifier = Modifier.weight(1f),
                 modifier = Modifier.clickableSingle(
                     onClick = {
-                        onEvent(CustomizeEvent.ShowColorPicker(ColorPickerType.CornerDotColor))
+                        onEvent(CustomizeEvent.ShowColorPicker(ColorPickerType.FrameDotColor))
                     },
                     hasIndication = false
                 ),
-                value = "#${state.cornerDotHex}",
+                value = "#${state.frameDotHex}",
                 onValueChange = {},
-                hint = stringResource(id = R.string.corner_dots_color),
+                hint = stringResource(id = R.string.dots_color),
                 trailingIcon = {
                     Box(
                         modifier = Modifier
@@ -446,7 +438,7 @@ private fun CornerStyleContent(
                                 color = MaterialTheme.colorScheme.outline,
                                 shape = CircleShape
                             )
-                            .background(state.cornerDotHex.toColor())
+                            .background(state.frameDotHex.toColor())
                     )
                 },
                 readOnly = true

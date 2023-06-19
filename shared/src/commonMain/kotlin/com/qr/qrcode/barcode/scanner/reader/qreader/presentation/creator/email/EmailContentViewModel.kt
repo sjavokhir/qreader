@@ -16,19 +16,28 @@ class EmailContentViewModel : KMMViewModel() {
 
     fun onEvent(event: EmailContentEvent) {
         when (event) {
-            is EmailContentEvent.EmailChanged -> onEmailChanged(email = event.email)
+            is EmailContentEvent.EmailChanged -> onValueChanged(email = event.email)
+            is EmailContentEvent.MessageChanged -> onValueChanged(message = event.message)
         }
     }
 
-    private fun onEmailChanged(email: String) {
+    private fun onValueChanged(
+        email: String? = null,
+        message: String? = null
+    ) {
         stateData.update {
+            val mEmail = email ?: it.email
+
             it.copy(
-                email = email,
-                isEnabled = email.isEmailValid(),
+                email = mEmail,
+                message = message ?: it.message,
+                isEnabled = mEmail.isEmailValid(),
                 generateText = it.generateText()
             )
         }
     }
 
-    private fun EmailContentState.generateText(): String = "mailto:$email"
+    private fun EmailContentState.generateText(): String {
+        return "mailto:$email?body=$message"
+    }
 }

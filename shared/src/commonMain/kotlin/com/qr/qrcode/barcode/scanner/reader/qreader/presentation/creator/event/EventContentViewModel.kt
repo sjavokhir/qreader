@@ -2,7 +2,6 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDateTime
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToString
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.location.LocationContentState
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState

@@ -48,6 +48,11 @@ class WifiContentViewModel : KMMViewModel() {
     }
 
     private fun WifiContentState.generateText(): String {
-        return "WIFI:S:$networkName;P:$password;;"
+        return buildString {
+            append("WIFI:")
+            append("S:$networkName;")
+            append("P:$password;")
+            append("T:${selectedType.title};")
+        }
     }
 }

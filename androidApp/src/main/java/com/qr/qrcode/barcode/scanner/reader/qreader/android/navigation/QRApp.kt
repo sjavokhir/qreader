@@ -7,11 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.QRTheme
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.NavGraphs
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CustomizeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.Destination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.OnBoardingScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.EntryType
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.rememberNavHostEngine
@@ -24,7 +23,7 @@ fun QRApp(entry: EntryType) {
 
     val startRoute = when (entry) {
         EntryType.OnBoarding -> OnBoardingScreenDestination
-        EntryType.Scanner -> CustomizeScreenDestination
+        EntryType.Scanner -> ScannerScreenDestination
     }
 
     QRTheme {

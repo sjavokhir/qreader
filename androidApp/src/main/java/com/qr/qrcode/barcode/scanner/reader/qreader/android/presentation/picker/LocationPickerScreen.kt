@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.background
@@ -35,6 +34,7 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locationPermissions
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
@@ -99,10 +99,7 @@ private fun MapView(
 ) {
     val context = LocalContext.current
     val cameraPermissionState = rememberMultiplePermissionsState(
-        listOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
+        locationPermissions
     )
     var currentPosition by remember { mutableStateOf(GeoPosition()) }
 

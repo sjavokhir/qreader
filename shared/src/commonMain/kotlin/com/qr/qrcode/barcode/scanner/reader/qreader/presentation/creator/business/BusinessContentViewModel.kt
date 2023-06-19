@@ -55,12 +55,12 @@ class BusinessContentViewModel : KMMViewModel() {
         return buildString {
             append("BEGIN:VCARD\n")
             append("VERSION:3.0\n")
-            append("ORG:").append(name).append("\n")
-            append("INDUSTRY:").append(industry).append("\n")
-            append("TEL;TYPE=WORK,VOICE:").append(phone).append("\n")
-            append("EMAIL;TYPE=PREF,INTERNET:").append(email).append("\n")
-            append("URL:").append(website).append("\n")
-            append("ADR;TYPE=WORK:").append(address).append("\n")
+            append("N:$name\n")
+            append("ORG:$industry\n")
+            append("TEL:$phone\n")
+            append("URL:$website\n")
+            append("EMAIL:$email\n")
+            append("ADR:$address\n")
             append("END:VCARD")
         }
     }

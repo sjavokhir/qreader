@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settings.permissions
 
-import android.Manifest
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,6 +31,9 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.cameraPermission
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locationPermissions
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.storagePermissions
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.ramcosta.composedestinations.annotation.Destination
@@ -47,17 +49,14 @@ fun ManagePermissionsScreen() {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun ManagePermissionsScreenContent() {
-    val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
-    val locationPermissionState = rememberMultiplePermissionsState(
-        listOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-    )
+    val cameraPermissionState = rememberPermissionState(cameraPermission)
+    val locationPermissionState = rememberMultiplePermissionsState(locationPermissions)
+    val storagePermissionState = rememberMultiplePermissionsState(storagePermissions)
 
     if (
         cameraPermissionState.status.isGranted &&
-        locationPermissionState.allPermissionsGranted
+        locationPermissionState.allPermissionsGranted &&
+        storagePermissionState.allPermissionsGranted
     ) {
         PermissionsGrantedContent()
     } else {
@@ -99,6 +98,20 @@ private fun ManagePermissionsScreenContent() {
                         description = R.string.grant_location_permission,
                         onCheckedChange = {
                             locationPermissionState.launchMultiplePermissionRequest()
+                        }
+                    )
+                }
+
+                if (!storagePermissionState.allPermissionsGranted) {
+                    DividerContent(
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+
+                    SwitchContent(
+                        title = R.string.allow_storage_access,
+                        description = R.string.grant_storage_permission,
+                        onCheckedChange = {
+                            storagePermissionState.launchMultiplePermissionRequest()
                         }
                     )
                 }

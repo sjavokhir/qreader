@@ -20,6 +20,6 @@ sealed class CustomizeEvent {
 enum class ColorPickerType {
     PatternDotColor,
     PatternBackgroundColor,
-    CornerColor,
-    CornerDotColor
+    FrameColor,
+    FrameDotColor
 }

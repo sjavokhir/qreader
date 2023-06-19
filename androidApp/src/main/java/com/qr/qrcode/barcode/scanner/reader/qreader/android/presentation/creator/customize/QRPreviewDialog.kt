@@ -32,7 +32,17 @@ fun QRPreviewDialog(
     onDismissRequest: () -> Unit,
     properties: DialogProperties = DialogProperties()
 ) {
-    val qrDrawable = rememberQrDrawable(content = appUrl)
+    val qrDrawable = rememberQrDrawable(
+        content = appUrl,
+        patternType = state.selectedPattern,
+        cornerType = state.selectedCorner,
+        dotType = state.selectedDot,
+        patternDotHex = state.patternDotHex,
+        patternBackgroundHex = state.patternBackgroundHex,
+        frameHex = state.frameHex,
+        frameDotHex = state.frameDotHex,
+        selectedLogo = state.selectedLogo
+    )
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -54,10 +64,7 @@ fun QRPreviewDialog(
                     fontWeight = FontWeight.SemiBold
                 )
 
-                QrImageContent(
-                    state = state,
-                    qrDrawable = qrDrawable
-                )
+                QrImageContent(qrDrawable)
 
                 QRFilledButton(
                     text = stringResource(id = R.string.action_ok),
@@ -69,10 +76,7 @@ fun QRPreviewDialog(
 }
 
 @Composable
-private fun QrImageContent(
-    state: CustomizeState,
-    qrDrawable: Drawable?
-) {
+private fun QrImageContent(qrDrawable: Drawable) {
     Image(
         painter = rememberDrawablePainter(drawable = qrDrawable),
         contentDescription = null,

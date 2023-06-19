@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.ImageUtils
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
@@ -55,6 +57,7 @@ private fun QRCodeScreenContent(
     generateText: String,
     onNavigate: (Direction) -> Unit
 ) {
+    val context = LocalContext.current
     val qrDrawable = rememberQrDrawable(content = generateText)
 
     LazyColumn(
@@ -72,8 +75,18 @@ private fun QRCodeScreenContent(
         }
         item {
             ActionsContent(
-                onSave = {},
-                onShare = {}
+                onSave = {
+                    ImageUtils.saveDrawableToGallery(
+                        context = context,
+                        drawable = qrDrawable
+                    )
+                },
+                onShare = {
+                    ImageUtils.shareDrawable(
+                        context = context,
+                        drawable = qrDrawable
+                    )
+                }
             )
         }
     }
@@ -135,7 +148,7 @@ private fun CustomizeContent(
 }
 
 @Composable
-private fun QrImageContent(qrDrawable: Drawable?) {
+private fun QrImageContent(qrDrawable: Drawable) {
     Image(
         painter = rememberDrawablePainter(drawable = qrDrawable),
         contentDescription = null,

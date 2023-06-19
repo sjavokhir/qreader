@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "com.qr.qrcode.barcode.scanner.reader.qreader.android"
-        minSdk = 24
+        minSdk = 27
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"

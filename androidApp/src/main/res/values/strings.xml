@@ -6,11 +6,11 @@
     <string name="action_create">Create</string>
     <string name="action_finish">Finish</string>
     <string name="action_next">Next</string>
+    <string name="action_ok">OK</string>
     <string name="action_preview">Preview</string>
     <string name="action_save">Save</string>
     <string name="action_scan">Scan</string>
     <string name="action_select">Select</string>
-    <string name="action_ok">OK</string>
     <string name="action_select_location">Select location</string>
     <string name="action_share">Share</string>
     <string name="action_skip">Skip</string>
@@ -25,6 +25,7 @@
     <string name="align_qr_code">Align QR Code / Bardcode within frame to scan</string>
     <string name="allow_camera_access">Allow Camera Access</string>
     <string name="allow_location_access">Allow Location Access</string>
+    <string name="allow_storage_access">Allow Storage Access</string>
     <string name="app_lock">App Lock</string>
     <string name="app_name">QReader</string>
     <string name="background_color">Background Color</string>
@@ -37,8 +38,6 @@
     <string name="color">Color</string>
     <string name="communication">Communication</string>
     <string name="company_name">Company name</string>
-    <string name="corner_dots_color">Dots color</string>
-    <string name="corner_dots_type">Corner dots type</string>
     <string name="corner_style">Corner style</string>
     <string name="created">Created</string>
     <string name="creator">Creator</string>
@@ -48,6 +47,8 @@
     <string name="description">Description</string>
     <string name="document_type">Document type</string>
     <string name="dot_color">Dot color</string>
+    <string name="dots_color">Dots color</string>
+    <string name="dots_style">Dots style</string>
     <string name="eg_placeholder_address">e.g. New York City, Spring Avenue, 9/18</string>
     <string name="eg_placeholder_company_name">e.g. My Company</string>
     <string name="eg_placeholder_date_time">e.g 12 Dec 2024, 10:40</string>
@@ -72,6 +73,7 @@
     <string name="enter_value">Enter value</string>
     <string name="event_name">Event name</string>
     <string name="expiry_date">Expiry date</string>
+    <string name="failed_to_save_image">Failed to save image</string>
     <string name="faq">FAQ</string>
     <string name="feature_1">Unlimited CSV Exports &amp; Folders</string>
     <string name="feature_2">Code Color Custom &amp; APP Lock</string>
@@ -80,8 +82,8 @@
     <string name="feedback">Feedback</string>
     <string name="first_name">Name</string>
     <string name="foreground_color">Foreground Color</string>
-    <string name="frame_around_corner_dots_color">Corner color</string>
-    <string name="frame_around_corner_dots_style">Frame around corner dots style</string>
+    <string name="frame_color">Frame color</string>
+    <string name="frame_style">Frame style</string>
     <string name="free">Free</string>
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
     <string name="gender">Gender</string>
@@ -89,9 +91,11 @@
     <string name="go_pro">Go Pro!</string>
     <string name="grant_camera_permission">Grant Camera Permission for QR Codes.</string>
     <string name="grant_location_permission">Grant Location permission for enhanced QR scanning accuracy.</string>
+    <string name="grant_storage_permission">Grant Storage permission to save the QR image so you can easily access and share it whenever necessary.</string>
     <string name="help_us_improve">Help us improve!</string>
     <string name="hidden_network">Hidden network</string>
     <string name="history">History</string>
+    <string name="image_saved_to_gallery">Image saved to gallery</string>
     <string name="industry">Industry</string>
     <string name="issue_date">Issue date</string>
     <string name="issuing_country">Issuing country</string>

@@ -53,12 +53,12 @@ class ContactContentViewModel : KMMViewModel() {
         return buildString {
             append("BEGIN:VCARD\n")
             append("VERSION:3.0\n")
-            append("N:").append(lastName).append(";").append(firstName).append(";;;").append("\n")
-            append("FN:").append(firstName).append(" ").append(lastName).append("\n")
-            append("TEL;TYPE=WORK,VOICE:").append(phone).append("\n")
-            append("EMAIL;TYPE=PREF,INTERNET:").append(email).append("\n")
-            append("URL:").append(website).append("\n")
-            append("ADR;TYPE=WORK:").append(address).append(";").append("\n")
+            append("N:$firstName\n")
+            append("X:$lastName\n")
+            append("TEL:$phone\n")
+            append("URL:$website\n")
+            append("EMAIL:$email\n")
+            append("ADR:$address\n")
             append("END:VCARD")
         }
     }

@@ -36,16 +36,11 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 
     private fun getAllStyles() {
         val patterns = listOf(
-            QRPatternType.Square, QRPatternType.Rounded, QRPatternType.Dots,
+            QRPatternType.Square, QRPatternType.Rounded, QRPatternType.Circle,
             QRPatternType.Classy, QRPatternType.ClassyRounded, QRPatternType.ExtraRounded
         )
-        val corners = listOf(
-            QRCornerType.NoStyle, QRCornerType.Square,
-            QRCornerType.Rounded, QRCornerType.RoundedEdge
-        )
-        val dots = listOf(
-            QRDotType.NoStyle, QRDotType.Square, QRDotType.Rounded
-        )
+        val corners = listOf(QRCornerType.Square, QRCornerType.Circle, QRCornerType.Rounded)
+        val dots = listOf(QRDotType.Square, QRDotType.Circle, QRDotType.Rounded)
 
         stateData.update {
             it.copy(
@@ -86,17 +81,17 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
                     )
                 }
 
-                ColorPickerType.CornerColor -> {
+                ColorPickerType.FrameColor -> {
                     it.copy(
                         showColorPicker = false,
-                        cornerHex = hex
+                        frameHex = hex
                     )
                 }
 
-                ColorPickerType.CornerDotColor -> {
+                ColorPickerType.FrameDotColor -> {
                     it.copy(
                         showColorPicker = false,
-                        cornerDotHex = hex
+                        frameDotHex = hex
                     )
                 }
             }

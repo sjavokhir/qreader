@@ -53,7 +53,7 @@ interface QrVectorBallShape : QrVectorShapeModifier {
 
     
     data class Circle(
-        @FloatRange(from = 0.0, to = 1.0) val size: Float
+        @FloatRange(from = 0.0, to = 1.0) val size: Float = 1f
     ) : QrVectorBallShape, QrVectorShapeModifier by CircleVectorShape(size)
 
     

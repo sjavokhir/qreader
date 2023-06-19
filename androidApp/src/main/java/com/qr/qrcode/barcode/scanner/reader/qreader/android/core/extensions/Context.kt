@@ -3,6 +3,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 
 fun Context.drawableId(name: String): Int? {
@@ -14,6 +15,12 @@ fun Context.drawableId(name: String): Int? {
         )
     } catch (t: Throwable) {
         null
+    }
+}
+
+fun Context.toast(message: String?) {
+    if (!message.isNullOrEmpty()) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
 

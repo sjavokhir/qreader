@@ -22,15 +22,16 @@ class SmsContentViewModel : KMMViewModel(), KoinComponent {
     }
 
     private fun onValueChanged(
-        message: String? = null, phone: String? = null
+        phone: String? = null,
+        message: String? = null
     ) {
         stateData.update {
-            val mMessage = message ?: it.message
             val mPhone = phone ?: it.phone
+            val mMessage = message ?: it.message
 
             it.copy(
-                message = mMessage,
                 phone = mPhone,
+                message = mMessage,
                 isEnabled = mMessage.isNotEmpty() && mPhone.isNotEmpty(),
                 generateText = it.generateText()
             )
