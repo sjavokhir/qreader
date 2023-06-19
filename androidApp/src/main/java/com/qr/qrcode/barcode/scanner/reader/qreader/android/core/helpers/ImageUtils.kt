@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.net.Uri
@@ -95,5 +97,20 @@ object ImageUtils {
         }
 
         return Uri.fromFile(imageFile)
+    }
+
+    fun getDrawableFromUri(
+        context: Context,
+        uri: Uri?
+    ): Drawable? {
+        uri ?: return null
+
+        try {
+            val inputStream = context.contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            return BitmapDrawable(context.resources, bitmap)
+        } catch (_: Throwable) {
+        }
+        return null
     }
 }

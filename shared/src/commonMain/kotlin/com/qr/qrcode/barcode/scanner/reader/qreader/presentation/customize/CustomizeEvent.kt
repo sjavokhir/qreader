@@ -5,6 +5,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternType
 
 sealed class CustomizeEvent {
+    data class Customize(val state: CustomizeState) : CustomizeEvent()
     data class SelectPattern(val pattern: QRPatternType) : CustomizeEvent()
     data class SelectCorner(val corner: QRCornerType) : CustomizeEvent()
     data class SelectDot(val dot: QRDotType) : CustomizeEvent()
@@ -14,7 +15,7 @@ sealed class CustomizeEvent {
     data class ShowColorPicker(val colorPickerType: ColorPickerType) : CustomizeEvent()
     object DismissColorPicker : CustomizeEvent()
 
-    data class ShowHidePreview(val show: Boolean): CustomizeEvent()
+    data class ShowHidePreview(val show: Boolean) : CustomizeEvent()
 }
 
 enum class ColorPickerType {

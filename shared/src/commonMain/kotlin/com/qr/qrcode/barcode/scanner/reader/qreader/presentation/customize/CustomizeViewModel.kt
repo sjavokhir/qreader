@@ -23,6 +23,7 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 
     fun onEvent(event: CustomizeEvent) {
         when (event) {
+            is CustomizeEvent.Customize -> onCustomize(event.state)
             is CustomizeEvent.SelectPattern -> onPatternSelected(event.pattern)
             is CustomizeEvent.SelectCorner -> onCornerSelected(event.corner)
             is CustomizeEvent.SelectDot -> onDotSelected(event.dot)
@@ -48,6 +49,21 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
                 corners = corners,
                 dots = dots,
                 logos = logos
+            )
+        }
+    }
+
+    private fun onCustomize(state: CustomizeState) {
+        stateData.update {
+            it.copy(
+                selectedPattern = state.selectedPattern,
+                selectedCorner = state.selectedCorner,
+                selectedDot = state.selectedDot,
+                patternDotHex = state.patternDotHex,
+                patternBackgroundHex = state.patternBackgroundHex,
+                frameHex = state.frameHex,
+                frameDotHex = state.frameDotHex,
+                selectedLogo = state.selectedLogo
             )
         }
     }

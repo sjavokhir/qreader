@@ -15,6 +15,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,9 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.ImageUtils
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.storagePermissions
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
@@ -36,29 +43,51 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.result.NavResult
+import com.ramcosta.composedestinations.result.ResultRecipient
 import com.ramcosta.composedestinations.spec.Direction
 
 @Destination
 @Composable
 fun QRCodeScreen(
-    generateText: String = "text",
-    navigator: DestinationsNavigator
+    generateText: String,
+    navigator: DestinationsNavigator,
+    resultCustomization: ResultRecipient<CustomizeScreenDestination, QRCustomizeModel>
 ) {
+    var qrCustomizeModel by rememberSaveable { mutableStateOf(QRCustomizeModel()) }
+
+    resultCustomization.onNavResult { result ->
+        when (result) {
+            NavResult.Canceled -> {}
+            is NavResult.Value -> {
+                qrCustomizeModel = result.value
+            }
+        }
+    }
+
     QRBackground {
         QRCodeScreenContent(
             generateText = generateText,
+            model = qrCustomizeModel,
             onNavigate = navigator::navigate
         )
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun QRCodeScreenContent(
     generateText: String,
+    model: QRCustomizeModel,
     onNavigate: (Direction) -> Unit
 ) {
     val context = LocalContext.current
-    val qrDrawable = rememberQrDrawable(content = generateText)
+    val qrDrawable = rememberQrDrawable(
+        content = generateText,
+        model = model
+    )
+
+    val storagePermissionsState = rememberMultiplePermissionsState(storagePermissions)
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(24.dp),
@@ -66,6 +95,7 @@ private fun QRCodeScreenContent(
     ) {
         item {
             CustomizeContent(
+                model = model,
                 hasSubscription = true,
                 onNavigate = onNavigate
             )
@@ -76,16 +106,24 @@ private fun QRCodeScreenContent(
         item {
             ActionsContent(
                 onSave = {
-                    ImageUtils.saveDrawableToGallery(
-                        context = context,
-                        drawable = qrDrawable
-                    )
+                    if (storagePermissionsState.allPermissionsGranted) {
+                        ImageUtils.saveDrawableToGallery(
+                            context = context,
+                            drawable = qrDrawable
+                        )
+                    } else {
+                        storagePermissionsState.launchMultiplePermissionRequest()
+                    }
                 },
                 onShare = {
-                    ImageUtils.shareDrawable(
-                        context = context,
-                        drawable = qrDrawable
-                    )
+                    if (storagePermissionsState.allPermissionsGranted) {
+                        ImageUtils.shareDrawable(
+                            context = context,
+                            drawable = qrDrawable
+                        )
+                    } else {
+                        storagePermissionsState.launchMultiplePermissionRequest()
+                    }
                 }
             )
         }
@@ -95,6 +133,7 @@ private fun QRCodeScreenContent(
 @Composable
 private fun CustomizeContent(
     hasSubscription: Boolean,
+    model: QRCustomizeModel,
     onNavigate: (Direction) -> Unit
 ) {
     Box(
@@ -112,7 +151,7 @@ private fun CustomizeContent(
                 .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
                 .clickableSingle {
                     if (hasSubscription) {
-                        onNavigate(CustomizeScreenDestination)
+                        onNavigate(CustomizeScreenDestination(model))
                     } else {
                         onNavigate(PremiumScreenDestination)
                     }

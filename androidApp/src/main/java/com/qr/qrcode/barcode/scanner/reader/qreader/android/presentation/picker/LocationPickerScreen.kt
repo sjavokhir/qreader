@@ -98,12 +98,11 @@ private fun MapView(
     onMovePosition: (GeoPosition) -> Unit
 ) {
     val context = LocalContext.current
-    val cameraPermissionState = rememberMultiplePermissionsState(
-        locationPermissions
-    )
+    val locationPermissionsState = rememberMultiplePermissionsState(locationPermissions)
+
     var currentPosition by remember { mutableStateOf(GeoPosition()) }
 
-    if (cameraPermissionState.allPermissionsGranted) {
+    if (locationPermissionsState.allPermissionsGranted) {
         getLocation(context) { location ->
             currentPosition = location
         }
@@ -115,7 +114,7 @@ private fun MapView(
         )
     } else {
         LaunchedEffect(Unit) {
-            cameraPermissionState.launchMultiplePermissionRequest()
+            locationPermissionsState.launchMultiplePermissionRequest()
         }
     }
 }

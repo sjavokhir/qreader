@@ -1,6 +1,13 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.customize
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,12 +31,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,12 +55,16 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.dashedBorder
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.ImageUtils
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.QRCustomizeModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.toModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.toState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.extensions.toColor
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.extensions.toHex
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.pickers.ColorPickerDialog
@@ -62,10 +78,15 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 @Destination
 @Composable
 fun CustomizeScreen(
+    model: QRCustomizeModel,
     viewModel: CustomizeViewModel = viewModel(),
-    resultNavigator: ResultBackNavigator<String>
+    resultNavigator: ResultBackNavigator<QRCustomizeModel>
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(model) {
+        viewModel.onEvent(CustomizeEvent.Customize(model.toState()))
+    }
 
     QRBackground {
         CustomizeScreenContent(
@@ -80,9 +101,16 @@ fun CustomizeScreen(
 private fun CustomizeScreenContent(
     state: CustomizeState,
     onEvent: (CustomizeEvent) -> Unit,
-    resultNavigator: ResultBackNavigator<String>
+    resultNavigator: ResultBackNavigator<QRCustomizeModel>
 ) {
     val context = LocalContext.current
+
+    var logoUri by remember { mutableStateOf<Uri?>(null) }
+    val logoBitmap = rememberOwnLogo(context, logoUri)
+
+    val imageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { logoUri = it }
 
     if (state.showColorPicker) {
         ColorPickerDialog(
@@ -97,7 +125,8 @@ private fun CustomizeScreenContent(
 
     if (state.showPreview) {
         QRPreviewDialog(
-            state = state,
+            ownLogo = ImageUtils.getDrawableFromUri(context, logoUri),
+            model = state.toModel(),
             onDismissRequest = {
                 onEvent(CustomizeEvent.ShowHidePreview(false))
             }
@@ -140,7 +169,14 @@ private fun CustomizeScreenContent(
                 AddLogoContent(
                     context = context,
                     state = state,
-                    onEvent = onEvent
+                    onEvent = onEvent,
+                    logo = logoBitmap,
+                    onUpload = {
+                        imageLauncher.launch("image/*")
+                    },
+                    onDelete = {
+                        logoUri = null
+                    }
                 )
             }
             item {
@@ -175,7 +211,7 @@ private fun CustomizeScreenContent(
                 QRFilledButton(
                     text = stringResource(id = R.string.customize),
                     onClick = {
-                        resultNavigator.navigateBack("Result")
+                        resultNavigator.navigateBack(state.toModel())
                     },
                     modifier = Modifier.weight(1f)
                 )
@@ -452,7 +488,10 @@ private fun CornerStyleContent(
 private fun AddLogoContent(
     context: Context,
     state: CustomizeState,
-    onEvent: (CustomizeEvent) -> Unit
+    onEvent: (CustomizeEvent) -> Unit,
+    logo: Bitmap?,
+    onUpload: () -> Unit,
+    onDelete: () -> Unit
 ) {
     Column {
         Text(
@@ -505,39 +544,89 @@ private fun AddLogoContent(
                 .padding(top = 10.dp, bottom = 16.dp)
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .clip(MaterialTheme.shapes.medium)
-                .dashedBorder(
-                    width = (1.5).dp,
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
-                    shape = MaterialTheme.shapes.medium,
-                    on = 8.dp,
-                    off = 4.dp
+        if (logo != null) {
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    bitmap = logo.asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .padding(10.dp)
                 )
-                .clickableSingle {}
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            QRIcon(
-                painter = painterResource(id = R.drawable.ic_add_photo),
-                color = MaterialTheme.colorScheme.outline,
-                modifier = Modifier.size(48.dp)
-            )
 
-            Text(
-                text = stringResource(id = R.string.upload_image),
-                style = MaterialTheme.typography.titleMedium
-            )
+                Text(
+                    text = stringResource(id = R.string.action_delete),
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .clickableSingle(
+                            onClick = onDelete,
+                            hasIndication = false
+                        )
+                        .padding(vertical = 10.dp)
+                )
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .clip(MaterialTheme.shapes.medium)
+                    .dashedBorder(
+                        width = (1.5).dp,
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
+                        shape = MaterialTheme.shapes.medium,
+                        on = 8.dp,
+                        off = 4.dp
+                    )
+                    .clickableSingle(onClick = onUpload)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                QRIcon(
+                    painter = painterResource(id = R.drawable.ic_add_photo),
+                    color = MaterialTheme.colorScheme.outline,
+                    modifier = Modifier.size(48.dp)
+                )
 
-            Text(
-                text = stringResource(id = R.string.maximum_size),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.outline
-            )
+                Text(
+                    text = stringResource(id = R.string.upload_image),
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Text(
+                    text = stringResource(id = R.string.maximum_size),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.outline
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun rememberOwnLogo(
+    context: Context,
+    uri: Uri?
+): Bitmap? {
+    uri ?: return null
+
+    return if (Build.VERSION.SDK_INT < 28) {
+        @Suppress("DEPRECATION")
+        MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+    } else {
+        val source = ImageDecoder.createSource(context.contentResolver, uri)
+        ImageDecoder.decodeBitmap(source)
     }
 }

@@ -22,14 +22,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternTyp
 @Composable
 fun rememberQrDrawable(
     content: String,
-    patternType: QRPatternType = QRPatternType.Square,
-    cornerType: QRCornerType = QRCornerType.Square,
-    dotType: QRDotType = QRDotType.Square,
-    patternDotHex: String = "FF000000",
-    patternBackgroundHex: String = "FFFFFFFF",
-    frameHex: String = "FF000000",
-    frameDotHex: String = "FF000000",
-    selectedLogo: String = ""
+    model: QRCustomizeModel,
+    ownLogo: Drawable? = null
 ): Drawable {
     val context = LocalContext.current
 
@@ -38,11 +32,11 @@ fun rememberQrDrawable(
         padding = .15f
 
         background {
-            color = QrVectorColor.Solid(Color.parseColor("#$patternBackgroundHex"))
+            color = QrVectorColor.Solid(Color.parseColor("#${model.patternBackgroundHex}"))
         }
 
-        if (selectedLogo.isNotEmpty()) {
-            context.drawableId(selectedLogo)?.let {
+        if (model.selectedLogo.isNotEmpty()) {
+            context.drawableId(model.selectedLogo)?.let {
                 logo {
                     drawable = ContextCompat.getDrawable(context, it)
                     size = .25f
@@ -50,16 +44,23 @@ fun rememberQrDrawable(
                     shape = QrVectorLogoShape.Default
                 }
             }
+        } else if (ownLogo != null) {
+            logo {
+                drawable = ownLogo
+                size = .25f
+                padding = QrVectorLogoPadding.Natural(.2f)
+                shape = QrVectorLogoShape.Default
+            }
         }
 
         colors {
-            dark = QrVectorColor.Solid(Color.parseColor("#$patternDotHex"))
-            frame = QrVectorColor.Solid(Color.parseColor("#$frameHex"))
-            ball = QrVectorColor.Solid(Color.parseColor("#$frameDotHex"))
+            dark = QrVectorColor.Solid(Color.parseColor("#${model.patternDotHex}"))
+            frame = QrVectorColor.Solid(Color.parseColor("#${model.frameHex}"))
+            ball = QrVectorColor.Solid(Color.parseColor("#${model.frameDotHex}"))
         }
 
         shapes {
-            darkPixel = when (patternType) {
+            darkPixel = when (model.selectedPattern) {
                 QRPatternType.Square -> QrVectorPixelShape.RoundCorners(0f)
                 QRPatternType.Rounded -> QrVectorPixelShape.RoundCorners(.25f)
                 QRPatternType.Circle -> QrVectorPixelShape.Circle()
@@ -67,12 +68,12 @@ fun rememberQrDrawable(
                 QRPatternType.ClassyRounded -> QrVectorPixelShape.Star
                 QRPatternType.ExtraRounded -> QrVectorPixelShape.RoundCorners(.5f)
             }
-            frame = when (cornerType) {
+            frame = when (model.selectedCorner) {
                 QRCornerType.Square -> QrVectorFrameShape.RoundCorners(0f)
                 QRCornerType.Circle -> QrVectorFrameShape.Circle()
                 QRCornerType.Rounded -> QrVectorFrameShape.RoundCorners(.25f)
             }
-            ball = when (dotType) {
+            ball = when (model.selectedDot) {
                 QRDotType.Square -> QrVectorBallShape.RoundCorners(0f)
                 QRDotType.Circle -> QrVectorBallShape.Circle(1f)
                 QRDotType.Rounded -> QrVectorBallShape.RoundCorners(.25f)

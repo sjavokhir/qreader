@@ -22,26 +22,22 @@ import androidx.compose.ui.window.DialogProperties
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.rememberQrDrawable
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize.CustomizeState
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
 
 @Composable
 fun QRPreviewDialog(
-    state: CustomizeState,
+    ownLogo: Drawable?,
+    model: QRCustomizeModel,
     onDismissRequest: () -> Unit,
     properties: DialogProperties = DialogProperties()
 ) {
     val qrDrawable = rememberQrDrawable(
         content = appUrl,
-        patternType = state.selectedPattern,
-        cornerType = state.selectedCorner,
-        dotType = state.selectedDot,
-        patternDotHex = state.patternDotHex,
-        patternBackgroundHex = state.patternBackgroundHex,
-        frameHex = state.frameHex,
-        frameDotHex = state.frameDotHex,
-        selectedLogo = state.selectedLogo
+        model = model,
+        ownLogo = ownLogo
     )
 
     Dialog(

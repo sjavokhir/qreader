@@ -4,6 +4,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_continue">Continue</string>
     <string name="action_create">Create</string>
+    <string name="action_delete">Delete</string>
     <string name="action_finish">Finish</string>
     <string name="action_next">Next</string>
     <string name="action_ok">OK</string>
@@ -108,7 +109,7 @@
     <string name="location">Location</string>
     <string name="longitude">Longitude</string>
     <string name="manage_permissions">Manage Permissions</string>
-    <string name="maximum_size">Maximum size: 5 MB</string>
+    <string name="maximum_size">Maximum size: 2 MB</string>
     <string name="message">Message</string>
     <string name="middle_name">Middle name</string>
     <string name="most_popular">Most\nPopular</string>
@@ -169,7 +170,7 @@
     <string name="thank_you">Thank you!</string>
     <string name="thank_you_description">Thank you for sharing your thoughts. We appreciate your feedback.</string>
     <string name="update_new_version">Update new version</string>
-    <string name="upload_image">Upload image (JPG, PNG, SVG)</string>
+    <string name="upload_image">Upload image (JPG and PNG)</string>
     <string name="upload_your_own_logo">Upload your own logo</string>
     <string name="vibrate">Vibrate</string>
     <string name="web">Web</string>
