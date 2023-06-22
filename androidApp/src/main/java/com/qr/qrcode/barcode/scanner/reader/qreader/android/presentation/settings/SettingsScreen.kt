@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settings
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,10 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -28,14 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.toColorInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
@@ -148,6 +143,16 @@ private fun ScanControlsContent(
 
         SwitchContent(
             title = R.string.open_web_pages,
+            checked = state.isChromeCustomTabsChecked,
+            onCheckedChange = {
+                onEvent(SettingsEvent.CheckChromeCustomTabs(it))
+            }
+        )
+
+        DividerContent()
+
+        SwitchContent(
+            title = R.string.chrome_custom_tabs,
             checked = state.isOpenWebPagesChecked,
             onCheckedChange = {
                 onEvent(SettingsEvent.CheckOpenWebPages(it))
@@ -320,45 +325,6 @@ private fun SwitchContent(
                 .height(24.dp)
                 .scale(.85f)
         )
-    }
-}
-
-@Composable
-private fun ColorContent(
-    title: Int,
-    hasSubscription: Boolean = true,
-    hexColor: String
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = stringResource(id = title),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        if (!hasSubscription) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_subscription),
-                contentDescription = null
-            )
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Canvas(
-            modifier = Modifier
-                .size(size = 24.dp)
-                .border(
-                    width = 1.dp, color = MaterialTheme.colorScheme.outline, shape = CircleShape
-                )
-        ) {
-            drawCircle(color = Color(hexColor.toColorInt()))
-        }
     }
 }
 

@@ -26,6 +26,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
                 it.copy(
                     isVibrateChecked = appStore.isVibrateEnabled(),
                     isOpenWebPagesChecked = appStore.isOpenWebPagesEnabled(),
+                    isChromeCustomTabsChecked = appStore.isChromeCustomTabsEnabled(),
                     isBatchScanChecked = appStore.isBatchScanEnabled()
                 )
             }
@@ -36,6 +37,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         when (event) {
             is SettingsEvent.CheckVibrate -> onVibrateChecked(event.isChecked)
             is SettingsEvent.CheckOpenWebPages -> onOpenWebPagesChecked(event.isChecked)
+            is SettingsEvent.CheckChromeCustomTabs -> onChromeCustomTabsChecked(event.isChecked)
             is SettingsEvent.CheckBatchScan -> onBatchScanChecked(event.isChecked)
         }
     }
@@ -50,6 +52,12 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         appStore.setOpenWebPages(isChecked)
 
         stateData.update { it.copy(isOpenWebPagesChecked = isChecked) }
+    }
+
+    private fun onChromeCustomTabsChecked(isChecked: Boolean) {
+        appStore.setChromeCustomTabs(isChecked)
+
+        stateData.update { it.copy(isChromeCustomTabsChecked = isChecked) }
     }
 
     private fun onBatchScanChecked(isChecked: Boolean) {

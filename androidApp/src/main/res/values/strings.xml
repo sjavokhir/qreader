@@ -130,6 +130,7 @@
     <string name="one_purchase">1 purchase</string>
     <string name="one_year">/year</string>
     <string name="open_web_pages">Open web pages automatically</string>
+    <string name="chrome_custom_tabs">Chrome Custom Tabs</string>
     <string name="other">Other</string>
     <string name="others">Others</string>
     <string name="password">Password</string>

@@ -58,6 +58,14 @@ class AppStore(private val settings: ObservableSettings) {
         settings[Keys.IS_OPEN_WEB_PAGES] = isEnabled
     }
 
+    fun isChromeCustomTabsEnabled(): Boolean {
+        return settings.getBoolean(Keys.IS_CHROME_CUSTOM_TABS, false)
+    }
+
+    fun setChromeCustomTabs(isEnabled: Boolean) {
+        settings[Keys.IS_CHROME_CUSTOM_TABS] = isEnabled
+    }
+
     fun isBatchScanEnabled(): Boolean {
         return settings.getBoolean(Keys.IS_BATCH_SCAN, false)
     }
