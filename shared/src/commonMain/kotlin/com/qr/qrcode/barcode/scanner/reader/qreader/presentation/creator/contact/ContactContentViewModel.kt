@@ -15,51 +15,42 @@ class ContactContentViewModel : KMMViewModel() {
 
     fun onEvent(event: ContactContentEvent) {
         when (event) {
-            is ContactContentEvent.FirstNameChanged -> onValueChanged(firstName = event.firstName)
-            is ContactContentEvent.LastNameChanged -> onValueChanged(lastName = event.lastName)
+            is ContactContentEvent.NameChanged -> onValueChanged(name = event.name)
             is ContactContentEvent.PhoneChanged -> onValueChanged(phone = event.phone)
             is ContactContentEvent.EmailChanged -> onValueChanged(email = event.email)
-            is ContactContentEvent.WebsiteChanged -> onValueChanged(website = event.website)
             is ContactContentEvent.AddressChanged -> onValueChanged(address = event.address)
         }
     }
 
     private fun onValueChanged(
-        firstName: String? = null,
-        lastName: String? = null,
+        name: String? = null,
         phone: String? = null,
         email: String? = null,
-        website: String? = null,
         address: String? = null
     ) {
         stateData.update {
-            val mFirstName = firstName ?: it.firstName
+            val mName = name ?: it.name
             val mPhone = phone ?: it.phone
 
             it.copy(
-                firstName = mFirstName,
-                lastName = lastName ?: it.lastName,
+                name = mName,
                 phone = mPhone,
                 email = email ?: it.email,
-                website = website ?: it.website,
                 address = address ?: it.address,
-                isEnabled = mFirstName.isNotEmpty() && mPhone.isNotEmpty(),
-                generateText = it.generateText()
+                isEnabled = mName.isNotEmpty() && mPhone.isNotEmpty()
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun ContactContentState.generateText(): String {
         return buildString {
-            append("BEGIN:VCARD\n")
-            append("VERSION:3.0\n")
-            append("N:$firstName\n")
-            append("X:$lastName\n")
-            append("TEL:$phone\n")
-            append("URL:$website\n")
-            append("EMAIL:$email\n")
-            append("ADR:$address\n")
-            append("END:VCARD")
+            append("MECARD:")
+            append("N:$name;")
+            append("ADR:$address;")
+            append("TEL:$phone;")
+            append("EMAIL:$email;")
+            append(";")
         }
     }
 }

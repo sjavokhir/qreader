@@ -52,6 +52,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ManagePermissionsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SoundEffectsScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ThemeModeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsViewModel
@@ -91,61 +92,37 @@ private fun SettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         item { GoProContent { onNavigate(PremiumScreenDestination) } }
-        item { CustomSettingContent(state, onEvent, onNavigate) }
-        item { ScanSettingContent(state, onEvent, onNavigate) }
-        item { ResultSettingContent(onNavigate) }
+        item { GeneralContent(onNavigate) }
+        item { ScanControlsContent(state, onEvent, onNavigate) }
         item { GetHelpContent(onNavigate) }
         item { OthersContent(onNavigate) }
     }
 }
 
 @Composable
-private fun CustomSettingContent(
-    state: SettingsState,
-    onEvent: (SettingsEvent) -> Unit,
+private fun GeneralContent(
     onNavigate: (Direction) -> Unit
 ) {
-    HeaderContent(title = R.string.custom_setting) {
-        SwitchContent(
-            title = R.string.app_lock,
-            hasSubscription = state.hasSubscription,
-            checked = state.isAppLockChecked,
-            onCheckedChange = {
-                if (state.hasSubscription) {
-                    onEvent(SettingsEvent.CheckAppLock(it))
-                } else {
-                    onNavigate(PremiumScreenDestination)
-                }
-            }
-        )
-
-        return@HeaderContent
+    HeaderContent(title = R.string.general) {
+        NavigateContent(title = R.string.theme) {
+            onNavigate(ThemeModeScreenDestination)
+        }
 
         DividerContent()
 
-        ColorContent(
-            title = R.string.background_color,
-            hasSubscription = state.hasSubscription,
-            hexColor = "#FFFBFF"
-        )
-
-        DividerContent()
-
-        ColorContent(
-            title = R.string.foreground_color,
-            hasSubscription = state.hasSubscription,
-            hexColor = "#201A19"
-        )
+        NavigateContent(title = R.string.language) {
+            onNavigate(LanguageScreenDestination)
+        }
     }
 }
 
 @Composable
-private fun ScanSettingContent(
+private fun ScanControlsContent(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
     onNavigate: (Direction) -> Unit
 ) {
-    HeaderContent(title = R.string.scan_setting) {
+    HeaderContent(title = R.string.scan_controls) {
         NavigateContent(
             title = R.string.sound_effects,
             hasSubscription = state.hasSubscription
@@ -191,17 +168,6 @@ private fun ScanSettingContent(
                 }
             }
         )
-    }
-}
-
-@Composable
-private fun ResultSettingContent(
-    onNavigate: (Direction) -> Unit
-) {
-    HeaderContent(title = R.string.result_setting) {
-        NavigateContent(title = R.string.language) {
-            onNavigate(LanguageScreenDestination)
-        }
     }
 }
 

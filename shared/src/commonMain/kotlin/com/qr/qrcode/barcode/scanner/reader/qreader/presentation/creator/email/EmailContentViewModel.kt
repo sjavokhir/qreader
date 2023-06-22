@@ -31,10 +31,10 @@ class EmailContentViewModel : KMMViewModel() {
             it.copy(
                 email = mEmail,
                 message = message ?: it.message,
-                isEnabled = mEmail.isEmailValid(),
-                generateText = it.generateText()
+                isEnabled = mEmail.isEmailValid()
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun EmailContentState.generateText(): String {

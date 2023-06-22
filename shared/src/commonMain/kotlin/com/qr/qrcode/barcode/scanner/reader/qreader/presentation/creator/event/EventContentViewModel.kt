@@ -2,6 +2,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDateTime
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToString
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.randomUUID
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -37,17 +38,16 @@ class EventContentViewModel : KMMViewModel() {
             if (currentState.isStart) {
                 it.copy(
                     startTimestamp = timestamp,
-                    startDateTime = timestamp.timestampToDateTime().defaultDateTime,
-                    generateText = it.generateText()
+                    startDateTime = timestamp.timestampToDateTime().defaultDateTime
                 )
             } else {
                 it.copy(
                     endTimestamp = timestamp,
-                    endDateTime = timestamp.timestampToDateTime().defaultDateTime,
-                    generateText = it.generateText()
+                    endDateTime = timestamp.timestampToDateTime().defaultDateTime
                 )
             }
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun onValueChanged(
@@ -62,10 +62,10 @@ class EventContentViewModel : KMMViewModel() {
                 name = mName,
                 location = location ?: it.location,
                 description = description ?: it.description,
-                isEnabled = mName.isNotEmpty(),
-                generateText = it.generateText()
+                isEnabled = mName.isNotEmpty()
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun EventContentState.generateText(): String {

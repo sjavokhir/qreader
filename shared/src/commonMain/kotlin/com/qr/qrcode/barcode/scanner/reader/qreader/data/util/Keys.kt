@@ -6,12 +6,12 @@ internal object Keys {
     const val SHARED_PREFS_NAME = "app.preferences"
 
     // App prefs
-    const val ENTRY_TYPE = "KEY_ENTRY_TYPE"
-    const val APP_LOCK = "KEY_APP_LOCK"
-    const val VIBRATE = "KEY_VIBRATE"
-    const val OPEN_WEB_PAGES = "KEY_OPEN_WEB_PAGES"
-    const val BATCH_SCAN = "KEY_BATCH_SCAN"
-    const val LANGUAGE = "KEY_LANGUAGE"
-    const val SOUND_EFFECTS = "KEY_SOUND_EFFECTS"
-    const val SOUND = "KEY_SOUND"
+    const val IS_ON_BOARDING = "KEY_IS_ONBOARDING"
+    const val SELECTED_THEME_MODE = "KEY_SELECTED_THEME_MODE"
+    const val SELECTED_LANGUAGE = "KEY_SELECTED_LANGUAGE"
+    const val IS_VIBRATE = "KEY_IS_VIBRATE"
+    const val IS_OPEN_WEB_PAGES = "KEY_IS_OPEN_WEB_PAGES"
+    const val IS_BATCH_SCAN = "KEY_IS_BATCH_SCAN"
+    const val IS_SOUND_EFFECTS = "KEY_IS_SOUND_EFFECTS"
+    const val SELECTED_SOUND = "KEY_SELECTED_SOUND"
 }

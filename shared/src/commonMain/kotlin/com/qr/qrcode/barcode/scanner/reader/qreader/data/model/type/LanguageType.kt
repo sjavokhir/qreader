@@ -3,7 +3,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type
 enum class LanguageType(val language: String, val key: String) {
     English("English", "en"),
     Uzbek("O'zbekcha", "uz"),
-    Arabic("عربي", "uz"),
+    Arabic("عربي", "ar"),
     Turkish("Türkçe", ""),
     German("Deutsch", ""),
     French("Français", ""),

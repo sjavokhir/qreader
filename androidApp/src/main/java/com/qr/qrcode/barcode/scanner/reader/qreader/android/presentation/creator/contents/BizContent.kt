@@ -12,12 +12,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.contact.ContactContentEvent
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.contact.ContactContentViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.biz.BizContentEvent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.biz.BizContentViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.BusinessContentEvent
 
 @Composable
-fun ContactContent(
-    viewModel: ContactContentViewModel = viewModel(),
+fun BizContent(
+    viewModel: BizContentViewModel = viewModel(),
     onContent: (Boolean, String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -30,18 +31,45 @@ fun ContactContent(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         QRTextField(
-            value = state.name,
+            value = state.firstName,
             onValueChange = {
-                viewModel.onEvent(ContactContentEvent.NameChanged(it))
+                viewModel.onEvent(BizContentEvent.FirstNameChanged(it))
             },
             placeholder = stringResource(id = R.string.eg_placeholder_first_name),
             hint = stringResource(id = R.string.first_name)
         )
 
         QRTextField(
+            value = state.lastName,
+            onValueChange = {
+                viewModel.onEvent(BizContentEvent.LastNameChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_last_name),
+            hint = stringResource(id = R.string.last_name)
+        )
+
+        QRTextField(
+            value = state.job,
+            onValueChange = {
+                viewModel.onEvent(BizContentEvent.JobChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_job),
+            hint = stringResource(id = R.string.job)
+        )
+
+        QRTextField(
+            value = state.company,
+            onValueChange = {
+                viewModel.onEvent(BizContentEvent.CompanyChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_company_name),
+            hint = stringResource(id = R.string.company_name)
+        )
+
+        QRTextField(
             value = state.phone,
             onValueChange = {
-                viewModel.onEvent(ContactContentEvent.PhoneChanged(it))
+                viewModel.onEvent(BizContentEvent.PhoneChanged(it))
             },
             placeholder = stringResource(id = R.string.eg_placeholder_phone),
             hint = stringResource(id = R.string.phone_number),
@@ -51,7 +79,7 @@ fun ContactContent(
         QRTextField(
             value = state.email,
             onValueChange = {
-                viewModel.onEvent(ContactContentEvent.EmailChanged(it))
+                viewModel.onEvent(BizContentEvent.EmailChanged(it))
             },
             placeholder = stringResource(id = R.string.eg_placeholder_email),
             hint = stringResource(id = R.string.email_address),
@@ -61,7 +89,7 @@ fun ContactContent(
         QRTextField(
             value = state.address,
             onValueChange = {
-                viewModel.onEvent(ContactContentEvent.AddressChanged(it))
+                viewModel.onEvent(BizContentEvent.AddressChanged(it))
             },
             placeholder = stringResource(id = R.string.eg_placeholder_address),
             hint = stringResource(id = R.string.address)

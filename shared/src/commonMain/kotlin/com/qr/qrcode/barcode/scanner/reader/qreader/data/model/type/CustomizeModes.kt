@@ -1,6 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type
 
-enum class QRPatternType(
+enum class QRPatternMode(
     val id: Int,
     val icon: String
 ) {
@@ -12,7 +12,7 @@ enum class QRPatternType(
     ExtraRounded(6, "ic_customize_pattern_extra_rounded")
 }
 
-enum class QRCornerType(
+enum class QRCornerMode(
     val id: Int,
     val icon: String
 ) {
@@ -21,7 +21,7 @@ enum class QRCornerType(
     Rounded(3, "ic_customize_corner_rounded")
 }
 
-enum class QRDotType(
+enum class QRDotMode(
     val id: Int,
     val icon: String
 ) {

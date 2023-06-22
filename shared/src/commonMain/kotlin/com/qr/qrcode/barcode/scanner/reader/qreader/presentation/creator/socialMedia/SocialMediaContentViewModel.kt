@@ -1,6 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialMedia
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -21,7 +21,7 @@ class SocialMediaContentViewModel : KMMViewModel() {
         }
     }
 
-    private fun onGenerateType(type: GenerateType) {
+    private fun onGenerateType(type: GenerateMode) {
         stateData.update { it.copy(type = type) }
     }
 
@@ -29,28 +29,28 @@ class SocialMediaContentViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 username = username,
-                isEnabled = username.isNotEmpty(),
-                generateText = it.generateText()
+                isEnabled = username.isNotEmpty()
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun SocialMediaContentState.generateText(): String {
         return when (type) {
-            GenerateType.Youtube -> "https://youtube.com/@"
-            GenerateType.WhatsApp -> "https://wa.me/"
-            GenerateType.Instagram -> "https://instagram.com/"
-            GenerateType.Facebook -> "https://facebook.com/"
-            GenerateType.Twitter -> "https://twitter.com/"
-            GenerateType.TikTok -> "https://tiktok.com/@"
-            GenerateType.Telegram -> "https://t.me/"
-            GenerateType.VKontakte -> "https://vk.com/"
-            GenerateType.Twitch -> "https://twitch.tv/"
-            GenerateType.LinkedIn -> "https://linkedin.com/in/"
-            GenerateType.Github -> "https://github.com/"
-            GenerateType.Medium -> "https://medium.com/"
-            GenerateType.Dribbble -> "https://dribbble.com/"
-            GenerateType.Behance -> "https://www.behance.net/"
+            GenerateMode.Youtube -> "https://youtube.com/@"
+            GenerateMode.WhatsApp -> "https://wa.me/"
+            GenerateMode.Instagram -> "https://instagram.com/"
+            GenerateMode.Facebook -> "https://facebook.com/"
+            GenerateMode.Twitter -> "https://twitter.com/"
+            GenerateMode.TikTok -> "https://tiktok.com/@"
+            GenerateMode.Telegram -> "https://t.me/"
+            GenerateMode.VKontakte -> "https://vk.com/"
+            GenerateMode.Twitch -> "https://twitch.tv/"
+            GenerateMode.LinkedIn -> "https://linkedin.com/in/"
+            GenerateMode.Github -> "https://github.com/"
+            GenerateMode.Medium -> "https://medium.com/"
+            GenerateMode.Dribbble -> "https://dribbble.com/"
+            GenerateMode.Behance -> "https://www.behance.net/"
             else -> ""
         } + username
     }

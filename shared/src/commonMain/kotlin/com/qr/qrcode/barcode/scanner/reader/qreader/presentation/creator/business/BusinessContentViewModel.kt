@@ -44,11 +44,10 @@ class BusinessContentViewModel : KMMViewModel() {
                 email = email ?: it.email,
                 website = website ?: it.website,
                 address = address ?: it.address,
-                isEnabled = (mName.isNotEmpty() || mIndustry.isNotEmpty()) &&
-                        mPhone.isNotEmpty(),
-                generateText = it.generateText()
+                isEnabled = (mName.isNotEmpty() || mIndustry.isNotEmpty()) && mPhone.isNotEmpty()
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun BusinessContentState.generateText(): String {

@@ -27,7 +27,6 @@
     <string name="allow_camera_access">Allow Camera Access</string>
     <string name="allow_location_access">Allow Location Access</string>
     <string name="allow_storage_access">Allow Storage Access</string>
-    <string name="app_lock">App Lock</string>
     <string name="app_name">QReader</string>
     <string name="background_color">Background Color</string>
     <string name="batch_scan">Batch Scan</string>
@@ -42,11 +41,10 @@
     <string name="corner_style">Corner style</string>
     <string name="created">Created</string>
     <string name="creator">Creator</string>
-    <string name="custom_setting">Custom Setting</string>
     <string name="customize">Customize</string>
     <string name="customize_qr">Customize QR</string>
+    <string name="dark">Dark</string>
     <string name="description">Description</string>
-    <string name="document_type">Document type</string>
     <string name="dot_color">Dot color</string>
     <string name="dots_color">Dots color</string>
     <string name="dots_style">Dots style</string>
@@ -58,6 +56,7 @@
     <string name="eg_placeholder_event_name">e.g. Birthday mother</string>
     <string name="eg_placeholder_first_name">e.g. Paul</string>
     <string name="eg_placeholder_industry">e.g. Animation Studio</string>
+    <string name="eg_placeholder_job">e.g. Android Developer</string>
     <string name="eg_placeholder_last_name">e.g. Jones</string>
     <string name="eg_placeholder_latitude">e.g. 24.467035</string>
     <string name="eg_placeholder_location">e.g. Rooftop Restaurant - Skyline Bistro</string>
@@ -77,7 +76,7 @@
     <string name="failed_to_save_image">Failed to save image</string>
     <string name="faq">FAQ</string>
     <string name="feature_1">Unlimited CSV Exports &amp; Folders</string>
-    <string name="feature_2">Code Color Custom &amp; APP Lock</string>
+    <string name="feature_2">Code Color Custom</string>
     <string name="feature_3">Fast &amp; Secure Batch Scan</string>
     <string name="feature_4">No Ads!</string>
     <string name="feedback">Feedback</string>
@@ -88,6 +87,7 @@
     <string name="free">Free</string>
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
     <string name="gender">Gender</string>
+    <string name="general">General</string>
     <string name="get_help">Get Help</string>
     <string name="go_pro">Go Pro!</string>
     <string name="grant_camera_permission">Grant Camera Permission for QR Codes.</string>
@@ -100,12 +100,14 @@
     <string name="industry">Industry</string>
     <string name="issue_date">Issue date</string>
     <string name="issuing_country">Issuing country</string>
+    <string name="job">Job</string>
     <string name="language">Language</string>
     <string name="last_name">Last name</string>
     <string name="latitude">Latitude</string>
     <string name="library">Library</string>
     <string name="license_number">License number</string>
     <string name="lifetime">Lifetime</string>
+    <string name="light">Light</string>
     <string name="location">Location</string>
     <string name="longitude">Longitude</string>
     <string name="manage_permissions">Manage Permissions</string>
@@ -127,7 +129,7 @@
     <string name="one_month">/month</string>
     <string name="one_purchase">1 purchase</string>
     <string name="one_year">/year</string>
-    <string name="open_web_pages">Open web pages aytomatically</string>
+    <string name="open_web_pages">Open web pages automatically</string>
     <string name="other">Other</string>
     <string name="others">Others</string>
     <string name="password">Password</string>
@@ -141,10 +143,8 @@
     <string name="qr_code">QR Code</string>
     <string name="qr_code_pattern">QR code pattern</string>
     <string name="rate_us">Rate us</string>
-    <string name="restore_purchase">Restore Purchase</string>
-    <string name="result_setting">Result Setting</string>
     <string name="save_percent">Save\n50%</string>
-    <string name="scan_setting">Scan Setting</string>
+    <string name="scan_controls">Scan controls</string>
     <string name="scanned">Scanned</string>
     <string name="scanner">Scanner</string>
     <string name="search_qr_code">Search QR Code</string>
@@ -163,12 +163,14 @@
     <string name="sound">Sound</string>
     <string name="sound_effects">Sound Effects</string>
     <string name="start_date_time">Start date and time</string>
+    <string name="system_default">System default</string>
     <string name="tell_friends">Tell friends</string>
     <string name="terms">Terms</string>
     <string name="terms_of_use">Terms of Use</string>
     <string name="text">Text</string>
     <string name="thank_you">Thank you!</string>
     <string name="thank_you_description">Thank you for sharing your thoughts. We appreciate your feedback.</string>
+    <string name="theme">Theme</string>
     <string name="update_new_version">Update new version</string>
     <string name="upload_image">Upload image (JPG and PNG)</string>
     <string name="upload_your_own_logo">Upload your own logo</string>

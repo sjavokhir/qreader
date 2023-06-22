@@ -108,6 +108,10 @@ object ImageUtils {
     fun getDrawableFromPath(context: Context, path: String?): Drawable? {
         path ?: return null
 
-        return getDrawableFromUri(context, Uri.parse(path))
+        return try {
+            getDrawableFromUri(context, Uri.parse(path))
+        } catch (_: Throwable) {
+            null
+        }
     }
 }

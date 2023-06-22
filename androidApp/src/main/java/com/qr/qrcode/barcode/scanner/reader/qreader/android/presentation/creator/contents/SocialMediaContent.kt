@@ -12,14 +12,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialMedia.SocialMediaContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialMedia.SocialMediaContentViewModel
 
 @Composable
 fun SocialMediaContent(
     viewModel: SocialMediaContentViewModel = viewModel(),
-    type: GenerateType,
+    type: GenerateMode,
     onContent: (Boolean, String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -42,7 +42,7 @@ fun SocialMediaContent(
             },
             placeholder = type.inputPlaceholder,
             hint = type.inputHint,
-            keyboardType = if (type == GenerateType.WhatsApp) {
+            keyboardType = if (type == GenerateMode.WhatsApp) {
                 KeyboardType.Phone
             } else {
                 KeyboardType.Text
@@ -51,46 +51,46 @@ fun SocialMediaContent(
     }
 }
 
-private val GenerateType.inputHint: String
+private val GenerateMode.inputHint: String
     @Composable
     get() = when (this) {
-        GenerateType.Instagram,
-        GenerateType.Facebook,
-        GenerateType.Twitter,
-        GenerateType.TikTok,
-        GenerateType.Telegram,
-        GenerateType.VKontakte,
-        GenerateType.Github,
-        GenerateType.Medium -> stringResource(id = R.string.social_media_username, title)
+        GenerateMode.Instagram,
+        GenerateMode.Facebook,
+        GenerateMode.Twitter,
+        GenerateMode.TikTok,
+        GenerateMode.Telegram,
+        GenerateMode.VKontakte,
+        GenerateMode.Github,
+        GenerateMode.Medium -> stringResource(id = R.string.social_media_username, title)
 
-        GenerateType.Youtube,
-        GenerateType.Twitch -> stringResource(id = R.string.social_media_channel, title)
+        GenerateMode.Youtube,
+        GenerateMode.Twitch -> stringResource(id = R.string.social_media_channel, title)
 
-        GenerateType.LinkedIn,
-        GenerateType.Dribbble,
-        GenerateType.Behance -> stringResource(id = R.string.social_media_profile, title)
+        GenerateMode.LinkedIn,
+        GenerateMode.Dribbble,
+        GenerateMode.Behance -> stringResource(id = R.string.social_media_profile, title)
 
-        GenerateType.WhatsApp -> stringResource(id = R.string.whatsapp_number)
+        GenerateMode.WhatsApp -> stringResource(id = R.string.whatsapp_number)
 
         else -> stringResource(id = R.string.text)
     }
 
-private val GenerateType.inputPlaceholder: String
+private val GenerateMode.inputPlaceholder: String
     @Composable
     get() = when (this) {
-        GenerateType.Instagram -> "e.g. cristiano"
-        GenerateType.Facebook -> "e.g. cristiano"
-        GenerateType.Twitter -> "e.g. elonmusk"
-        GenerateType.TikTok -> "e.g. khaby.lame"
-        GenerateType.Telegram -> "e.g. durov"
-        GenerateType.VKontakte -> "e.g. durov"
-        GenerateType.Github -> "e.g. freeCodeCamp"
-        GenerateType.Medium -> "e.g. swlh"
-        GenerateType.Youtube -> "e.g. MrBeast"
-        GenerateType.Twitch -> "e.g. ninja"
-        GenerateType.LinkedIn -> "e.g. williamhgates"
-        GenerateType.Dribbble -> "e.g. zhenyary"
-        GenerateType.Behance -> "e.g. zekadesign"
-        GenerateType.WhatsApp -> stringResource(id = R.string.eg_placeholder_phone)
+        GenerateMode.Instagram -> "e.g. cristiano"
+        GenerateMode.Facebook -> "e.g. cristiano"
+        GenerateMode.Twitter -> "e.g. elonmusk"
+        GenerateMode.TikTok -> "e.g. khaby.lame"
+        GenerateMode.Telegram -> "e.g. durov"
+        GenerateMode.VKontakte -> "e.g. durov"
+        GenerateMode.Github -> "e.g. freeCodeCamp"
+        GenerateMode.Medium -> "e.g. swlh"
+        GenerateMode.Youtube -> "e.g. MrBeast"
+        GenerateMode.Twitch -> "e.g. ninja"
+        GenerateMode.LinkedIn -> "e.g. williamhgates"
+        GenerateMode.Dribbble -> "e.g. zhenyary"
+        GenerateMode.Behance -> "e.g. zekadesign"
+        GenerateMode.WhatsApp -> stringResource(id = R.string.eg_placeholder_phone)
         else -> stringResource(id = R.string.enter_value)
     }

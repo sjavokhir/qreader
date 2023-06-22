@@ -32,10 +32,10 @@ class SmsContentViewModel : KMMViewModel(), KoinComponent {
             it.copy(
                 phone = mPhone,
                 message = mMessage,
-                isEnabled = mMessage.isNotEmpty() && mPhone.isNotEmpty(),
-                generateText = it.generateText()
+                isEnabled = mMessage.isNotEmpty() && mPhone.isNotEmpty()
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun SmsContentState.generateText(): String {

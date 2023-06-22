@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
 
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
@@ -85,11 +86,17 @@ private val DarkBackgroundTheme = BackgroundTheme(color = md_theme_dark_backgrou
 
 @Composable
 fun QRTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeMode: ThemeMode,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
-    val backgroundTheme = if (darkTheme) DarkBackgroundTheme else LightBackgroundTheme
+    val darkMode = when (themeMode) {
+        ThemeMode.System -> isSystemInDarkTheme()
+        ThemeMode.Light -> false
+        ThemeMode.Dark -> true
+    }
+
+    val colorScheme = if (darkMode) DarkColorScheme else LightColorScheme
+    val backgroundTheme = if (darkMode) DarkBackgroundTheme else LightBackgroundTheme
     val shapes = Shapes(
         extraSmall = RoundedCornerShape(1.dp),
         small = RoundedCornerShape(5.dp),
@@ -105,8 +112,8 @@ fun QRTheme(
             window.statusBarColor = colorScheme.background.toArgb()
             window.navigationBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).apply {
-                isAppearanceLightStatusBars = !darkTheme
-                isAppearanceLightNavigationBars = !darkTheme
+                isAppearanceLightStatusBars = !darkMode
+                isAppearanceLightNavigationBars = !darkMode
             }
         }
     }

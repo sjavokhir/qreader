@@ -24,7 +24,6 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         viewModelScope.coroutineScope.launch {
             stateData.update {
                 it.copy(
-                    isAppLockChecked = appStore.isAppLockEnabled(),
                     isVibrateChecked = appStore.isVibrateEnabled(),
                     isOpenWebPagesChecked = appStore.isOpenWebPagesEnabled(),
                     isBatchScanChecked = appStore.isBatchScanEnabled()
@@ -35,32 +34,25 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
 
     fun onEvent(event: SettingsEvent) {
         when (event) {
-            is SettingsEvent.CheckAppLock -> onCheckedAppLock(event.isChecked)
-            is SettingsEvent.CheckVibrate -> onCheckedVibrate(event.isChecked)
-            is SettingsEvent.CheckOpenWebPages -> onCheckedOpenWebPages(event.isChecked)
-            is SettingsEvent.CheckBatchScan -> onCheckedBatchScan(event.isChecked)
+            is SettingsEvent.CheckVibrate -> onVibrateChecked(event.isChecked)
+            is SettingsEvent.CheckOpenWebPages -> onOpenWebPagesChecked(event.isChecked)
+            is SettingsEvent.CheckBatchScan -> onBatchScanChecked(event.isChecked)
         }
     }
 
-    private fun onCheckedAppLock(isChecked: Boolean) {
-        appStore.setAppLock(isChecked)
-
-        stateData.update { it.copy(isAppLockChecked = isChecked) }
-    }
-
-    private fun onCheckedVibrate(isChecked: Boolean) {
+    private fun onVibrateChecked(isChecked: Boolean) {
         appStore.setVibrate(isChecked)
 
         stateData.update { it.copy(isVibrateChecked = isChecked) }
     }
 
-    private fun onCheckedOpenWebPages(isChecked: Boolean) {
+    private fun onOpenWebPagesChecked(isChecked: Boolean) {
         appStore.setOpenWebPages(isChecked)
 
         stateData.update { it.copy(isOpenWebPagesChecked = isChecked) }
     }
 
-    private fun onCheckedBatchScan(isChecked: Boolean) {
+    private fun onBatchScanChecked(isChecked: Boolean) {
         appStore.setBatchScan(isChecked)
 
         stateData.update { it.copy(isBatchScanChecked = isChecked) }

@@ -1,5 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime
 
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.az
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
@@ -21,7 +22,8 @@ fun Long?.actualDateMillis(hour: Int, minute: Int): Long {
 }
 
 fun Long.timestampToString(): String {
-    return Instant.fromEpochMilliseconds(this).toString()
+    val model = Instant.fromEpochMilliseconds(this).toDateTimeModel()
+    return "${model.year.az()}${model.month.az()}${model.dayOfMonth.az()}T${model.hour.az()}${model.minute}${model.second}"
 }
 
 fun Long.timestampToDateTime(): DateTimeModel {

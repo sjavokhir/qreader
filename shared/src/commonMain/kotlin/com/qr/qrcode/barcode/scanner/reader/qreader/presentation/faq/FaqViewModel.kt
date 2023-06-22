@@ -50,11 +50,6 @@ private val faq = listOf(
         answer = "To upgrade to the premium version, open the app and navigate to the settings menu. Look for the \"Go Pro!\" option and follow the instructions to complete the upgrade process."
     ),
     FaqModel(
-        id = 6,
-        question = "Can I transfer my premium subscription to another device?",
-        answer = "Yes, if you have an active premium subscription, you can use the same subscription on multiple devices. Simply log in to your account on the new device, and the premium features will be available to you."
-    ),
-    FaqModel(
         id = 7,
         question = "What happens if my premium subscription expires?",
         answer = "If your premium subscription expires, you will lose access to the premium features. However, you can still use the basic functionality of the app, including scanning and creating QR codes."

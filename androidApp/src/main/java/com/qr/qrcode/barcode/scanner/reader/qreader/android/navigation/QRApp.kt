@@ -11,25 +11,29 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.OnBoardingScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.EntryType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.rememberNavHostEngine
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun QRApp(entry: EntryType) {
+fun QRApp(
+    isOnBoarding: Boolean,
+    themeMode: ThemeMode
+) {
     val engine = rememberNavHostEngine()
     val navController = engine.rememberNavController()
 
-    val startRoute = when (entry) {
-        EntryType.OnBoarding -> OnBoardingScreenDestination
-        EntryType.Scanner -> ScannerScreenDestination
+    val startDestination = if (isOnBoarding) {
+        OnBoardingScreenDestination
+    } else {
+        ScannerScreenDestination
     }
 
-    QRTheme {
+    QRTheme(themeMode) {
         QRScaffold(
             navController = navController,
-            startRoute = startRoute,
+            startRoute = startDestination,
             topBar = { destination, _ ->
                 if (destination.shouldShowScaffoldElements) {
                     QRTopBar(destination, navController)
@@ -48,7 +52,7 @@ fun QRApp(entry: EntryType) {
                 modifier = Modifier
                     .padding(padding)
                     .consumeWindowInsets(padding),
-                startRoute = startRoute
+                startRoute = startDestination
             )
         }
     }

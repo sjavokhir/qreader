@@ -34,9 +34,9 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.BizContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.BusinessContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.ContactContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.DriverLicenseContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.EmailContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.EventContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.LocationContent
@@ -49,7 +49,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LocationPickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultRecipient
@@ -58,7 +58,7 @@ import com.ramcosta.composedestinations.spec.Direction
 @Destination
 @Composable
 fun AddContentScreen(
-    type: GenerateType,
+    type: GenerateMode,
     navigator: DestinationsNavigator,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
@@ -141,29 +141,29 @@ fun AddContentScreen(
 
 @Composable
 private fun GenerateContent(
-    type: GenerateType,
+    type: GenerateMode,
     onContent: (Boolean, String) -> Unit,
     onNavigate: (Direction) -> Unit,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
 ) {
     when (type) {
-        GenerateType.Text -> TextContent(onContent = onContent)
-        GenerateType.Website -> WebsiteContent(onContent = onContent)
-        GenerateType.Sms -> SmsContent(onContent = onContent)
-        GenerateType.PhoneNumber -> PhoneContent(onContent = onContent)
-        GenerateType.EmailAddress -> EmailContent(onContent = onContent)
-        GenerateType.Wifi -> WifiContent(onContent = onContent)
-        GenerateType.CalendarEvent -> EventContent(
+        GenerateMode.Text -> TextContent(onContent = onContent)
+        GenerateMode.Website -> WebsiteContent(onContent = onContent)
+        GenerateMode.Sms -> SmsContent(onContent = onContent)
+        GenerateMode.PhoneNumber -> PhoneContent(onContent = onContent)
+        GenerateMode.EmailAddress -> EmailContent(onContent = onContent)
+        GenerateMode.Wifi -> WifiContent(onContent = onContent)
+        GenerateMode.ContactVCard -> ContactContent(onContent = onContent)
+        GenerateMode.CalendarEvent -> EventContent(
             onContent = onContent,
             onNavigate = onNavigate,
             resultTimestamp = resultTimestamp
         )
 
-        GenerateType.ContactVCard -> ContactContent(onContent = onContent)
-        GenerateType.BusinessVCard -> BusinessContent(onContent = onContent)
-        GenerateType.DriverLicense -> DriverLicenseContent(onContent = onContent)
-        GenerateType.Location -> LocationContent(
+        GenerateMode.BizCard -> BizContent(onContent = onContent)
+        GenerateMode.BusinessVCard -> BusinessContent(onContent = onContent)
+        GenerateMode.Location -> LocationContent(
             onContent = onContent,
             onNavigate = onNavigate,
             resultLocation = resultLocation

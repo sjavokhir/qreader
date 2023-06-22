@@ -1,8 +1,8 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRCornerType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRCornerMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternMode
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -37,11 +37,11 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 
     private fun getAllStyles() {
         val patterns = listOf(
-            QRPatternType.Square, QRPatternType.Rounded, QRPatternType.Circle,
-            QRPatternType.Classy, QRPatternType.ClassyRounded, QRPatternType.ExtraRounded
+            QRPatternMode.Square, QRPatternMode.Rounded, QRPatternMode.Circle,
+            QRPatternMode.Classy, QRPatternMode.ClassyRounded, QRPatternMode.ExtraRounded
         )
-        val corners = listOf(QRCornerType.Square, QRCornerType.Circle, QRCornerType.Rounded)
-        val dots = listOf(QRDotType.Square, QRDotType.Circle, QRDotType.Rounded)
+        val corners = listOf(QRCornerMode.Square, QRCornerMode.Circle, QRCornerMode.Rounded)
+        val dots = listOf(QRDotMode.Square, QRDotMode.Circle, QRDotMode.Rounded)
 
         stateData.update {
             it.copy(
@@ -69,15 +69,15 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
         }
     }
 
-    private fun onPatternSelected(pattern: QRPatternType) {
+    private fun onPatternSelected(pattern: QRPatternMode) {
         stateData.update { it.copy(selectedPattern = pattern) }
     }
 
-    private fun onCornerSelected(corner: QRCornerType) {
+    private fun onCornerSelected(corner: QRCornerMode) {
         stateData.update { it.copy(selectedCorner = corner) }
     }
 
-    private fun onDotSelected(dot: QRDotType) {
+    private fun onDotSelected(dot: QRDotMode) {
         stateData.update { it.copy(selectedDot = dot) }
     }
 

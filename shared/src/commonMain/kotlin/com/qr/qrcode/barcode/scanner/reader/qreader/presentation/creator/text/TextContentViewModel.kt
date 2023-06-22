@@ -5,6 +5,7 @@ import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 
 class TextContentViewModel : KMMViewModel() {
 
@@ -23,10 +24,10 @@ class TextContentViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 text = text,
-                isEnabled = text.isNotEmpty(),
-                generateText = it.generateText()
+                isEnabled = text.isNotEmpty()
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun TextContentState.generateText(): String = text

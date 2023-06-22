@@ -9,7 +9,8 @@ fun Any?.log() {
 fun tryCatch(onTryAction: () -> Unit) {
     try {
         onTryAction()
-    } catch (_: Throwable) {
+    } catch (t: Throwable) {
+        t.log()
     }
 }
 

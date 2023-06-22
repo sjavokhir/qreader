@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -175,11 +176,13 @@ private fun SoundItem(
             modifier = Modifier.weight(1f)
         )
 
-        if (sound == selectedSound) {
-            QRIcon(
-                painter = painterResource(id = R.drawable.ic_check_circle),
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
+        QRIcon(
+            painter = painterResource(id = R.drawable.ic_check_circle),
+            color = if (sound == selectedSound) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                Color.Transparent
+            }
+        )
     }
 }

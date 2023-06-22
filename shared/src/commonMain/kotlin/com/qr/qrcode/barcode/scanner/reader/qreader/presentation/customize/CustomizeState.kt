@@ -1,16 +1,16 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRCornerType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRCornerMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternMode
 
 data class CustomizeState(
-    val patterns: List<QRPatternType> = emptyList(),
-    val selectedPattern: QRPatternType = QRPatternType.Square,
-    val corners: List<QRCornerType> = emptyList(),
-    val selectedCorner: QRCornerType = QRCornerType.Square,
-    val dots: List<QRDotType> = emptyList(),
-    val selectedDot: QRDotType = QRDotType.Square,
+    val patterns: List<QRPatternMode> = emptyList(),
+    val selectedPattern: QRPatternMode = QRPatternMode.Square,
+    val corners: List<QRCornerMode> = emptyList(),
+    val selectedCorner: QRCornerMode = QRCornerMode.Square,
+    val dots: List<QRDotMode> = emptyList(),
+    val selectedDot: QRDotMode = QRDotMode.Square,
     val showColorPicker: Boolean = false,
     val colorPickerType: ColorPickerType = ColorPickerType.PatternDotColor,
     val patternDotHex: String = "FF000000",

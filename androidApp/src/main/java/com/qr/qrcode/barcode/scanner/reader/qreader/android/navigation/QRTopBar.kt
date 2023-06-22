@@ -22,6 +22,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SettingsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SoundEffectsScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ThemeModeScreenDestination
 
 @Composable
 fun QRTopBar(
@@ -56,6 +57,7 @@ private fun Destination.topBarTitle(): Int {
         LocationPickerScreenDestination -> R.string.action_select_location
         QRCodeScreenDestination -> R.string.qr_code
         CustomizeScreenDestination -> R.string.customize_qr
+        ThemeModeScreenDestination -> R.string.theme
     }
 }
 

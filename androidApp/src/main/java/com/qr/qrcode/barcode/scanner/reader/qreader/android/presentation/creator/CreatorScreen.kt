@@ -39,8 +39,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateHeaderType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateHeader
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -120,7 +120,7 @@ private fun GenerateContentsContent(
 @Composable
 private fun GenerateContentItem(
     context: Context,
-    type: GenerateType,
+    type: GenerateMode,
     isLastItem: Boolean,
     onClick: () -> Unit
 ) {
@@ -187,11 +187,11 @@ private fun GenerateContentItem(
     }
 }
 
-private fun GenerateHeaderType.headerTitle(): Int {
+private fun GenerateHeader.headerTitle(): Int {
     return when (this) {
-        GenerateHeaderType.Web -> R.string.web
-        GenerateHeaderType.Communication -> R.string.communication
-        GenerateHeaderType.Other -> R.string.other
-        GenerateHeaderType.SocialMedia -> R.string.social_media
+        GenerateHeader.Web -> R.string.web
+        GenerateHeader.Communication -> R.string.communication
+        GenerateHeader.Other -> R.string.other
+        GenerateHeader.SocialMedia -> R.string.social_media
     }
 }

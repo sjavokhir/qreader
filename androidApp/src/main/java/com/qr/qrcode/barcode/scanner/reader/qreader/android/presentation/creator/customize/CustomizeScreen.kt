@@ -68,7 +68,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.extensions.toColor
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.extensions.toHex
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.pickers.ColorPickerDialog
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.log
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize.ColorPickerType
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize.CustomizeEvent
@@ -115,8 +114,6 @@ private fun CustomizeScreenContent(
     ) { logoUri = it }
 
     LaunchedEffect(state.ownLogoPath) {
-        state.ownLogoPath.log()
-
         if (!state.ownLogoPath.isNullOrEmpty()) {
             tryCatch {
                 logoUri = Uri.parse(state.ownLogoPath)
@@ -634,11 +631,15 @@ private fun rememberOwnLogo(
 ): Bitmap? {
     uri ?: return null
 
-    return if (Build.VERSION.SDK_INT < 28) {
-        @Suppress("DEPRECATION")
-        MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-    } else {
-        val source = ImageDecoder.createSource(context.contentResolver, uri)
-        ImageDecoder.decodeBitmap(source)
+    return try {
+        if (Build.VERSION.SDK_INT < 28) {
+            @Suppress("DEPRECATION")
+            MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+        } else {
+            val source = ImageDecoder.createSource(context.contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
+        }
+    } catch (_: Throwable) {
+        null
     }
 }

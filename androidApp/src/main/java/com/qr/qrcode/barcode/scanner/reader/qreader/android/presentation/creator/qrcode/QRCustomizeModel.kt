@@ -1,16 +1,16 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode
 
 import android.net.Uri
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRCornerType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRCornerMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize.CustomizeState
 import java.io.Serializable
 
 data class QRCustomizeModel(
-    val selectedPattern: QRPatternType = QRPatternType.Square,
-    val selectedCorner: QRCornerType = QRCornerType.Square,
-    val selectedDot: QRDotType = QRDotType.Square,
+    val selectedPattern: QRPatternMode = QRPatternMode.Square,
+    val selectedCorner: QRCornerMode = QRCornerMode.Square,
+    val selectedDot: QRDotMode = QRDotMode.Square,
     val patternDotHex: String = "FF000000",
     val patternBackgroundHex: String = "FFFFFFFF",
     val frameHex: String = "FF000000",

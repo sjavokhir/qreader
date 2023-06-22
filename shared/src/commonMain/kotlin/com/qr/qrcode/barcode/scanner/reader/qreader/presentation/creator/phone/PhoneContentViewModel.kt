@@ -23,10 +23,10 @@ class PhoneContentViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 phone = phone,
-                isEnabled = phone.isNotEmpty(),
-                generateText = it.generateText()
+                isEnabled = phone.isNotEmpty()
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun PhoneContentState.generateText(): String = "tel:$phone"

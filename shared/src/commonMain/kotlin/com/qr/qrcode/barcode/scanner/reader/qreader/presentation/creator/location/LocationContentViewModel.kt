@@ -41,10 +41,10 @@ class LocationContentViewModel : KMMViewModel() {
                 it.copy(
                     latitude = mLatitude,
                     longitude = mLongitude,
-                    isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0,
-                    generateText = it.generateText()
+                    isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0
                 )
             }
+            stateData.update { it.copy(generateText = it.generateText()) }
         }
     }
 
@@ -59,10 +59,10 @@ class LocationContentViewModel : KMMViewModel() {
             it.copy(
                 latitude = mLatitude,
                 longitude = mLongitude,
-                isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0,
-                generateText = it.generateText()
+                isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun LocationContentState.generateText(): String {

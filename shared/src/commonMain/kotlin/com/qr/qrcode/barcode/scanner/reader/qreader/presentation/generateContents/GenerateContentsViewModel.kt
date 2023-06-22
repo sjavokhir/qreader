@@ -1,6 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmm.viewmodel.coroutineScope
@@ -25,33 +25,33 @@ class GenerateContentsViewModel : KMMViewModel() {
 
         viewModelScope.coroutineScope.launch {
             val contents = buildList {
-                add(GenerateType.Text)
-                add(GenerateType.Website)
-                add(GenerateType.Sms)
-                add(GenerateType.PhoneNumber)
-                add(GenerateType.EmailAddress)
-                add(GenerateType.Wifi)
-                add(GenerateType.CalendarEvent)
-                add(GenerateType.ContactVCard)
-                add(GenerateType.BusinessVCard)
-                add(GenerateType.DriverLicense)
-                add(GenerateType.Location)
-                add(GenerateType.Youtube)
-                add(GenerateType.WhatsApp)
-                add(GenerateType.Instagram)
-                add(GenerateType.Facebook)
-                add(GenerateType.Twitter)
-                add(GenerateType.TikTok)
-                add(GenerateType.Telegram)
-                add(GenerateType.VKontakte)
-                add(GenerateType.Twitch)
-                add(GenerateType.LinkedIn)
-                add(GenerateType.Github)
-                add(GenerateType.Medium)
-                add(GenerateType.Dribbble)
-                add(GenerateType.Behance)
+                add(GenerateMode.Text)
+                add(GenerateMode.Website)
+                add(GenerateMode.Sms)
+                add(GenerateMode.PhoneNumber)
+                add(GenerateMode.EmailAddress)
+                add(GenerateMode.Wifi)
+                add(GenerateMode.ContactVCard)
+                add(GenerateMode.CalendarEvent)
+                add(GenerateMode.BizCard)
+                add(GenerateMode.BusinessVCard)
+                add(GenerateMode.Location)
+                add(GenerateMode.Youtube)
+                add(GenerateMode.WhatsApp)
+                add(GenerateMode.Instagram)
+                add(GenerateMode.Facebook)
+                add(GenerateMode.Twitter)
+                add(GenerateMode.TikTok)
+                add(GenerateMode.Telegram)
+                add(GenerateMode.VKontakte)
+                add(GenerateMode.Twitch)
+                add(GenerateMode.LinkedIn)
+                add(GenerateMode.Github)
+                add(GenerateMode.Medium)
+                add(GenerateMode.Dribbble)
+                add(GenerateMode.Behance)
             }.groupBy {
-                it.headerType
+                it.header
             }
 
             stateData.update {

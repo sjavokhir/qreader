@@ -41,10 +41,10 @@ class WifiContentViewModel : KMMViewModel() {
             it.copy(
                 networkName = mNetworkName,
                 password = password ?: it.password,
-                isEnabled = mNetworkName.isNotEmpty(),
-                generateText = it.generateText()
+                isEnabled = mNetworkName.isNotEmpty()
             )
         }
+        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun WifiContentState.generateText(): String {
