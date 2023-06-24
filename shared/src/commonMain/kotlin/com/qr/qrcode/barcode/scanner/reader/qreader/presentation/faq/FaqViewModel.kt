@@ -113,5 +113,10 @@ private val faq = listOf(
         id = 19,
         question = "What payment methods are accepted for the premium subscription?",
         answer = "We accept various payment methods, including credit cards, debit cards, and popular mobile payment options like Google Pay and Apple Pay. The available payment methods may vary depending on your app store and region."
+    ),
+    FaqModel(
+        id = 20,
+        question = "What are \"Chrome Custom Tabs\"?",
+        answer = "By providing a service to other apps Chrome lets other apps display Web content faster."
     )
 )

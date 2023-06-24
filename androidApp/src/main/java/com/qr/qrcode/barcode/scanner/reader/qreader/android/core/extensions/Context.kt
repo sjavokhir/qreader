@@ -39,3 +39,15 @@ fun Context.shareText(text: String) {
         startActivity(Intent.createChooser(intent, null))
     }
 }
+
+fun Context.sendMail() {
+    tryCatch {
+        val intent = Intent(
+            Intent.ACTION_SENDTO,
+            Uri.fromParts("mailto", "javokhirdev@gmail.com", null)
+        )
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Simple Vocabulary")
+        intent.putExtra(Intent.EXTRA_TEXT, "Contact developer")
+        startActivity(Intent.createChooser(intent, "Send mail"))
+    }
+}

@@ -13,6 +13,7 @@
     <string name="action_scan">Scan</string>
     <string name="action_select">Select</string>
     <string name="action_select_location">Select location</string>
+    <string name="action_send_us">Send us an email</string>
     <string name="action_share">Share</string>
     <string name="action_skip">Skip</string>
     <string name="action_start">Start</string>
@@ -33,6 +34,7 @@
     <string name="best_value">Best\nValue</string>
     <string name="birth_date">Birth date</string>
     <string name="cancel_anytime">No commitments, cancel anytime!</string>
+    <string name="chrome_custom_tabs">Chrome Custom Tabs</string>
     <string name="click_create_button">Click create button to start create QR Code.</string>
     <string name="click_scan_button">Click scan button to start scan QR Code.</string>
     <string name="color">Color</string>
@@ -80,6 +82,7 @@
     <string name="feature_3">Fast &amp; Secure Batch Scan</string>
     <string name="feature_4">No Ads!</string>
     <string name="feedback">Feedback</string>
+    <string name="feedback_description">Many questions are already answered in the "FAQ".\n\nPlease write your email in English.\n\nIf possible, please include photos of the barcode or screenshots.</string>
     <string name="first_name">Name</string>
     <string name="foreground_color">Foreground Color</string>
     <string name="frame_color">Frame color</string>
@@ -130,14 +133,12 @@
     <string name="one_purchase">1 purchase</string>
     <string name="one_year">/year</string>
     <string name="open_web_pages">Open web pages automatically</string>
-    <string name="chrome_custom_tabs">Chrome Custom Tabs</string>
     <string name="other">Other</string>
     <string name="others">Others</string>
     <string name="password">Password</string>
     <string name="permissions_granted">Permission granted!</string>
     <string name="permissions_granted_description">You now have complete access to our QReader app. Get ready to scan, generate and share QR codes with ease.</string>
     <string name="phone_number">Phone number</string>
-    <string name="please_select_topic">Please select a topic below and let us know about your concern.</string>
     <string name="premium">Premium</string>
     <string name="premium_description">You can be premium by choosing a package and you can create the qr code you want and customize it as you wish.</string>
     <string name="privacy">Privacy</string>
