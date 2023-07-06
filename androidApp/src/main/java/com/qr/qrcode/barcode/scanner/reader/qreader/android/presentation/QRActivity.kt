@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.ads.MobileAds
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.QRTheme
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.QRApp
@@ -44,6 +45,7 @@ class QRActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        MobileAds.initialize(this)
 
         setContent {
             val hasAcknowledged = viewModel.hasAcknowledged.collectAsStateWithLifecycle().value

@@ -115,8 +115,9 @@ dependencies {
     implementation(libs.compose.maps)
 
     implementation(libs.google.material)
-    implementation(libs.google.playservices.maps)
-    implementation(libs.google.playservices.location)
+    implementation(libs.google.ps.maps)
+    implementation(libs.google.ps.location)
+    implementation(libs.google.ps.ads)
     implementation(libs.google.mlkit.barcodescanning)
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.crashlytics)

@@ -42,7 +42,10 @@ fun QRApp(
             },
             bottomBar = { destination ->
                 if (destination.shouldShowScaffoldElements) {
-                    QRBottomBar(navController)
+                    QRBottomBar(
+                        hasSubscription = hasSubscription,
+                        navController = navController
+                    )
                 }
             }
         ) { padding ->

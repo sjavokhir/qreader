@@ -16,16 +16,17 @@ androidx-billing = "6.0.1"
 compose = "1.4.3"
 compose-activity = "1.7.2"
 compose-lifecycle = "2.6.1"
-compose-material3 = "1.1.0"
-compose-compiler = "1.4.7"
+compose-material3 = "1.1.1"
+compose-compiler = "1.4.8"
 compose-accompanist = "0.31.3-beta"
 compose-maps = "2.11.2"
 
 google-material = "1.9.0"
 google-services = "4.3.14"
 google-mapsplatform-secrets = "2.0.1"
-google-playservices-maps = "18.1.0"
-google-playservices-location = "21.0.1"
+google-ps-maps = "18.1.0"
+google-ps-location = "21.0.1"
+google-ps-ads = "22.1.0"
 google-firebase-bom = "32.1.1"
 google-firebase-crashlytics = "2.9.2"
 google-mlkit-barcodescanning = "17.1.0"
@@ -67,8 +68,9 @@ compose-accompanist-drawablepainter = { module = "com.google.accompanist:accompa
 compose-maps = { module = "com.google.maps.android:maps-compose", version.ref = "compose-maps" }
 
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
-google-playservices-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-playservices-maps" }
-google-playservices-location = { module = "com.google.android.gms:play-services-location", version.ref = "google-playservices-location" }
+google-ps-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-ps-maps" }
+google-ps-location = { module = "com.google.android.gms:play-services-location", version.ref = "google-ps-location" }
+google-ps-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "google-ps-ads" }
 google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "google-firebase-bom" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }

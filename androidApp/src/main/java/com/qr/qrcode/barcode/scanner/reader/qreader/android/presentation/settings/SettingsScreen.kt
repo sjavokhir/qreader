@@ -176,7 +176,7 @@ private fun ScanControlsContent(
         SwitchContent(
             title = R.string.batch_scan,
             hasSubscription = hasSubscription,
-            checked = state.isBatchScanChecked,
+            checked = state.isBatchScanChecked && hasSubscription,
             onCheckedChange = {
                 if (hasSubscription) {
                     onEvent(SettingsEvent.CheckBatchScan(it))

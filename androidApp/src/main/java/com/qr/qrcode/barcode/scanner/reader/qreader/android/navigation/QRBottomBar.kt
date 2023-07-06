@@ -18,9 +18,10 @@ import com.ramcosta.composedestinations.utils.isRouteOnBackStack
 
 @Composable
 fun QRBottomBar(
+    hasSubscription: Boolean,
     navController: NavHostController
 ) {
-    QRNavigationBar {
+    QRNavigationBar(hasSubscription = hasSubscription) {
         BottomBarItem.values().forEach { destination ->
             val isCurrentDestOnBackStack = navController.isRouteOnBackStack(destination.direction)
 
