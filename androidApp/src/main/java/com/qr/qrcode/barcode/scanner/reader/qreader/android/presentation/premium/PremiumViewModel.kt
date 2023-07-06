@@ -1,0 +1,82 @@
+package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.premium
+
+import android.app.Activity
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.android.billingclient.api.BillingFlowParams
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.billing.BillingClientWrapper
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+class PremiumViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val billingClient = BillingClientWrapper(application)
+
+    private val stateData = MutableStateFlow(PremiumState())
+    val state = stateData.asStateFlow()
+
+    val hasAcknowledged = billingClient.hasAcknowledged
+    val isPurchaseAcknowledged = billingClient.isPurchaseAcknowledged
+
+    private val currentState: PremiumState
+        get() = state.value
+
+    override fun onCleared() {
+        billingClient.terminateBillingConnection()
+    }
+
+    init {
+        billingClient.startBillingConnection()
+
+        collectProductDetails()
+    }
+
+    fun onEvent(event: PremiumEvent) {
+        when (event) {
+            is PremiumEvent.SelectProduct -> onSelectProduct(event.price)
+            is PremiumEvent.Buy -> buy(event.activity)
+        }
+    }
+
+    private fun collectProductDetails() {
+        viewModelScope.launch {
+            billingClient.productDetails.collectLatest { productDetails ->
+                stateData.update { it.copy(productDetails = productDetails) }
+            }
+        }
+    }
+
+    private fun onSelectProduct(price: String) {
+        stateData.update { it.copy(selectedProductId = price) }
+    }
+
+    private fun buy(activity: Activity) {
+        val productDetails = currentState.productDetails
+            .firstOrNull { it.productId == currentState.selectedProductId }
+            ?.productDetails ?: return
+
+        val offerToken = currentState.productDetails
+            .firstOrNull { it.productId == currentState.selectedProductId }
+            ?.offerToken ?: return
+
+        val productDetailsParamsList = listOf(
+            BillingFlowParams.ProductDetailsParams.newBuilder()
+                .setProductDetails(productDetails)
+                .setOfferToken(offerToken)
+                .build()
+        )
+
+        val billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(productDetailsParamsList)
+            .build()
+
+        billingClient.launchBillingFlow(
+            activity,
+            billingFlowParams
+        )
+    }
+}

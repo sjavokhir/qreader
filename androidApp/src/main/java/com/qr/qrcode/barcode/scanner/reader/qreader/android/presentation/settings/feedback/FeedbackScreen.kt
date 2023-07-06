@@ -49,10 +49,11 @@ fun FeedbackScreen() {
             }
             item {
                 Text(
+                    modifier = Modifier.fillMaxWidth(),
                     text = stringResource(id = R.string.feedback_description),
                     style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.fillMaxWidth()
+                    color = MaterialTheme.colorScheme.outline,
+                    textAlign = TextAlign.Start
                 )
             }
             item {

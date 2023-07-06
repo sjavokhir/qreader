@@ -5,5 +5,4 @@ data class SettingsState(
     val isOpenWebPagesChecked: Boolean = false,
     val isChromeCustomTabsChecked: Boolean = false,
     val isBatchScanChecked: Boolean = false,
-    val hasSubscription: Boolean = true
 )

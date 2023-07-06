@@ -32,6 +32,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clic
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -44,8 +45,11 @@ import com.ramcosta.composedestinations.spec.Direction
 fun ScannerScreen(
     navigator: DestinationsNavigator
 ) {
+    val hasSubscription = LocalSubscription.current
+
     QRBackground {
         ScannerScreenContent(
+            hasSubscription = hasSubscription,
             onNavigate = navigator::navigate
         )
     }
@@ -53,6 +57,7 @@ fun ScannerScreen(
 
 @Composable
 private fun ScannerScreenContent(
+    hasSubscription: Boolean,
     onNavigate: (Direction) -> Unit
 ) {
     var isFlashlightOn by remember { mutableStateOf(false) }
@@ -61,7 +66,9 @@ private fun ScannerScreenContent(
         modifier = Modifier.padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        GoProContent { onNavigate(PremiumScreenDestination) }
+        if (!hasSubscription) {
+            GoProContent { onNavigate(PremiumScreenDestination) }
+        }
 
         Box(
             modifier = Modifier

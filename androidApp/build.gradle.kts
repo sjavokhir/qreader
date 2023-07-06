@@ -20,7 +20,7 @@ android {
         applicationId = "com.qr.qrcode.barcode.scanner.reader.qreader.android"
         minSdk = 27
         targetSdk = 33
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
     }
 
@@ -55,8 +55,10 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 
@@ -68,7 +70,7 @@ android {
         kotlinCompilerExtensionVersion = "1.4.4"
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -97,6 +99,7 @@ dependencies {
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.billing)
 
     implementation(libs.compose.activity)
     implementation(libs.compose.lifecycle)

@@ -10,6 +10,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
@@ -84,8 +85,11 @@ private val DarkColorScheme = darkColorScheme(
 private val LightBackgroundTheme = BackgroundTheme(color = md_theme_light_background)
 private val DarkBackgroundTheme = BackgroundTheme(color = md_theme_dark_background)
 
+val LocalSubscription = staticCompositionLocalOf { false }
+
 @Composable
 fun QRTheme(
+    hasSubscription: Boolean,
     themeMode: ThemeMode,
     content: @Composable () -> Unit
 ) {
@@ -120,6 +124,7 @@ fun QRTheme(
 
     CompositionLocalProvider(
         LocalBackgroundTheme provides backgroundTheme,
+        LocalSubscription provides hasSubscription,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

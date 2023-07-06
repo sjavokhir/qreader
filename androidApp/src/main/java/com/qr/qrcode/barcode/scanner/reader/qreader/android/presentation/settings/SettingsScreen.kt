@@ -1,5 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settings
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,7 +41,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.shar
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AboutScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FaqScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FeedbackScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LanguageScreenDestination
@@ -52,6 +53,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.Settin
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsViewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appVersion
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
@@ -62,10 +64,13 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = viewModel(),
     navigator: DestinationsNavigator
 ) {
+    val hasSubscription = LocalSubscription.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     QRBackground {
         SettingsScreenContent(
+            hasSubscription = hasSubscription,
             state = state,
             onEvent = viewModel::onEvent,
             onNavigate = navigator::navigate
@@ -76,9 +81,12 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenContent(
     state: SettingsState,
+    hasSubscription: Boolean,
     onEvent: (SettingsEvent) -> Unit,
     onNavigate: (Direction) -> Unit
 ) {
+    val context = LocalContext.current
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -86,11 +94,14 @@ private fun SettingsScreenContent(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        item { GoProContent { onNavigate(PremiumScreenDestination) } }
+        if (!hasSubscription) {
+            item { GoProContent { onNavigate(PremiumScreenDestination) } }
+        }
+
         item { GeneralContent(onNavigate) }
-        item { ScanControlsContent(state, onEvent, onNavigate) }
+        item { ScanControlsContent(hasSubscription, state, onEvent, onNavigate) }
         item { GetHelpContent(onNavigate) }
-        item { OthersContent(onNavigate) }
+        item { OthersContent(context) }
     }
 }
 
@@ -99,13 +110,13 @@ private fun GeneralContent(
     onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.general) {
-        NavigateContent(title = R.string.theme) {
+        NavigateContent(title = stringResource(id = R.string.theme)) {
             onNavigate(ThemeModeScreenDestination)
         }
 
         DividerContent()
 
-        NavigateContent(title = R.string.language) {
+        NavigateContent(title = stringResource(id = R.string.language)) {
             onNavigate(LanguageScreenDestination)
         }
     }
@@ -113,16 +124,17 @@ private fun GeneralContent(
 
 @Composable
 private fun ScanControlsContent(
+    hasSubscription: Boolean,
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
     onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.scan_controls) {
         NavigateContent(
-            title = R.string.sound_effects,
-            hasSubscription = state.hasSubscription
+            title = stringResource(id = R.string.sound_effects),
+            hasSubscription = hasSubscription
         ) {
-            if (state.hasSubscription) {
+            if (hasSubscription) {
                 onNavigate(SoundEffectsScreenDestination)
             } else {
                 onNavigate(PremiumScreenDestination)
@@ -163,10 +175,10 @@ private fun ScanControlsContent(
 
         SwitchContent(
             title = R.string.batch_scan,
-            hasSubscription = state.hasSubscription,
+            hasSubscription = hasSubscription,
             checked = state.isBatchScanChecked,
             onCheckedChange = {
-                if (state.hasSubscription) {
+                if (hasSubscription) {
                     onEvent(SettingsEvent.CheckBatchScan(it))
                 } else {
                     onNavigate(PremiumScreenDestination)
@@ -181,45 +193,41 @@ private fun GetHelpContent(
     onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(title = R.string.get_help) {
-        NavigateContent(title = R.string.feedback) {
+        NavigateContent(title = stringResource(id = R.string.feedback)) {
             onNavigate(FeedbackScreenDestination)
         }
 
         DividerContent()
 
-        NavigateContent(title = R.string.frequently_asked_questions) {
+        NavigateContent(title = stringResource(id = R.string.frequently_asked_questions)) {
             onNavigate(FaqScreenDestination)
         }
 
         DividerContent()
 
-        NavigateContent(title = R.string.manage_permissions) {
+        NavigateContent(title = stringResource(id = R.string.manage_permissions)) {
             onNavigate(ManagePermissionsScreenDestination)
         }
     }
 }
 
 @Composable
-private fun OthersContent(
-    onNavigate: (Direction) -> Unit
-) {
-    val context = LocalContext.current
-
+private fun OthersContent(context: Context) {
     HeaderContent(title = R.string.others) {
-        NavigateContent(title = R.string.rate_us) {
+        NavigateContent(title = stringResource(id = R.string.rate_us)) {
             context.gotoUrl(appUrl)
         }
 
         DividerContent()
 
-        NavigateContent(title = R.string.tell_friends) {
+        NavigateContent(title = stringResource(id = R.string.tell_friends)) {
             context.shareText("Share")
         }
 
         DividerContent()
 
-        NavigateContent(title = R.string.about_us) {
-            onNavigate(AboutScreenDestination)
+        NavigateContent(title = "${stringResource(id = R.string.app_version)} ($appVersion)") {
+            context.gotoUrl(appUrl)
         }
     }
 }
@@ -256,7 +264,7 @@ private fun HeaderContent(
 
 @Composable
 private fun NavigateContent(
-    title: Int,
+    title: String,
     hasSubscription: Boolean = true,
     onClick: () -> Unit
 ) {
@@ -269,7 +277,7 @@ private fun NavigateContent(
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = stringResource(id = title),
+            text = title,
             style = MaterialTheme.typography.bodyLarge
         )
 

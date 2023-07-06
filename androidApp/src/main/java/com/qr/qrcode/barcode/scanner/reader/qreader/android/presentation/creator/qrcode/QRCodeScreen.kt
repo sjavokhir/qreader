@@ -39,6 +39,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CustomizeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
@@ -54,6 +55,8 @@ fun QRCodeScreen(
     navigator: DestinationsNavigator,
     resultCustomization: ResultRecipient<CustomizeScreenDestination, QRCustomizeModel>
 ) {
+    val hasSubscription = LocalSubscription.current
+
     var qrCustomizeModel by rememberSaveable { mutableStateOf(QRCustomizeModel()) }
 
     resultCustomization.onNavResult { result ->
@@ -67,6 +70,7 @@ fun QRCodeScreen(
 
     QRBackground {
         QRCodeScreenContent(
+            hasSubscription = hasSubscription,
             generateText = generateText,
             model = qrCustomizeModel,
             onNavigate = navigator::navigate
@@ -77,6 +81,7 @@ fun QRCodeScreen(
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun QRCodeScreenContent(
+    hasSubscription: Boolean,
     generateText: String,
     model: QRCustomizeModel,
     onNavigate: (Direction) -> Unit
@@ -97,7 +102,7 @@ private fun QRCodeScreenContent(
         item {
             CustomizeContent(
                 model = model,
-                hasSubscription = true,
+                hasSubscription = hasSubscription,
                 onNavigate = onNavigate
             )
         }

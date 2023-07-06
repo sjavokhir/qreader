@@ -11,6 +11,7 @@ androidx-appcompat = "1.6.1"
 androidx-core = "1.10.1"
 androidx-lifecycle = "2.6.1"
 androidx-camerax = "1.2.3"
+androidx-billing = "6.0.1"
 
 compose = "1.4.3"
 compose-activity = "1.7.2"
@@ -25,7 +26,7 @@ google-services = "4.3.14"
 google-mapsplatform-secrets = "2.0.1"
 google-playservices-maps = "18.1.0"
 google-playservices-location = "21.0.1"
-google-firebase-bom = "32.1.0"
+google-firebase-bom = "32.1.1"
 google-firebase-crashlytics = "2.9.2"
 google-mlkit-barcodescanning = "17.1.0"
 google-zxing = "3.5.1"
@@ -49,6 +50,7 @@ androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-kt
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "androidx-camerax" }
 androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "androidx-camerax" }
 androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "androidx-camerax" }
+androidx-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "androidx-billing" }
 
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "compose-activity" }
 compose-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "compose-lifecycle" }

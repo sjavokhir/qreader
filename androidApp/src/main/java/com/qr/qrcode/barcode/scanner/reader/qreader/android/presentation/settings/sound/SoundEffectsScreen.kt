@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -92,20 +92,15 @@ private fun SoundEffectsScreenContent(
                     )
                 }
 
-                items(state.soundEffects) { sound ->
-                    Column {
-                        SoundItem(
-                            sound = sound,
-                            selectedSound = state.selectedSound,
-                            onClick = {
-                                onEvent(SoundEffectsEvent.SelectSound(sound))
-                            }
-                        )
-
-                        DividerContent(
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                    }
+                itemsIndexed(state.soundEffects) { index, sound ->
+                    SoundItem(
+                        sound = sound,
+                        selectedSound = state.selectedSound,
+                        hasDivider = index != state.soundEffects.lastIndex,
+                        onClick = {
+                            onEvent(SoundEffectsEvent.SelectSound(sound))
+                        }
+                    )
                 }
             }
         }
@@ -150,39 +145,48 @@ private fun SwitchContent(
 private fun SoundItem(
     sound: Int,
     selectedSound: Int,
+    hasDivider: Boolean,
     onClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickableSingle(onClick = onClick)
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = "${stringResource(id = R.string.sound_effects)} $sound",
-            style = MaterialTheme.typography.bodyLarge,
-            color = if (sound == selectedSound) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onBackground
-            },
-            fontWeight = if (sound == selectedSound) {
-                FontWeight.SemiBold
-            } else {
-                FontWeight.Normal
-            },
-            modifier = Modifier.weight(1f)
-        )
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickableSingle(onClick = onClick)
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "${stringResource(id = R.string.sound_effects)} $sound",
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (sound == selectedSound) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onBackground
+                },
+                fontWeight = if (sound == selectedSound) {
+                    FontWeight.SemiBold
+                } else {
+                    FontWeight.Normal
+                },
+                modifier = Modifier.weight(1f)
+            )
 
-        QRIcon(
-            painter = painterResource(id = R.drawable.ic_check_circle),
-            color = if (sound == selectedSound) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                Color.Transparent
-            }
-        )
+            QRIcon(
+                painter = painterResource(id = R.drawable.ic_check_circle),
+                color = if (sound == selectedSound) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    Color.Transparent
+                }
+            )
+        }
+
+        if (hasDivider) {
+            DividerContent(
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+        }
     }
 }

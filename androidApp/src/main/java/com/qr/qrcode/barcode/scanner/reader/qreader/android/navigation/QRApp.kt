@@ -18,6 +18,7 @@ import com.ramcosta.composedestinations.rememberNavHostEngine
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun QRApp(
+    hasSubscription: Boolean,
     isOnBoarding: Boolean,
     themeMode: ThemeMode
 ) {
@@ -30,7 +31,7 @@ fun QRApp(
         ScannerScreenDestination
     }
 
-    QRTheme(themeMode) {
+    QRTheme(hasSubscription, themeMode) {
         QRScaffold(
             navController = navController,
             startRoute = startDestination,

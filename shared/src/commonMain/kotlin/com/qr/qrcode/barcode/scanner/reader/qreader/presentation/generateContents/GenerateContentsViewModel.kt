@@ -8,8 +8,9 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
 
-class GenerateContentsViewModel : KMMViewModel() {
+class GenerateContentsViewModel : KMMViewModel(), KoinComponent {
 
     private val stateData = MutableStateFlow(viewModelScope, GenerateContentsState())
 
@@ -57,7 +58,7 @@ class GenerateContentsViewModel : KMMViewModel() {
             stateData.update {
                 it.copy(
                     contents = contents,
-                    isLoading = false
+                    isLoading = false,
                 )
             }
         }

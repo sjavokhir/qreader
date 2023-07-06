@@ -27,7 +27,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
                     isVibrateChecked = appStore.isVibrateEnabled(),
                     isOpenWebPagesChecked = appStore.isOpenWebPagesEnabled(),
                     isChromeCustomTabsChecked = appStore.isChromeCustomTabsEnabled(),
-                    isBatchScanChecked = appStore.isBatchScanEnabled()
+                    isBatchScanChecked = appStore.isBatchScanEnabled(),
                 )
             }
         }

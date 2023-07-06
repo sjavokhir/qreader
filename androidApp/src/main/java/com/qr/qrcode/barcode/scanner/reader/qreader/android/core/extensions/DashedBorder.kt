@@ -1,7 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithCache
@@ -14,13 +13,6 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Dp
-
-fun Modifier.dashedBorder(
-    border: BorderStroke,
-    shape: Shape = RectangleShape,
-    on: Dp,
-    off: Dp
-) = dashedBorder(width = border.width, brush = border.brush, shape = shape, on, off)
 
 fun Modifier.dashedBorder(
     width: Dp,

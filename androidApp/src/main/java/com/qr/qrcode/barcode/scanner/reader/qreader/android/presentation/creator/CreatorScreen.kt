@@ -37,6 +37,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clic
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateHeader
@@ -53,10 +54,13 @@ fun CreatorScreen(
     viewModel: GenerateContentsViewModel = viewModel(),
     navigator: DestinationsNavigator
 ) {
+    val hasSubscription = LocalSubscription.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     QRBackground {
         GenerateContentsContent(
+            hasSubscription = hasSubscription,
             state = state,
             onNavigate = navigator::navigate
         )
@@ -65,6 +69,7 @@ fun CreatorScreen(
 
 @Composable
 private fun GenerateContentsContent(
+    hasSubscription: Boolean,
     state: GenerateContentsState,
     onNavigate: (Direction) -> Unit
 ) {
@@ -101,9 +106,10 @@ private fun GenerateContentsContent(
                         GenerateContentItem(
                             context = context,
                             type = type,
+                            hasSubscription = hasSubscription,
                             isLastItem = index == content.value.lastIndex,
                             onClick = {
-                                if (type.isPremium) {
+                                if (!hasSubscription && type.isPremium) {
                                     onNavigate(PremiumScreenDestination)
                                 } else {
                                     onNavigate(AddContentScreenDestination(type = type))
@@ -121,6 +127,7 @@ private fun GenerateContentsContent(
 private fun GenerateContentItem(
     context: Context,
     type: GenerateMode,
+    hasSubscription: Boolean,
     isLastItem: Boolean,
     onClick: () -> Unit
 ) {
@@ -153,7 +160,7 @@ private fun GenerateContentItem(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                if (type.isPremium) {
+                if (!hasSubscription && type.isPremium) {
                     Text(
                         text = stringResource(id = R.string.premium),
                         style = MaterialTheme.typography.bodyMedium,

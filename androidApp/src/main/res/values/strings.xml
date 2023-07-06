@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="about_us">About us</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_continue">Continue</string>
     <string name="action_create">Create</string>
@@ -17,22 +16,18 @@
     <string name="action_share">Share</string>
     <string name="action_skip">Skip</string>
     <string name="action_start">Start</string>
-    <string name="action_submit">Submit</string>
     <string name="add_content">Add content</string>
     <string name="add_logo">Add logo</string>
     <string name="address">Address</string>
-    <string name="address_city">Address city</string>
-    <string name="address_street">Address street</string>
-    <string name="address_zip">Address zip</string>
     <string name="align_qr_code">Align QR Code / Bardcode within frame to scan</string>
     <string name="allow_camera_access">Allow Camera Access</string>
     <string name="allow_location_access">Allow Location Access</string>
     <string name="allow_storage_access">Allow Storage Access</string>
     <string name="app_name">QReader</string>
+    <string name="app_version">App Version</string>
     <string name="background_color">Background Color</string>
     <string name="batch_scan">Batch Scan</string>
     <string name="best_value">Best\nValue</string>
-    <string name="birth_date">Birth date</string>
     <string name="cancel_anytime">No commitments, cancel anytime!</string>
     <string name="chrome_custom_tabs">Chrome Custom Tabs</string>
     <string name="click_create_button">Click create button to start create QR Code.</string>
@@ -74,7 +69,6 @@
     <string name="end_date_time">End date and time</string>
     <string name="enter_value">Enter value</string>
     <string name="event_name">Event name</string>
-    <string name="expiry_date">Expiry date</string>
     <string name="failed_to_save_image">Failed to save image</string>
     <string name="faq">FAQ</string>
     <string name="feature_1">Unlimited CSV Exports &amp; Folders</string>
@@ -84,12 +78,9 @@
     <string name="feedback">Feedback</string>
     <string name="feedback_description">Many questions are already answered in the "FAQ".\n\nPlease write your email in English.\n\nIf possible, please include photos of the barcode or screenshots.</string>
     <string name="first_name">Name</string>
-    <string name="foreground_color">Foreground Color</string>
     <string name="frame_color">Frame color</string>
     <string name="frame_style">Frame style</string>
-    <string name="free">Free</string>
     <string name="frequently_asked_questions">Frequently Asked Questions</string>
-    <string name="gender">Gender</string>
     <string name="general">General</string>
     <string name="get_help">Get Help</string>
     <string name="go_pro">Go Pro!</string>
@@ -97,18 +88,14 @@
     <string name="grant_location_permission">Grant Location permission for enhanced QR scanning accuracy.</string>
     <string name="grant_storage_permission">Grant Storage permission to save the QR image so you can easily access and share it whenever necessary.</string>
     <string name="help_us_improve">Help us improve!</string>
-    <string name="hidden_network">Hidden network</string>
     <string name="history">History</string>
     <string name="image_saved_to_gallery">Image saved to gallery</string>
     <string name="industry">Industry</string>
-    <string name="issue_date">Issue date</string>
-    <string name="issuing_country">Issuing country</string>
     <string name="job">Job</string>
     <string name="language">Language</string>
     <string name="last_name">Last name</string>
     <string name="latitude">Latitude</string>
     <string name="library">Library</string>
-    <string name="license_number">License number</string>
     <string name="lifetime">Lifetime</string>
     <string name="light">Light</string>
     <string name="location">Location</string>
@@ -116,7 +103,6 @@
     <string name="manage_permissions">Manage Permissions</string>
     <string name="maximum_size">Maximum size: 2 MB</string>
     <string name="message">Message</string>
-    <string name="middle_name">Middle name</string>
     <string name="most_popular">Most\nPopular</string>
     <string name="network_name">Network name</string>
     <string name="no_content_found">No content found!</string>
@@ -152,28 +138,20 @@
     <string name="search_qr_code">Search QR Code</string>
     <string name="select_date">Select date</string>
     <string name="select_date_and_time">Select Date and Time</string>
-    <string name="select_logo">Select logo</string>
     <string name="select_time">Select time</string>
-    <string name="select_topic">Select a topic</string>
     <string name="settings">Settings</string>
     <string name="seven_days_free">7 days free</string>
-    <string name="share_description">Share app</string>
     <string name="social_media">Social Media</string>
     <string name="social_media_channel">%1$s channel name</string>
     <string name="social_media_profile">%1$s profile</string>
     <string name="social_media_username">%1$s username</string>
-    <string name="sound">Sound</string>
     <string name="sound_effects">Sound Effects</string>
     <string name="start_date_time">Start date and time</string>
     <string name="system_default">System default</string>
     <string name="tell_friends">Tell friends</string>
     <string name="terms">Terms</string>
-    <string name="terms_of_use">Terms of Use</string>
     <string name="text">Text</string>
-    <string name="thank_you">Thank you!</string>
-    <string name="thank_you_description">Thank you for sharing your thoughts. We appreciate your feedback.</string>
     <string name="theme">Theme</string>
-    <string name="update_new_version">Update new version</string>
     <string name="upload_image">Upload image (JPG and PNG)</string>
     <string name="upload_your_own_logo">Upload your own logo</string>
     <string name="vibrate">Vibrate</string>
@@ -181,6 +159,4 @@
     <string name="website">Website</string>
     <string name="welcome_to_premium">Welcome to Premium!</string>
     <string name="whatsapp_number">WhatsApp number</string>
-    <string name="write_your_comments">Write your comments and complaints here.</string>
-    <string name="you_agree_terms">You agree to our Terms of Use by using QReader app.</string>
 </resources>

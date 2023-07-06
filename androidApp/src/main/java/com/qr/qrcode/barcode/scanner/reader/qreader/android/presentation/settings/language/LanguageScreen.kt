@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -72,20 +72,15 @@ private fun LanguageScreenContent(
                 )
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            items(state.languages) { language ->
-                Column {
-                    LanguageItem(
-                        language = language,
-                        selectedLanguage = state.selectedLanguage,
-                        onClick = {
-                            onEvent(LanguageEvent.SelectLanguage(language))
-                        }
-                    )
-
-                    DividerContent(
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                }
+            itemsIndexed(state.languages) { index, language ->
+                LanguageItem(
+                    language = language,
+                    selectedLanguage = state.selectedLanguage,
+                    hasDivider = index != state.languages.lastIndex,
+                    onClick = {
+                        onEvent(LanguageEvent.SelectLanguage(language))
+                    }
+                )
             }
         }
     }
@@ -95,58 +90,67 @@ private fun LanguageScreenContent(
 private fun LanguageItem(
     language: LanguageType,
     selectedLanguage: LanguageType,
+    hasDivider: Boolean,
     onClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickableSingle(onClick = onClick)
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Image(
-            painter = painterResource(
-                id = when (language) {
-                    LanguageType.English -> R.drawable.ic_english
-                    LanguageType.Uzbek -> R.drawable.ic_uzbekistan
-                    LanguageType.Arabic -> R.drawable.ic_saudi_arabia
-                    LanguageType.Turkish -> R.drawable.ic_turkey
-                    LanguageType.German -> R.drawable.ic_germany
-                    LanguageType.French -> R.drawable.ic_france
-                    LanguageType.Japanese -> R.drawable.ic_japan
-                    LanguageType.Korean -> R.drawable.ic_south_korea
-                    LanguageType.Portuguese -> R.drawable.ic_portugal
-                    LanguageType.Spanish -> R.drawable.ic_spain
-                    LanguageType.Italian -> R.drawable.ic_italy
-                    LanguageType.Russian -> R.drawable.ic_russia
-                    LanguageType.Chinese -> R.drawable.ic_china
-                }
-            ),
-            contentDescription = language.language,
-            modifier = Modifier.size(24.dp)
-        )
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickableSingle(onClick = onClick)
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Image(
+                painter = painterResource(
+                    id = when (language) {
+                        LanguageType.English -> R.drawable.ic_english
+                        LanguageType.Uzbek -> R.drawable.ic_uzbekistan
+                        LanguageType.Arabic -> R.drawable.ic_saudi_arabia
+                        LanguageType.Turkish -> R.drawable.ic_turkey
+                        LanguageType.German -> R.drawable.ic_germany
+                        LanguageType.French -> R.drawable.ic_france
+                        LanguageType.Japanese -> R.drawable.ic_japan
+                        LanguageType.Korean -> R.drawable.ic_south_korea
+                        LanguageType.Portuguese -> R.drawable.ic_portugal
+                        LanguageType.Spanish -> R.drawable.ic_spain
+                        LanguageType.Italian -> R.drawable.ic_italy
+                        LanguageType.Russian -> R.drawable.ic_russia
+                        LanguageType.Chinese -> R.drawable.ic_china
+                    }
+                ),
+                contentDescription = language.language,
+                modifier = Modifier.size(24.dp)
+            )
 
-        Text(
-            text = language.language,
-            style = MaterialTheme.typography.bodyLarge,
-            color = if (language == selectedLanguage) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onBackground
-            },
-            fontWeight = if (language == selectedLanguage) {
-                FontWeight.SemiBold
-            } else {
-                FontWeight.Normal
-            },
-            modifier = Modifier.weight(1f)
-        )
+            Text(
+                text = language.language,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (language == selectedLanguage) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onBackground
+                },
+                fontWeight = if (language == selectedLanguage) {
+                    FontWeight.SemiBold
+                } else {
+                    FontWeight.Normal
+                },
+                modifier = Modifier.weight(1f)
+            )
 
-        if (language == selectedLanguage) {
-            QRIcon(
-                painter = painterResource(id = R.drawable.ic_check_circle),
-                color = MaterialTheme.colorScheme.primary
+            if (language == selectedLanguage) {
+                QRIcon(
+                    painter = painterResource(id = R.drawable.ic_check_circle),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+
+        if (hasDivider) {
+            DividerContent(
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
     }

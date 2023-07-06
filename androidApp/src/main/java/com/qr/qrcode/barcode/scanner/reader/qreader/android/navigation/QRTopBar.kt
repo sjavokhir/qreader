@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTopAppBar
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AboutScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CustomizeScreenDestination
@@ -40,7 +39,6 @@ fun QRTopBar(
 @Composable
 private fun Destination.topBarTitle(): Int {
     return when (this) {
-        AboutScreenDestination -> R.string.about_us
         CreatorScreenDestination -> R.string.creator
         FaqScreenDestination -> R.string.faq
         FeedbackScreenDestination -> R.string.feedback
