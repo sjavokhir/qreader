@@ -7,5 +7,6 @@ sealed interface BizContentEvent {
     data class CompanyChanged(val company: String) : BizContentEvent
     data class PhoneChanged(val phone: String) : BizContentEvent
     data class EmailChanged(val email: String) : BizContentEvent
+    data class WebsiteChanged(val website: String) : BizContentEvent
     data class AddressChanged(val address: String) : BizContentEvent
 }

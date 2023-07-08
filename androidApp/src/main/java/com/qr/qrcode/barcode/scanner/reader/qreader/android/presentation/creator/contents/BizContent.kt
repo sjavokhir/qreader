@@ -14,7 +14,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.biz.BizContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.biz.BizContentViewModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.BusinessContentEvent
 
 @Composable
 fun BizContent(
@@ -24,7 +23,7 @@ fun BizContent(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.generateText)
+        onContent(state.isEnabled, state.encode())
     }
 
     Column(
@@ -49,21 +48,21 @@ fun BizContent(
         )
 
         QRTextField(
-            value = state.job,
-            onValueChange = {
-                viewModel.onEvent(BizContentEvent.JobChanged(it))
-            },
-            placeholder = stringResource(id = R.string.eg_placeholder_job),
-            hint = stringResource(id = R.string.job)
-        )
-
-        QRTextField(
             value = state.company,
             onValueChange = {
                 viewModel.onEvent(BizContentEvent.CompanyChanged(it))
             },
             placeholder = stringResource(id = R.string.eg_placeholder_company_name),
             hint = stringResource(id = R.string.company_name)
+        )
+
+        QRTextField(
+            value = state.job,
+            onValueChange = {
+                viewModel.onEvent(BizContentEvent.JobChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_job),
+            hint = stringResource(id = R.string.job)
         )
 
         QRTextField(
@@ -84,6 +83,15 @@ fun BizContent(
             placeholder = stringResource(id = R.string.eg_placeholder_email),
             hint = stringResource(id = R.string.email_address),
             keyboardType = KeyboardType.Email
+        )
+
+        QRTextField(
+            value = state.website,
+            onValueChange = {
+                viewModel.onEvent(BizContentEvent.WebsiteChanged(it))
+            },
+            placeholder = stringResource(id = R.string.eg_placeholder_website),
+            hint = stringResource(id = R.string.website)
         )
 
         QRTextField(

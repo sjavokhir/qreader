@@ -1,8 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDateTime
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToString
-import com.qr.qrcode.barcode.scanner.reader.qreader.shared.randomUUID
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -24,6 +22,7 @@ class EventContentViewModel : KMMViewModel() {
             is EventContentEvent.NameChanged -> onValueChanged(name = event.name)
             is EventContentEvent.LocationChanged -> onValueChanged(location = event.location)
             is EventContentEvent.DescriptionChanged -> onValueChanged(description = event.description)
+            is EventContentEvent.AllDayChecked -> onValueChanged(isAllDay = event.isChecked)
             is EventContentEvent.ShowPicker -> onShowPicker(event.isStart)
             is EventContentEvent.DateTimeChanged -> onDateTimeChanged(event.timestamp)
         }
@@ -38,22 +37,30 @@ class EventContentViewModel : KMMViewModel() {
             if (currentState.isStart) {
                 it.copy(
                     startTimestamp = timestamp,
-                    startDateTime = timestamp.timestampToDateTime().defaultDateTime
+                    startDateTime = if (it.isAllDay) {
+                        timestamp.timestampToDateTime().defaultDate
+                    } else {
+                        timestamp.timestampToDateTime().defaultDateTime
+                    }
                 )
             } else {
                 it.copy(
                     endTimestamp = timestamp,
-                    endDateTime = timestamp.timestampToDateTime().defaultDateTime
+                    endDateTime = if (it.isAllDay) {
+                        timestamp.timestampToDateTime().defaultDate
+                    } else {
+                        timestamp.timestampToDateTime().defaultDateTime
+                    }
                 )
             }
         }
-        stateData.update { it.copy(generateText = it.generateText()) }
     }
 
     private fun onValueChanged(
         name: String? = null,
         location: String? = null,
-        description: String? = null
+        description: String? = null,
+        isAllDay: Boolean? = null
     ) {
         stateData.update {
             val mName = name ?: it.name
@@ -62,21 +69,9 @@ class EventContentViewModel : KMMViewModel() {
                 name = mName,
                 location = location ?: it.location,
                 description = description ?: it.description,
+                isAllDay = isAllDay ?: it.isAllDay,
                 isEnabled = mName.isNotEmpty()
             )
-        }
-        stateData.update { it.copy(generateText = it.generateText()) }
-    }
-
-    private fun EventContentState.generateText(): String {
-        return buildString {
-            append("BEGIN:VEVENT\n")
-            append("SUMMARY:$name\n")
-            append("DTSTART:${startTimestamp.timestampToString()}\n")
-            append("DTEND:${endTimestamp.timestampToString()}\n")
-            append("LOCATION:$location\n")
-            append("DESCRIPTION:$description\n")
-            append("END:VEVENT")
         }
     }
 }

@@ -21,7 +21,7 @@ fun PhoneContent(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.generateText)
+        onContent(state.isEnabled, state.encode())
     }
 
     Column {

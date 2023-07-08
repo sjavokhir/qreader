@@ -5,9 +5,6 @@ import platform.CoreFoundation.CFUUIDCreate
 import platform.CoreFoundation.CFUUIDCreateString
 import platform.Foundation.CFBridgingRelease
 
-actual val developerUrl: String
-    get() = "https://play.google.com/store/apps/details?id=com.toptop.provider.android"
-
 actual val appUrl: String
     get() = "https://play.google.com/store/apps/details?id=com.toptop.provider.android"
 

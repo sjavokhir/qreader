@@ -40,17 +40,5 @@ class ContactContentViewModel : KMMViewModel() {
                 isEnabled = mName.isNotEmpty() && mPhone.isNotEmpty()
             )
         }
-        stateData.update { it.copy(generateText = it.generateText()) }
-    }
-
-    private fun ContactContentState.generateText(): String {
-        return buildString {
-            append("MECARD:")
-            append("N:$name;")
-            append("ADR:$address;")
-            append("TEL:$phone;")
-            append("EMAIL:$email;")
-            append(";")
-        }
     }
 }

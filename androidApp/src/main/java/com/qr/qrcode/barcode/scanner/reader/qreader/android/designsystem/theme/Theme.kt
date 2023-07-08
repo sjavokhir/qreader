@@ -124,7 +124,7 @@ fun QRTheme(
 
     CompositionLocalProvider(
         LocalBackgroundTheme provides backgroundTheme,
-        LocalSubscription provides hasSubscription,
+        LocalSubscription provides true,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

@@ -18,12 +18,14 @@ class SmsContentViewModel : KMMViewModel(), KoinComponent {
         when (event) {
             is SmsContentEvent.MessageChanged -> onValueChanged(message = event.message)
             is SmsContentEvent.PhoneChanged -> onValueChanged(phone = event.phone)
+            is SmsContentEvent.UseMMSChecked -> onValueChanged(useMMS = event.isChecked)
         }
     }
 
     private fun onValueChanged(
         phone: String? = null,
-        message: String? = null
+        message: String? = null,
+        useMMS: Boolean? = null
     ) {
         stateData.update {
             val mPhone = phone ?: it.phone
@@ -32,13 +34,9 @@ class SmsContentViewModel : KMMViewModel(), KoinComponent {
             it.copy(
                 phone = mPhone,
                 message = mMessage,
+                useMMS = useMMS ?: it.useMMS,
                 isEnabled = mMessage.isNotEmpty() && mPhone.isNotEmpty()
             )
         }
-        stateData.update { it.copy(generateText = it.generateText()) }
-    }
-
-    private fun SmsContentState.generateText(): String {
-        return "sms:$phone?body=$message"
     }
 }

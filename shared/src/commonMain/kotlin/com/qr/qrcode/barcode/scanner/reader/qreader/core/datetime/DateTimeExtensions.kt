@@ -21,9 +21,11 @@ fun Long?.actualDateMillis(hour: Int, minute: Int): Long {
     return this + hour * millisecondsPerHour + minute * millisecondsPerMinute
 }
 
-fun Long.timestampToString(): String {
+fun Long.timestampToString(isAllDay: Boolean): String {
     val model = Instant.fromEpochMilliseconds(this).toDateTimeModel()
-    return "${model.year.az()}${model.month.az()}${model.dayOfMonth.az()}T${model.hour.az()}${model.minute}${model.second}"
+    return "${model.year.az()}${model.month.az()}${model.dayOfMonth.az()}" + if (!isAllDay) {
+        "T${model.hour.az()}${model.minute.az()}${model.second.az()}"
+    } else ""
 }
 
 fun Long.timestampToDateTime(): DateTimeModel {

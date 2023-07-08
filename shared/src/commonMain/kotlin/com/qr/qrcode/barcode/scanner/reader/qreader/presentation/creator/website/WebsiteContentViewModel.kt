@@ -27,8 +27,5 @@ class WebsiteContentViewModel : KMMViewModel() {
                 isEnabled = website.isUrlValid()
             )
         }
-        stateData.update { it.copy(generateText = it.generateText()) }
     }
-
-    private fun WebsiteContentState.generateText(): String = website
 }

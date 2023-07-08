@@ -1,6 +1,7 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -67,6 +68,7 @@ fun CreatorScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun GenerateContentsContent(
     hasSubscription: Boolean,
@@ -102,17 +104,17 @@ private fun GenerateContentsContent(
                                 .padding(bottom = 8.dp)
                         )
                     }
-                    itemsIndexed(content.value) { index, type ->
+                    itemsIndexed(content.value) { index, mode ->
                         GenerateContentItem(
                             context = context,
-                            type = type,
+                            mode = mode,
                             hasSubscription = hasSubscription,
                             isLastItem = index == content.value.lastIndex,
                             onClick = {
-                                if (!hasSubscription && type.isPremium) {
+                                if (!hasSubscription && mode.isPremium) {
                                     onNavigate(PremiumScreenDestination)
                                 } else {
-                                    onNavigate(AddContentScreenDestination(type = type))
+                                    onNavigate(AddContentScreenDestination(mode = mode))
                                 }
                             }
                         )
@@ -126,7 +128,7 @@ private fun GenerateContentsContent(
 @Composable
 private fun GenerateContentItem(
     context: Context,
-    type: GenerateMode,
+    mode: GenerateMode,
     hasSubscription: Boolean,
     isLastItem: Boolean,
     onClick: () -> Unit
@@ -143,24 +145,24 @@ private fun GenerateContentItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            context.drawableId(type.icon)?.let { icon ->
+            context.drawableId(mode.icon)?.let { icon ->
                 Image(
                     painter = painterResource(id = icon),
-                    contentDescription = type.title,
+                    contentDescription = mode.title,
                     modifier = Modifier
                         .size(42.dp)
                         .clip(MaterialTheme.shapes.medium)
                 )
 
                 Text(
-                    text = type.title,
+                    text = mode.title,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                if (!hasSubscription && type.isPremium) {
+                if (!hasSubscription && mode.isPremium) {
                     Text(
                         text = stringResource(id = R.string.premium),
                         style = MaterialTheme.typography.bodyMedium,

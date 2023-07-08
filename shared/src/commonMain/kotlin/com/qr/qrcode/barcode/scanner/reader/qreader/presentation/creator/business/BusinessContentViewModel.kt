@@ -47,20 +47,5 @@ class BusinessContentViewModel : KMMViewModel() {
                 isEnabled = (mName.isNotEmpty() || mIndustry.isNotEmpty()) && mPhone.isNotEmpty()
             )
         }
-        stateData.update { it.copy(generateText = it.generateText()) }
-    }
-
-    private fun BusinessContentState.generateText(): String {
-        return buildString {
-            append("BEGIN:VCARD\n")
-            append("VERSION:3.0\n")
-            append("N:$name\n")
-            append("ORG:$industry\n")
-            append("TEL:$phone\n")
-            append("URL:$website\n")
-            append("EMAIL:$email\n")
-            append("ADR:$address\n")
-            append("END:VCARD")
-        }
     }
 }

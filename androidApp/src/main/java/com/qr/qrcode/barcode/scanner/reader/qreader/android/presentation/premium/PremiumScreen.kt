@@ -54,6 +54,7 @@ fun PremiumScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
     val isPurchaseAcknowledged by viewModel.isPurchaseAcknowledged.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
     LaunchedEffect(isPurchaseAcknowledged) {
         if (isPurchaseAcknowledged) {
@@ -62,11 +63,24 @@ fun PremiumScreen(
     }
 
     QRBackground {
-        PremiumScreenContent(
-            state = state,
-            onEvent = viewModel::onEvent,
-            onNavigateUp = navigator::navigateUp
-        )
+        if (isLoading) {
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(MaterialTheme.shapes.large),
+                    strokeCap = StrokeCap.Round
+                )
+            }
+        } else {
+            PremiumScreenContent(
+                state = state,
+                onEvent = viewModel::onEvent,
+                onNavigateUp = navigator::navigateUp
+            )
+        }
     }
 }
 

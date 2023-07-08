@@ -14,7 +14,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LocationPickerScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event.EventContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.location.LocationContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.location.LocationContentViewModel
 import com.ramcosta.composedestinations.result.NavResult
@@ -40,7 +39,7 @@ fun LocationContent(
     }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.generateText)
+        onContent(state.isEnabled, state.encode())
     }
 
     Column(

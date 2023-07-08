@@ -31,6 +31,9 @@ class BillingClientWrapper(
     private val isPurchaseAcknowledgedData = MutableStateFlow(false)
     val isPurchaseAcknowledged = isPurchaseAcknowledgedData.asStateFlow()
 
+    private val isLoadingData = MutableStateFlow(false)
+    val isLoading = isLoadingData.asStateFlow()
+
     private val billingClient = BillingClient.newBuilder(context)
         .setListener(this)
         .enablePendingPurchases()
@@ -65,12 +68,16 @@ class BillingClientWrapper(
         billingResult: BillingResult,
         purchases: List<Purchase>?
     ) {
+        isLoadingData.value = true
+
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK
             && !purchases.isNullOrEmpty()
         ) {
             purchases.forEach {
                 acknowledgePurchases(it)
             }
+        } else {
+            isLoadingData.value = false
         }
     }
 
@@ -133,6 +140,8 @@ class BillingClientWrapper(
             billingClient.acknowledgePurchase(params) { _ ->
                 isPurchaseAcknowledgedData.value = true
             }
+        } else {
+            isLoadingData.value = false
         }
     }
 

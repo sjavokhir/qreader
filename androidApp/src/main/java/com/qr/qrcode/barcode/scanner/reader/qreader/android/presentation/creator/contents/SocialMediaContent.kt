@@ -19,17 +19,17 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialM
 @Composable
 fun SocialMediaContent(
     viewModel: SocialMediaContentViewModel = viewModel(),
-    type: GenerateMode,
+    mode: GenerateMode,
     onContent: (Boolean, String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(type) {
-        viewModel.onEvent(SocialMediaContentEvent.SetType(type))
+    LaunchedEffect(mode) {
+        viewModel.onEvent(SocialMediaContentEvent.SetGenerateMode(mode))
     }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.generateText)
+        onContent(state.isEnabled, state.encode())
     }
 
     Column(
@@ -40,9 +40,9 @@ fun SocialMediaContent(
             onValueChange = {
                 viewModel.onEvent(SocialMediaContentEvent.UsernameChanged(it))
             },
-            placeholder = type.inputPlaceholder,
-            hint = type.inputHint,
-            keyboardType = if (type == GenerateMode.WhatsApp) {
+            placeholder = mode.inputPlaceholder,
+            hint = mode.inputHint,
+            keyboardType = if (mode == GenerateMode.WhatsApp) {
                 KeyboardType.Phone
             } else {
                 KeyboardType.Text

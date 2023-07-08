@@ -58,7 +58,7 @@ import com.ramcosta.composedestinations.spec.Direction
 @Destination
 @Composable
 fun AddContentScreen(
-    type: GenerateMode,
+    mode: GenerateMode,
     navigator: DestinationsNavigator,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
@@ -81,17 +81,17 @@ fun AddContentScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(20.dp)
                     ) {
-                        context.drawableId(type.icon)?.let { icon ->
+                        context.drawableId(mode.icon)?.let { icon ->
                             Image(
                                 painter = painterResource(id = icon),
-                                contentDescription = type.title,
+                                contentDescription = mode.title,
                                 modifier = Modifier
                                     .size(44.dp)
                                     .clip(MaterialTheme.shapes.medium)
                             )
 
                             Text(
-                                text = type.title,
+                                text = mode.title,
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -100,7 +100,7 @@ fun AddContentScreen(
                 }
                 item {
                     GenerateContent(
-                        type = type,
+                        mode = mode,
                         onContent = { isReady, text ->
                             isEnabled = isReady
                             generateText = text
@@ -141,13 +141,13 @@ fun AddContentScreen(
 
 @Composable
 private fun GenerateContent(
-    type: GenerateMode,
+    mode: GenerateMode,
     onContent: (Boolean, String) -> Unit,
     onNavigate: (Direction) -> Unit,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
 ) {
-    when (type) {
+    when (mode) {
         GenerateMode.Text -> TextContent(onContent = onContent)
         GenerateMode.Website -> WebsiteContent(onContent = onContent)
         GenerateMode.Sms -> SmsContent(onContent = onContent)
@@ -171,7 +171,7 @@ private fun GenerateContent(
 
         else -> {
             SocialMediaContent(
-                type = type,
+                mode = mode,
                 onContent = onContent
             )
         }

@@ -21,6 +21,7 @@ class PremiumViewModel(application: Application) : AndroidViewModel(application)
 
     val hasAcknowledged = billingClient.hasAcknowledged
     val isPurchaseAcknowledged = billingClient.isPurchaseAcknowledged
+    val isLoading = billingClient.isLoading
 
     private val currentState: PremiumState
         get() = state.value

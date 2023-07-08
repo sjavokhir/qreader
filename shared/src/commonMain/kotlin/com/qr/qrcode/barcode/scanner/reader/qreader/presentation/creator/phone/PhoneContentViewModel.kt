@@ -26,8 +26,5 @@ class PhoneContentViewModel : KMMViewModel() {
                 isEnabled = phone.isNotEmpty()
             )
         }
-        stateData.update { it.copy(generateText = it.generateText()) }
     }
-
-    private fun PhoneContentState.generateText(): String = "tel:$phone"
 }

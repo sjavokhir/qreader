@@ -2,12 +2,20 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creato
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -43,7 +51,7 @@ fun EventContent(
     }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.generateText)
+        onContent(state.isEnabled, state.encode())
     }
 
     Column(
@@ -58,11 +66,47 @@ fun EventContent(
             hint = stringResource(id = R.string.event_name)
         )
 
+        Row(
+            modifier = Modifier,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.all_day_event),
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Switch(
+                checked = state.isAllDay,
+                onCheckedChange = {
+                    viewModel.onEvent(EventContentEvent.AllDayChecked(it))
+                },
+                modifier = Modifier
+                    .width(39.dp)
+                    .height(24.dp)
+                    .scale(.85f)
+            )
+        }
+
         QRTextField(
             value = state.startDateTime,
             onValueChange = {},
-            placeholder = stringResource(id = R.string.eg_placeholder_date_time),
-            hint = stringResource(id = R.string.start_date_time),
+            placeholder = stringResource(
+                id = if (state.isAllDay) {
+                    R.string.eg_placeholder_date
+                } else {
+                    R.string.eg_placeholder_date_time
+                }
+            ),
+            hint = stringResource(
+                id = if (state.isAllDay) {
+                    R.string.start_date
+                } else {
+                    R.string.start_date_time
+                }
+            ),
             trailingIcon = {
                 QRIcon(
                     painter = painterResource(id = R.drawable.ic_today),
@@ -82,8 +126,20 @@ fun EventContent(
         QRTextField(
             value = state.endDateTime,
             onValueChange = {},
-            placeholder = stringResource(id = R.string.eg_placeholder_date_time),
-            hint = stringResource(id = R.string.end_date_time),
+            placeholder = stringResource(
+                id = if (state.isAllDay) {
+                    R.string.eg_placeholder_date
+                } else {
+                    R.string.eg_placeholder_date_time
+                }
+            ),
+            hint = stringResource(
+                id = if (state.isAllDay) {
+                    R.string.end_date
+                } else {
+                    R.string.end_date_time
+                }
+            ),
             trailingIcon = {
                 QRIcon(
                     painter = painterResource(id = R.drawable.ic_today),

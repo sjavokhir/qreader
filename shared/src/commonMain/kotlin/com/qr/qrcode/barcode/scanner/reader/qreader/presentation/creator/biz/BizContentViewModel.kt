@@ -21,6 +21,7 @@ class BizContentViewModel : KMMViewModel() {
             is BizContentEvent.CompanyChanged -> onValueChanged(company = event.company)
             is BizContentEvent.PhoneChanged -> onValueChanged(phone = event.phone)
             is BizContentEvent.EmailChanged -> onValueChanged(email = event.email)
+            is BizContentEvent.WebsiteChanged -> onValueChanged(website = event.website)
             is BizContentEvent.AddressChanged -> onValueChanged(address = event.address)
         }
     }
@@ -32,43 +33,25 @@ class BizContentViewModel : KMMViewModel() {
         company: String? = null,
         phone: String? = null,
         email: String? = null,
+        website: String? = null,
         address: String? = null
     ) {
         stateData.update {
             val mFirstName = firstName ?: it.firstName
             val mLastName = lastName ?: it.lastName
-            val mJob = job ?: it.job
             val mPhone = phone ?: it.phone
-            val mEmail = email ?: it.email
 
             it.copy(
                 firstName = mFirstName,
                 lastName = mLastName,
-                job = mJob,
                 company = company ?: it.company,
+                job = job ?: it.job,
                 phone = mPhone,
-                email = mEmail,
+                email = email ?: it.email,
+                website = website ?: it.website,
                 address = address ?: it.address,
-                isEnabled = (mFirstName.isNotEmpty() || mLastName.isNotEmpty()) &&
-                        mJob.isNotEmpty() &&
-                        mPhone.isNotEmpty() &&
-                        mEmail.isNotEmpty()
+                isEnabled = (mFirstName.isNotEmpty() || mLastName.isNotEmpty()) && mPhone.isNotEmpty()
             )
-        }
-        stateData.update { it.copy(generateText = it.generateText()) }
-    }
-
-    private fun BizContentState.generateText(): String {
-        return buildString {
-            append("BEGIN:VCARD\n")
-            append("VERSION:3.0\n")
-            append("N:$firstName\n")
-            append("ORG:$job\n")
-            append("TEL:$phone\n")
-            append("URL:$company\n")
-            append("EMAIL:$email\n")
-            append("ADR:$address\n")
-            append("END:VCARD")
         }
     }
 }
