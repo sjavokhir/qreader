@@ -2,7 +2,6 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,6 +34,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalThemeMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.data.Colors
 
 /**
@@ -45,12 +45,13 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.
 @Composable
 fun ColorPickerDialog(
     onDismissRequest: () -> Unit,
-    darkTheme: Boolean = isSystemInDarkTheme(),
     properties: DialogProperties = DialogProperties(),
     onPickedColor: (Color) -> Unit
 ) {
+    val darkMode = LocalThemeMode.current
+
     var color by remember {
-        mutableStateOf(if (darkTheme) Color.White else Color.Black)
+        mutableStateOf(if (darkMode) Color.White else Color.Black)
     }
 
     Dialog(
@@ -80,7 +81,7 @@ fun ColorPickerDialog(
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     ColorPicker(
-                        darkTheme = darkTheme,
+                        darkMode = darkMode,
                         modifier = Modifier.weight(1f),
                         onPickedColor = {
                             color = it

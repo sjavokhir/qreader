@@ -86,6 +86,7 @@ private val LightBackgroundTheme = BackgroundTheme(color = md_theme_light_backgr
 private val DarkBackgroundTheme = BackgroundTheme(color = md_theme_dark_background)
 
 val LocalSubscription = staticCompositionLocalOf { false }
+val LocalThemeMode = staticCompositionLocalOf { false }
 
 @Composable
 fun QRTheme(
@@ -125,6 +126,7 @@ fun QRTheme(
     CompositionLocalProvider(
         LocalBackgroundTheme provides backgroundTheme,
         LocalSubscription provides true,
+        LocalThemeMode provides darkMode,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

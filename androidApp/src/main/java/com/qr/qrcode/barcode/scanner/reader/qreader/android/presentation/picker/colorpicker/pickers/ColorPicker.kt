@@ -27,7 +27,7 @@ import kotlin.math.roundToInt
 @Composable
 fun ColorPicker(
     modifier: Modifier = Modifier,
-    darkTheme: Boolean,
+    darkMode: Boolean,
     showBrightnessBar: Boolean = true,
     showAlphaBar: Boolean = false,
     onPickedColor: (Color) -> Unit
@@ -35,17 +35,17 @@ fun ColorPicker(
     var brightness by remember { mutableFloatStateOf(0f) }
     var alpha by remember { mutableFloatStateOf(1f) }
     var rangeColor by remember {
-        mutableStateOf(if (darkTheme) Color.White else Color.Black)
+        mutableStateOf(if (darkMode) Color.White else Color.Black)
     }
     var color by remember {
-        mutableStateOf(if (darkTheme) Color.White else Color.Black)
+        mutableStateOf(if (darkMode) Color.White else Color.Black)
     }
 
     LaunchedEffect(rangeColor, alpha, brightness) {
         color = Color(
-            rangeColor.red().moveColorTo(darkTheme, brightness),
-            rangeColor.green().moveColorTo(darkTheme, brightness),
-            rangeColor.blue().moveColorTo(darkTheme, brightness),
+            rangeColor.red().moveColorTo(darkMode, brightness),
+            rangeColor.green().moveColorTo(darkMode, brightness),
+            rangeColor.blue().moveColorTo(darkMode, brightness),
             alpha = (255 * alpha).roundToInt()
         )
     }
@@ -111,7 +111,7 @@ fun ColorPicker(
 
                 ColorSlideBar(
                     colors = listOf(
-                        if (darkTheme) Color.White else Color.Black,
+                        if (darkMode) Color.White else Color.Black,
                         rangeColor
                     )
                 ) {
