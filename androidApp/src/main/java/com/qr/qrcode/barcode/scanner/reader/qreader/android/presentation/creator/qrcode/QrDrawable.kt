@@ -32,7 +32,7 @@ fun rememberQrDrawable(
 
     val qrOptions = remember(content, model, ownLogo) {
         createQrVectorOptions {
-            padding = .15f
+            padding = .12f
 
             background {
                 color = QrVectorColor.Solid(Color.parseColor("#${model.patternBackgroundHex}"))
@@ -42,16 +42,16 @@ fun rememberQrDrawable(
                 context.drawableId(model.selectedLogo)?.let {
                     logo {
                         drawable = ContextCompat.getDrawable(context, it)
-                        size = .25f
-                        padding = QrVectorLogoPadding.Natural(.2f)
+                        size = .2f
+                        padding = QrVectorLogoPadding.Natural(.1f)
                         shape = QrVectorLogoShape.Circle
                     }
                 }
             } else if (ownLogo != null) {
                 logo {
                     drawable = ownLogo
-                    size = .25f
-                    padding = QrVectorLogoPadding.Natural(.2f)
+                    size = .2f
+                    padding = QrVectorLogoPadding.Natural(.1f)
                     shape = QrVectorLogoShape.Default
                 }
             }
@@ -68,7 +68,7 @@ fun rememberQrDrawable(
                     QRPatternMode.Rounded -> QrVectorPixelShape.RoundCorners(.25f)
                     QRPatternMode.ExtraRounded -> QrVectorPixelShape.RoundCorners(.5f)
                     QRPatternMode.Circle -> QrVectorPixelShape.Circle()
-                    QRPatternMode.CirclePadding -> QrVectorPixelShape.Circle(.75f)
+                    QRPatternMode.CirclePadding -> QrVectorPixelShape.Circle(.85f)
                     QRPatternMode.Horizontal -> QrVectorPixelShape.RoundCornersHorizontal()
                     QRPatternMode.Vertical -> QrVectorPixelShape.RoundCornersVertical()
                     QRPatternMode.Rhombus -> QrVectorPixelShape.Rhombus()
@@ -96,7 +96,7 @@ fun rememberQrDrawable(
                     )
 
                     QRCornerMode.DotsPadding -> QrVectorFrameShape.AsPixelShape(
-                        QrVectorPixelShape.Circle(.75f)
+                        QrVectorPixelShape.Circle(.85f)
                     )
 
                     QRCornerMode.Rhombus -> QrVectorFrameShape.AsPixelShape(
@@ -124,7 +124,7 @@ fun rememberQrDrawable(
                     )
 
                     QRDotMode.DotsPadding -> QrVectorBallShape.AsPixelShape(
-                        QrVectorPixelShape.Circle(.75f)
+                        QrVectorPixelShape.Circle(.85f)
                     )
 
                     QRDotMode.Horizontal -> QrVectorBallShape.AsPixelShape(
