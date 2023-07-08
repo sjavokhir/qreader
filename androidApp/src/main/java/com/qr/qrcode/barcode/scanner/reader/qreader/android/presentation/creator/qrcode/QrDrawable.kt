@@ -44,7 +44,7 @@ fun rememberQrDrawable(
                         drawable = ContextCompat.getDrawable(context, it)
                         size = .25f
                         padding = QrVectorLogoPadding.Natural(.2f)
-                        shape = QrVectorLogoShape.Default
+                        shape = QrVectorLogoShape.Circle
                     }
                 }
             } else if (ownLogo != null) {
@@ -64,22 +64,76 @@ fun rememberQrDrawable(
 
             shapes {
                 darkPixel = when (model.selectedPattern) {
-                    QRPatternMode.Square -> QrVectorPixelShape.RoundCorners(0f)
+                    QRPatternMode.Square -> QrVectorPixelShape.Default
                     QRPatternMode.Rounded -> QrVectorPixelShape.RoundCorners(.25f)
-                    QRPatternMode.Circle -> QrVectorPixelShape.Circle()
-                    QRPatternMode.Classy -> QrVectorPixelShape.Rhombus()
-                    QRPatternMode.ClassyRounded -> QrVectorPixelShape.Star
                     QRPatternMode.ExtraRounded -> QrVectorPixelShape.RoundCorners(.5f)
+                    QRPatternMode.Circle -> QrVectorPixelShape.Circle()
+                    QRPatternMode.CirclePadding -> QrVectorPixelShape.Circle(.75f)
+                    QRPatternMode.Horizontal -> QrVectorPixelShape.RoundCornersHorizontal()
+                    QRPatternMode.Vertical -> QrVectorPixelShape.RoundCornersVertical()
+                    QRPatternMode.Rhombus -> QrVectorPixelShape.Rhombus()
+                    QRPatternMode.Star -> QrVectorPixelShape.Star
+                    QRPatternMode.Classy -> QrVectorPixelShape.Classy(.25f)
+                    QRPatternMode.ClassyRounded -> QrVectorPixelShape.Classy(.5f)
                 }
                 frame = when (model.selectedCorner) {
-                    QRCornerMode.Square -> QrVectorFrameShape.RoundCorners(0f)
-                    QRCornerMode.Circle -> QrVectorFrameShape.Circle()
+                    QRCornerMode.Square -> QrVectorFrameShape.Default
                     QRCornerMode.Rounded -> QrVectorFrameShape.RoundCorners(.25f)
+                    QRCornerMode.Circle -> QrVectorFrameShape.Circle()
+                    QRCornerMode.Two -> QrVectorFrameShape.RoundCorners(
+                        corner = .3f,
+                        topLeft = false,
+                        bottomRight = false
+                    )
+
+                    QRCornerMode.Three -> QrVectorFrameShape.RoundCorners(
+                        corner = .3f,
+                        bottomRight = false
+                    )
+
+                    QRCornerMode.Dots -> QrVectorFrameShape.AsPixelShape(
+                        QrVectorPixelShape.Circle()
+                    )
+
+                    QRCornerMode.DotsPadding -> QrVectorFrameShape.AsPixelShape(
+                        QrVectorPixelShape.Circle(.75f)
+                    )
+
+                    QRCornerMode.Rhombus -> QrVectorFrameShape.AsPixelShape(
+                        QrVectorPixelShape.Rhombus()
+                    )
                 }
                 ball = when (model.selectedDot) {
-                    QRDotMode.Square -> QrVectorBallShape.RoundCorners(0f)
-                    QRDotMode.Circle -> QrVectorBallShape.Circle(1f)
+                    QRDotMode.Square -> QrVectorBallShape.Default
                     QRDotMode.Rounded -> QrVectorBallShape.RoundCorners(.25f)
+                    QRDotMode.Circle -> QrVectorBallShape.Circle()
+                    QRDotMode.Rhombus -> QrVectorBallShape.Rhombus()
+                    QRDotMode.CornerTwo -> QrVectorBallShape.RoundCorners(
+                        radius = .25f,
+                        topLeft = false,
+                        bottomRight = false
+                    )
+
+                    QRDotMode.CornerThree -> QrVectorBallShape.RoundCorners(
+                        radius = .25f,
+                        bottomRight = false
+                    )
+
+                    QRDotMode.Dots -> QrVectorBallShape.AsPixelShape(
+                        QrVectorPixelShape.Circle()
+                    )
+
+                    QRDotMode.DotsPadding -> QrVectorBallShape.AsPixelShape(
+                        QrVectorPixelShape.Circle(.75f)
+                    )
+
+                    QRDotMode.Horizontal -> QrVectorBallShape.AsPixelShape(
+                        QrVectorPixelShape.RoundCornersHorizontal()
+                    )
+
+                    QRDotMode.Vertical -> QrVectorBallShape.AsPixelShape(
+                        QrVectorPixelShape.RoundCornersVertical()
+                    )
                 }
             }
         }

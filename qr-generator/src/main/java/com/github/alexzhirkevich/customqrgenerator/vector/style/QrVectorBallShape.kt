@@ -12,8 +12,6 @@ import com.google.zxing.qrcode.encoder.ByteMatrix
  * */
 interface QrVectorBallShape : QrVectorShapeModifier {
 
-
-    
     object Default : QrVectorBallShape, QrVectorShapeModifier by DefaultVectorShape
 
     /**
@@ -21,42 +19,39 @@ interface QrVectorBallShape : QrVectorShapeModifier {
      *
      * [AsPixelShape] with the shape of dark pixels will be used.
      * */
-    
     object AsDarkPixels : QrVectorBallShape {
         override fun createPath(size: Float, neighbors: Neighbors): Path {
             return Path()
         }
     }
 
-    
     data class AsPixelShape(
         val pixelShape: QrVectorPixelShape
     ) : QrVectorBallShape {
 
         override fun createPath(size: Float, neighbors: Neighbors): Path = Path().apply {
-
-            val matrix =  ByteMatrix(3,3).apply { clear(1) }
+            val matrix = ByteMatrix(3, 3)
+                .apply { clear(1) }
                 .toQrMatrix()
-            repeat(3){ i ->
-                repeat(3){ j ->
+
+            repeat(3) { i ->
+                repeat(3) { j ->
                     addPath(
                         pixelShape.createPath(
                             size / 3,
-                            matrix.neighbors(i,j)
+                            matrix.neighbors(i, j)
                         ),
-                        size/3 * i, size/3 * j
+                        size / 3 * i, size / 3 * j
                     )
                 }
             }
         }
     }
 
-    
     data class Circle(
         @FloatRange(from = 0.0, to = 1.0) val size: Float = 1f
     ) : QrVectorBallShape, QrVectorShapeModifier by CircleVectorShape(size)
 
-    
     data class RoundCorners(
         @FloatRange(from = 0.0, to = .5) val radius: Float,
         val topLeft: Boolean = true,
@@ -72,8 +67,7 @@ interface QrVectorBallShape : QrVectorShapeModifier {
         bottomRight = bottomRight
     )
 
-    
     data class Rhombus(
-        @FloatRange(from = 0.0, to = 1.0) private val scale : Float = 1f
+        @FloatRange(from = 0.0, to = 1.0) private val scale: Float = 1f
     ) : QrVectorBallShape, QrVectorShapeModifier by RhombusVectorShape(scale)
 }

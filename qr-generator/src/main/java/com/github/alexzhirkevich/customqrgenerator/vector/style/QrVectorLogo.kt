@@ -8,19 +8,18 @@ import com.github.alexzhirkevich.customqrgenerator.style.EmptyDrawable
 interface IQRVectorLogo {
     val drawable: Drawable?
     val size: Float
-    val padding : QrVectorLogoPadding
+    val padding: QrVectorLogoPadding
     val shape: QrVectorLogoShape
     val scale: BitmapScale
-    val backgroundColor : QrVectorColor
+    val backgroundColor: QrVectorColor
 }
 
 /**
  * Logo of the QR code
  * */
-
 data class QrVectorLogo(
     override val drawable: Drawable? = null,
-    @FloatRange(from = 0.0, to = 1/3.0)
+    @FloatRange(from = 0.0, to = 1 / 3.0)
     override val size: Float = 0.2f,
     override val padding: QrVectorLogoPadding = QrVectorLogoPadding.Empty,
     override val shape: QrVectorLogoShape = QrVectorLogoShape.Default,
@@ -31,7 +30,8 @@ data class QrVectorLogo(
     class Builder : IQRVectorLogo {
 
         override var drawable: Drawable = EmptyDrawable
-        @FloatRange(from = 0.0, to = 1/3.0)
+
+        @FloatRange(from = 0.0, to = 1 / 3.0)
         override var size: Float = 0.2f
         override var padding: QrVectorLogoPadding = QrVectorLogoPadding.Empty
         override var shape: QrVectorLogoShape = QrVectorLogoShape.Default
@@ -62,7 +62,7 @@ data class QrVectorLogo(
             this.backgroundColor = color
         }
 
-        fun build() : QrVectorLogo = QrVectorLogo(
+        fun build(): QrVectorLogo = QrVectorLogo(
             drawable = drawable,
             size = size,
             padding = padding,
@@ -71,6 +71,5 @@ data class QrVectorLogo(
             backgroundColor = backgroundColor
         )
     }
-
 }
 

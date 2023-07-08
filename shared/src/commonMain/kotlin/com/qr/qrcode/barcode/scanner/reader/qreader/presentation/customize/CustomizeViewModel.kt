@@ -37,11 +37,22 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 
     private fun getAllStyles() {
         val patterns = listOf(
-            QRPatternMode.Square, QRPatternMode.Rounded, QRPatternMode.Circle,
-            QRPatternMode.Classy, QRPatternMode.ClassyRounded, QRPatternMode.ExtraRounded
+            QRPatternMode.Square, QRPatternMode.Rounded, QRPatternMode.ExtraRounded,
+            QRPatternMode.Circle, QRPatternMode.CirclePadding, QRPatternMode.Horizontal,
+            QRPatternMode.Vertical, QRPatternMode.Rhombus, QRPatternMode.Star,
+            QRPatternMode.Classy, QRPatternMode.ClassyRounded,
         )
-        val corners = listOf(QRCornerMode.Square, QRCornerMode.Circle, QRCornerMode.Rounded)
-        val dots = listOf(QRDotMode.Square, QRDotMode.Circle, QRDotMode.Rounded)
+        val corners = listOf(
+            QRCornerMode.Square, QRCornerMode.Rounded, QRCornerMode.Circle,
+            QRCornerMode.Two, QRCornerMode.Three, QRCornerMode.Dots,
+            QRCornerMode.DotsPadding, QRCornerMode.Rhombus
+        )
+        val dots = listOf(
+            QRDotMode.Square, QRDotMode.Rounded, QRDotMode.Circle,
+            QRDotMode.Rhombus, QRDotMode.CornerTwo, QRDotMode.CornerThree,
+            QRDotMode.Dots, QRDotMode.DotsPadding, QRDotMode.Horizontal,
+            QRDotMode.Vertical
+        )
 
         stateData.update {
             it.copy(
@@ -144,6 +155,7 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 private val logos: List<String>
     get() = listOf(
         "ic_logo_behance",
+        "ic_logo_bitcoin",
         "ic_logo_discord",
         "ic_logo_dribbble",
         "ic_logo_facebook",
@@ -165,5 +177,9 @@ private val logos: List<String>
         "ic_logo_twitch",
         "ic_logo_twitter",
         "ic_logo_whatsapp",
-        "ic_logo_youtube"
+        "ic_logo_youtube",
+        "ic_logo_play_google",
+        "ic_logo_app_store",
+        "ic_logo_share",
+        "ic_logo_wifi"
     )

@@ -4,7 +4,6 @@ package com.github.alexzhirkevich.customqrgenerator
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 
-
 /**
  * QR code technology allows you to read encoded information even if
  * part of the QR code image is damaged. It also allows to have logo

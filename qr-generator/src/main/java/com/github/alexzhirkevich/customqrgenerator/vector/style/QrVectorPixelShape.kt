@@ -7,35 +7,39 @@ import androidx.annotation.FloatRange
  * */
 interface QrVectorPixelShape : QrVectorShapeModifier {
 
-    
     object Default : QrVectorPixelShape, QrVectorShapeModifier by DefaultVectorShape
 
-    
     data class Circle(
         @FloatRange(from = 0.0, to = 1.0) val size: Float = 1f
     ) : QrVectorPixelShape, QrVectorShapeModifier by CircleVectorShape(size)
 
-    
     data class RoundCorners(
-        @FloatRange(from = 0.0, to = 0.5) val radius : Float
-    ) : QrVectorPixelShape, QrVectorShapeModifier by RoundCornersVectorShape(radius,true)
+        @FloatRange(from = 0.0, to = 0.5) val radius: Float
+    ) : QrVectorPixelShape, QrVectorShapeModifier by RoundCornersVectorShape(
+        cornerRadius = radius,
+        withNeighbors = true
+    )
 
-    
     data class Rhombus(
-        @FloatRange(from = 0.0, to = 1.0) private val scale : Float = 1f
-    ): QrVectorPixelShape, QrVectorShapeModifier by RhombusVectorShape(scale)
+        @FloatRange(from = 0.0, to = 1.0) private val scale: Float = 1f
+    ) : QrVectorPixelShape, QrVectorShapeModifier by RhombusVectorShape(scale)
 
-    
     object Star : QrVectorPixelShape, QrVectorShapeModifier by StarVectorShape
 
-
     data class RoundCornersVertical(
-        @FloatRange(from = 0.0, to = 1.0) private val radius : Float = 1f
-    ): QrVectorPixelShape, QrVectorShapeModifier by RoundCornersVerticalVectorShape(radius)
+        @FloatRange(from = 0.0, to = 1.0) private val radius: Float = 1f
+    ) : QrVectorPixelShape, QrVectorShapeModifier by RoundCornersVerticalVectorShape(radius)
 
-    
     data class RoundCornersHorizontal(
-        @FloatRange(from = 0.0, to = 1.0) private val radius : Float = 1f
-    ): QrVectorPixelShape, QrVectorShapeModifier by RoundCornersHorizontalVectorShape(radius)
+        @FloatRange(from = 0.0, to = 1.0) private val radius: Float = 1f
+    ) : QrVectorPixelShape, QrVectorShapeModifier by RoundCornersHorizontalVectorShape(radius)
 
+    data class Classy(
+        @FloatRange(from = 0.0, to = 0.5) val radius: Float
+    ) : QrVectorPixelShape, QrVectorShapeModifier by RoundCornersVectorShape(
+        cornerRadius = radius,
+        withNeighbors = true,
+        topRight = false,
+        bottomLeft = false
+    )
 }

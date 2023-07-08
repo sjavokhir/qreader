@@ -10,18 +10,17 @@ import com.github.alexzhirkevich.customqrgenerator.style.*
 /**
  * @param padding padding of the QR code relative to [width] and [height].
  * */
-
 @Deprecated("Use QrCodeDrawable with QrVectorOptions instead")
 data class QrOptions(
-    @IntRange(from = 0) val width : Int,
-    @IntRange(from = 0) val height : Int,
-    @FloatRange(from = .0, to = .5) val padding : Float,
+    @IntRange(from = 0) val width: Int,
+    @IntRange(from = 0) val height: Int,
+    @FloatRange(from = .0, to = .5) val padding: Float,
     val offset: QrOffset,
-    val colors : QrColors,
+    val colors: QrColors,
     val logo: QrLogo,
     val background: QrBackground,
     val shapes: QrElementsShapes,
-    val codeShape : QrShape,
+    val codeShape: QrShape,
     val errorCorrectionLevel: QrErrorCorrectionLevel
 ) {
 
@@ -90,8 +89,8 @@ inline fun createQrOptions(
     width: Int,
     height: Int = width,
     padding: Float = .125f,
-    crossinline build : QrOptionsBuilderScope.() -> Unit
-) : QrOptions = with(QrOptions.Builder(width, height).padding(padding)) {
+    crossinline build: QrOptionsBuilderScope.() -> Unit
+): QrOptions = with(QrOptions.Builder(width, height).padding(padding)) {
     QrOptionsBuilderScope(this).apply(build)
     build()
 }

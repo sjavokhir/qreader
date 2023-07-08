@@ -2,12 +2,7 @@
 
 package com.github.alexzhirkevich.customqrgenerator
 
-import android.content.Context
 import android.graphics.Bitmap
-import com.github.alexzhirkevich.customqrgenerator.style.QrBackground
-import com.github.alexzhirkevich.customqrgenerator.style.QrColor
-import com.github.alexzhirkevich.customqrgenerator.style.QrColors
-import com.github.alexzhirkevich.customqrgenerator.style.QrLogo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
@@ -17,7 +12,7 @@ import java.nio.charset.Charset
 /**
  * This exception can be thrown while generating code
  * */
-class QrCodeCreationException(cause : Throwable? = null, message: String? = null) :
+class QrCodeCreationException(cause: Throwable? = null, message: String? = null) :
     Exception(message, cause)
 
 /**
@@ -32,7 +27,7 @@ interface QrCodeGenerator {
      * @param charset charset used to encode [data].
      * If [charset] is null, default charset for bytes is used.
      * */
-    fun generateQrCode(data: QrData, options: QrOptions, charset: Charset ?= null) : Bitmap
+    fun generateQrCode(data: QrData, options: QrOptions, charset: Charset? = null): Bitmap
 
     /**
      * A [generateQrCode] wrap with cancellation support.
@@ -40,16 +35,25 @@ interface QrCodeGenerator {
      *
      * @see generateQrCode
      * */
-    suspend fun generateQrCodeSuspend(data: QrData, options: QrOptions, charset: Charset ?= null) : Bitmap
+    suspend fun generateQrCodeSuspend(
+        data: QrData,
+        options: QrOptions,
+        charset: Charset? = null
+    ): Bitmap
 }
 
 /**
  * Creates an instance of [QrCodeGenerator]
  * */
-@Deprecated("Use QrCodeDrawable instead")
+@Deprecated(
+    "Use QrCodeDrawable instead", ReplaceWith(
+        "QrCodeGeneratorImpl(threadPolicy)",
+        "com.github.alexzhirkevich.customqrgenerator.QrCodeGeneratorImpl"
+    )
+)
 fun QrCodeGenerator(
     threadPolicy: ThreadPolicy = ThreadPolicy.SingleThread
-) : QrCodeGenerator = QrCodeGeneratorImpl(threadPolicy)
+): QrCodeGenerator = QrCodeGeneratorImpl(threadPolicy)
 
 /**
  * Thread policy of the [QrCodeGenerator]
@@ -61,7 +65,7 @@ enum class ThreadPolicy {
      */
     SingleThread {
         override suspend operator fun invoke(
-            width : Int, height : Int, block: (IntRange, IntRange) -> Unit
+            width: Int, height: Int, block: (IntRange, IntRange) -> Unit
         ) {
             block((0 until width), (0 until height))
         }
@@ -72,7 +76,7 @@ enum class ThreadPolicy {
      */
     DoubleThread {
         override suspend operator fun invoke(
-            width : Int, height : Int, block: (IntRange, IntRange) -> Unit
+            width: Int, height: Int, block: (IntRange, IntRange) -> Unit
         ) {
             coroutineScope {
                 listOf(
@@ -92,7 +96,7 @@ enum class ThreadPolicy {
      */
     QuadThread {
         override suspend operator fun invoke(
-            width : Int, height : Int, block: (IntRange, IntRange) -> Unit
+            width: Int, height: Int, block: (IntRange, IntRange) -> Unit
         ) {
             coroutineScope {
                 listOf(
@@ -110,6 +114,6 @@ enum class ThreadPolicy {
     };
 
     abstract suspend operator fun invoke(
-        width : Int, height : Int, block : (IntRange, IntRange) -> Unit
+        width: Int, height: Int, block: (IntRange, IntRange) -> Unit
     )
 }

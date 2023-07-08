@@ -6,15 +6,13 @@ import java.net.URLEncoder
 
 fun interface QrData {
 
-    fun encode() : String
+    fun encode(): String
 
-    
-    data class Text(val value : String) : QrData {
+    data class Text(val value: String) : QrData {
         override fun encode(): String = value
     }
 
-    
-    data class Url(val url : String) : QrData {
+    data class Url(val url: String) : QrData {
         override fun encode(): String = url
     }
 
@@ -30,7 +28,7 @@ fun interface QrData {
             if (listOf(copyTo, subject, body).any { it.isNullOrEmpty().not() }) {
                 append("?")
             }
-            val querries = buildList<String> {
+            val querries = buildList {
                 if (copyTo.isNullOrEmpty().not()) {
                     add("cc=$copyTo")
                 }
@@ -49,20 +47,18 @@ fun interface QrData {
 
     }
 
-    
     data class GeoPos(
-        val lat : Float,
-        val lon : Float
+        val lat: Float,
+        val lon: Float
     ) : QrData {
         override fun encode(): String = "GEO:$lat,$lon"
     }
 
-    
     data class Bookmark(
-        val url : String,
-        val title : String
+        val url: String,
+        val title: String
     ) : QrData {
-        override fun encode(): String  = buildString{
+        override fun encode(): String = buildString {
             append("MEBKM:")
             append("URL:$url;")
             append("TITLE:$title;")
@@ -70,9 +66,8 @@ fun interface QrData {
         }
     }
 
-    
     data class Wifi(
-        val authentication: Authentication?=null,
+        val authentication: Authentication? = null,
         val ssid: String? = null,
         val psk: String? = null,
         val hidden: Boolean = false,
@@ -88,9 +83,9 @@ fun interface QrData {
             }
         }
 
-        override fun encode(): String = buildString{
+        override fun encode(): String = buildString {
             append("WIFI:")
-            if (ssid!= null)
+            if (ssid != null)
                 append("S:${escape(ssid)};")
 
             if (authentication != null)
@@ -101,6 +96,7 @@ fun interface QrData {
 
             append("H:$hidden;")
         }
+
         internal companion object {
             fun escape(text: String): String {
                 return text.replace("\\", "\\\\")
@@ -113,18 +109,17 @@ fun interface QrData {
         }
     }
 
-    
     data class EnterpriseWifi(
         val ssid: String? = null,
         val psk: String? = null,
         val hidden: Boolean = false,
-        val user : String? = null,
-        val eap : String?=null,
-        val phase : String?=null,
+        val user: String? = null,
+        val eap: String? = null,
+        val phase: String? = null,
     ) : QrData {
-        override fun encode(): String = buildString{
+        override fun encode(): String = buildString {
             append("WIFI:")
-            if (ssid!= null)
+            if (ssid != null)
                 append("S:${Wifi.escape(ssid)};")
 
             if (user != null)
@@ -143,32 +138,30 @@ fun interface QrData {
         }
     }
 
-    
     data class Phone(val phoneNumber: String) : QrData {
         override fun encode(): String = "TEL:$phoneNumber"
     }
 
-    
     data class SMS(
         val phoneNumber: String,
-        val subject : String,
-        val isMMS : Boolean
+        val subject: String,
+        val isMMS: Boolean
     ) : QrData {
         override fun encode(): String = "${if (isMMS) "MMS" else "SMS"}:" +
                 "$phoneNumber${if (subject.isNotEmpty()) ":$subject" else ""}"
     }
 
-    
     data class BizCard(
-        val firstName : String? = null,
-        val secondName : String? = null,
-        val job : String? = null,
-        val company : String? = null,
-        val address : String? = null,
-        val phone : String? = null,
-        val email : String? = null,
-    ) : QrData{
-        override fun encode(): String  = buildString {
+        val firstName: String? = null,
+        val secondName: String? = null,
+        val job: String? = null,
+        val company: String? = null,
+        val address: String? = null,
+        val phone: String? = null,
+        val email: String? = null,
+    ) : QrData {
+
+        override fun encode(): String = buildString {
             append("BIZCARD:")
             if (firstName != null)
                 append("N:$firstName;")
@@ -195,7 +188,6 @@ fun interface QrData {
         }
     }
 
-    
     data class VCard(
         val name: String? = null,
         val company: String? = null,
@@ -238,14 +230,14 @@ fun interface QrData {
         }
     }
 
-    
     data class MeCard(
         val name: String? = null,
         val address: String? = null,
         val phoneNumber: String? = null,
         val email: String? = null,
     ) : QrData {
-        override fun encode(): String = buildString{
+
+        override fun encode(): String = buildString {
             append("MECARD:")
             if (name != null)
                 append("N:$name;")
@@ -263,12 +255,10 @@ fun interface QrData {
         }
     }
 
-    
-    data class YouTube(val videoId : String) : QrData {
+    data class YouTube(val videoId: String) : QrData {
         override fun encode(): String = "YOUTUBE:$videoId"
     }
 
-    
     data class Event(
         val uid: String? = null,
         val stamp: String? = null,
@@ -277,6 +267,7 @@ fun interface QrData {
         val end: String? = null,
         val summary: String? = null,
     ) : QrData {
+
         override fun encode(): String = buildString {
             append("BEGIN:VEVENT\n")
             if (uid != null)
@@ -298,8 +289,7 @@ fun interface QrData {
         }
     }
 
-    
-    data class GooglePlay(val appPackage : String) : QrData {
+    data class GooglePlay(val appPackage: String) : QrData {
         override fun encode(): String = "{{{market://details?id=%$appPackage}}}"
     }
 }

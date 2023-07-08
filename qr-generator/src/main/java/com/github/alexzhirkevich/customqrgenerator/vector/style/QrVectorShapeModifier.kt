@@ -5,5 +5,5 @@ import com.github.alexzhirkevich.customqrgenerator.style.Neighbors
 
 fun interface QrVectorShapeModifier {
 
-    fun createPath(size : Float, neighbors: Neighbors) : Path
+    fun createPath(size: Float, neighbors: Neighbors): Path
 }

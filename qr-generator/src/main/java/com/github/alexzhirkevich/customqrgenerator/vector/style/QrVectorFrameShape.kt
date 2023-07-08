@@ -15,15 +15,14 @@ import com.google.zxing.qrcode.encoder.ByteMatrix
  */
 interface QrVectorFrameShape : QrVectorShapeModifier {
 
-    
     object Default : QrVectorFrameShape {
 
         override fun createPath(size: Float, neighbors: Neighbors): Path = Path().apply {
-            val width = size/7f
-            addRect(0f,0f,size,width,Path.Direction.CW)
-            addRect(0f,0f,width,size,Path.Direction.CW)
-            addRect(size-width,0f,size,size,Path.Direction.CW)
-            addRect(0f,size-width,size,size,Path.Direction.CW)
+            val width = size / 7f
+            addRect(0f, 0f, size, width, Path.Direction.CW)
+            addRect(0f, 0f, width, size, Path.Direction.CW)
+            addRect(size - width, 0f, size, size, Path.Direction.CW)
+            addRect(0f, size - width, size, size, Path.Direction.CW)
         }
     }
 
@@ -32,7 +31,6 @@ interface QrVectorFrameShape : QrVectorShapeModifier {
      *
      * [AsPixelShape] with the shape of dark pixels will be used.
      * */
-    
     object AsDarkPixels : QrVectorFrameShape {
 
         override fun createPath(size: Float, neighbors: Neighbors): Path {
@@ -40,53 +38,49 @@ interface QrVectorFrameShape : QrVectorShapeModifier {
         }
     }
 
-    
     data class AsPixelShape(
         val pixelShape: QrVectorPixelShape
     ) : QrVectorFrameShape {
 
         override fun createPath(size: Float, neighbors: Neighbors): Path = Path().apply {
-
-            val matrix =  ByteMatrix(7,7)
-                .toQrMatrix()
+            val matrix = ByteMatrix(7, 7).toQrMatrix()
 
             repeat(7) { i ->
                 repeat(7) { j ->
-                    matrix[i,j] = if (i == 0 || j == 0 || i == 6 || j == 6)
+                    matrix[i, j] = if (i == 0 || j == 0 || i == 6 || j == 6)
                         QrCodeMatrix.PixelType.DarkPixel else QrCodeMatrix.PixelType.Background
                 }
             }
 
-            repeat(7){ i ->
-                repeat(7){ j ->
-                    if (matrix[i,j] == QrCodeMatrix.PixelType.DarkPixel)
+            repeat(7) { i ->
+                repeat(7) { j ->
+                    if (matrix[i, j] == QrCodeMatrix.PixelType.DarkPixel)
                         addPath(
                             pixelShape.createPath(
                                 size / 7,
-                                matrix.neighbors(i,j)
+                                matrix.neighbors(i, j)
                             ),
-                            size/7 * i, size/7 * j
+                            size / 7 * i, size / 7 * j
                         )
                 }
             }
         }
     }
 
-
-    
     data class Circle(
-        @FloatRange(from = 0.0) val width : Float = 1f,
-        @FloatRange(from = 0.0) val radius : Float = 1f
+        @FloatRange(from = 0.0) val width: Float = 1f,
+        @FloatRange(from = 0.0) val radius: Float = 1f
     ) : QrVectorFrameShape {
+
         override fun createPath(size: Float, neighbors: Neighbors): Path = Path().apply {
-            val width = (size/7f) * width
+            val width = (size / 7f) * width
+
             val radius = radius.coerceAtLeast(0f)
-            addCircle(size/2f, size/2f, size/2f * radius, Path.Direction.CW)
-            addCircle(size/2f,size/2f,(size/2f - width) * radius, Path.Direction.CCW )
+            addCircle(size / 2f, size / 2f, size / 2f * radius, Path.Direction.CW)
+            addCircle(size / 2f, size / 2f, (size / 2f - width) * radius, Path.Direction.CCW)
         }
     }
 
-    
     data class RoundCorners(
         @FloatRange(from = 0.0, to = 0.5) val corner: Float,
         @FloatRange(from = 0.0) val width: Float = 1f,
@@ -95,8 +89,8 @@ interface QrVectorFrameShape : QrVectorShapeModifier {
         val topRight: Boolean = true,
         val bottomRight: Boolean = true,
     ) : QrVectorFrameShape {
-        override fun createPath(size: Float, neighbors: Neighbors): Path {
 
+        override fun createPath(size: Float, neighbors: Neighbors): Path {
             val width = size / 7f * width.coerceAtLeast(0f)
 
             val outerCornerSize = corner * size
@@ -135,4 +129,8 @@ interface QrVectorFrameShape : QrVectorShapeModifier {
             }
         }
     }
+
+    data class Rhombus(
+        @FloatRange(from = 0.0, to = 1.0) private val scale: Float = 1f
+    ) : QrVectorFrameShape, QrVectorShapeModifier by RhombusVectorShape(scale)
 }
