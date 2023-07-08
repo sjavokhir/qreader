@@ -4,11 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website.WebsiteContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website.WebsiteContentViewModel
 
@@ -17,6 +16,8 @@ fun WebsiteContent(
     viewModel: WebsiteContentViewModel = viewModel(),
     onContent: (Boolean, String) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
@@ -29,8 +30,8 @@ fun WebsiteContent(
             onValueChange = {
                 viewModel.onEvent(WebsiteContentEvent.WebsiteChanged(it))
             },
-            placeholder = stringResource(id = R.string.eg_placeholder_website),
-            hint = stringResource(id = R.string.website)
+            placeholder = strings.egPlaceholderWebsite,
+            hint = strings.website
         )
     }
 }

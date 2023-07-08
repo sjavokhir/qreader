@@ -26,13 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.WifiContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.WifiContentState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.WifiContentViewModel
@@ -42,6 +42,8 @@ fun WifiContent(
     viewModel: WifiContentViewModel = viewModel(),
     onContent: (Boolean, String) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var expanded by remember { mutableStateOf(false) }
@@ -58,8 +60,8 @@ fun WifiContent(
             onValueChange = {
                 viewModel.onEvent(WifiContentEvent.NetworkNameChanged(it))
             },
-            placeholder = stringResource(id = R.string.eg_placeholder_wifi_name),
-            hint = stringResource(id = R.string.network_name)
+            placeholder = strings.egPlaceholderWifiName,
+            hint = strings.networkName
         )
 
         if (state.authentication != WifiContentState.Authentication.OPEN) {
@@ -68,15 +70,15 @@ fun WifiContent(
                 onValueChange = {
                     viewModel.onEvent(WifiContentEvent.PasswordChanged(it))
                 },
-                placeholder = stringResource(id = R.string.eg_placeholder_wifi_password),
-                hint = stringResource(id = R.string.password),
+                placeholder = strings.egPlaceholderWifiPassword,
+                hint = strings.password,
             )
         }
 
         AuthenticationDropdown(
             expanded = expanded,
             onExpandedChange = { expanded = it },
-            hint = stringResource(id = R.string.encryption_type),
+            hint = strings.encryptionType,
             selectedAuthentication = state.authentication.name,
             onSelectedAuthentication = {
                 viewModel.onEvent(WifiContentEvent.SelectAuthentication(it))
@@ -102,7 +104,7 @@ fun WifiContent(
             )
 
             Text(
-                text = stringResource(id = R.string.hidden),
+                text = strings.hidden,
                 style = MaterialTheme.typography.bodyLarge
             )
         }

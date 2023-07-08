@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.premium.Subscriptions
 
 @Composable
 fun QRNavigationBar(
@@ -41,7 +40,9 @@ fun QRNavigationBar(
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
             )
 
-            BannerAdView()
+            if (!hasSubscription) {
+                BannerAdView()
+            }
 
             Row(
                 modifier = Modifier

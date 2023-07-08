@@ -28,7 +28,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,6 +40,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.shar
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FaqScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FeedbackScreenDestination
@@ -61,8 +61,7 @@ import com.ramcosta.composedestinations.spec.Direction
 @Destination
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = viewModel(),
-    navigator: DestinationsNavigator
+    viewModel: SettingsViewModel = viewModel(), navigator: DestinationsNavigator
 ) {
     val hasSubscription = LocalSubscription.current
 
@@ -109,14 +108,16 @@ private fun SettingsScreenContent(
 private fun GeneralContent(
     onNavigate: (Direction) -> Unit
 ) {
-    HeaderContent(title = R.string.general) {
-        NavigateContent(title = stringResource(id = R.string.theme)) {
+    val strings = LocalStrings.current
+
+    HeaderContent(title = strings.general) {
+        NavigateContent(title = strings.theme) {
             onNavigate(ThemeModeScreenDestination)
         }
 
         DividerContent()
 
-        NavigateContent(title = stringResource(id = R.string.language)) {
+        NavigateContent(title = strings.language) {
             onNavigate(LanguageScreenDestination)
         }
     }
@@ -129,10 +130,11 @@ private fun ScanControlsContent(
     onEvent: (SettingsEvent) -> Unit,
     onNavigate: (Direction) -> Unit
 ) {
-    HeaderContent(title = R.string.scan_controls) {
+    val strings = LocalStrings.current
+
+    HeaderContent(title = strings.scanControls) {
         NavigateContent(
-            title = stringResource(id = R.string.sound_effects),
-            hasSubscription = hasSubscription
+            title = strings.soundEffects, hasSubscription = hasSubscription
         ) {
             if (hasSubscription) {
                 onNavigate(SoundEffectsScreenDestination)
@@ -143,38 +145,29 @@ private fun ScanControlsContent(
 
         DividerContent()
 
-        SwitchContent(
-            title = R.string.vibrate,
-            checked = state.isVibrateChecked,
-            onCheckedChange = {
-                onEvent(SettingsEvent.CheckVibrate(it))
-            }
-        )
+        SwitchContent(title = strings.vibrate, checked = state.isVibrateChecked, onCheckedChange = {
+            onEvent(SettingsEvent.CheckVibrate(it))
+        })
 
         DividerContent()
 
-        SwitchContent(
-            title = R.string.open_web_pages,
+        SwitchContent(title = strings.openWebPages,
             checked = state.isChromeCustomTabsChecked,
             onCheckedChange = {
                 onEvent(SettingsEvent.CheckChromeCustomTabs(it))
-            }
-        )
+            })
 
         DividerContent()
 
-        SwitchContent(
-            title = R.string.chrome_custom_tabs,
+        SwitchContent(title = strings.chromeCustomTabs,
             checked = state.isOpenWebPagesChecked,
             onCheckedChange = {
                 onEvent(SettingsEvent.CheckOpenWebPages(it))
-            }
-        )
+            })
 
         DividerContent()
 
-        SwitchContent(
-            title = R.string.batch_scan,
+        SwitchContent(title = strings.batchScan,
             hasSubscription = hasSubscription,
             checked = state.isBatchScanChecked && hasSubscription,
             onCheckedChange = {
@@ -183,8 +176,7 @@ private fun ScanControlsContent(
                 } else {
                     onNavigate(PremiumScreenDestination)
                 }
-            }
-        )
+            })
     }
 }
 
@@ -192,20 +184,22 @@ private fun ScanControlsContent(
 private fun GetHelpContent(
     onNavigate: (Direction) -> Unit
 ) {
-    HeaderContent(title = R.string.get_help) {
-        NavigateContent(title = stringResource(id = R.string.feedback)) {
+    val strings = LocalStrings.current
+
+    HeaderContent(title = strings.getHelp) {
+        NavigateContent(title = strings.feedback) {
             onNavigate(FeedbackScreenDestination)
         }
 
         DividerContent()
 
-        NavigateContent(title = stringResource(id = R.string.frequently_asked_questions)) {
+        NavigateContent(title = strings.frequentlyAskedQuestions) {
             onNavigate(FaqScreenDestination)
         }
 
         DividerContent()
 
-        NavigateContent(title = stringResource(id = R.string.manage_permissions)) {
+        NavigateContent(title = strings.managePermissions) {
             onNavigate(ManagePermissionsScreenDestination)
         }
     }
@@ -213,20 +207,22 @@ private fun GetHelpContent(
 
 @Composable
 private fun OthersContent(context: Context) {
-    HeaderContent(title = R.string.others) {
-        NavigateContent(title = stringResource(id = R.string.rate_us)) {
+    val strings = LocalStrings.current
+
+    HeaderContent(title = strings.others) {
+        NavigateContent(title = strings.rateUs) {
             context.gotoUrl(appUrl)
         }
 
         DividerContent()
 
-        NavigateContent(title = stringResource(id = R.string.tell_friends)) {
+        NavigateContent(title = strings.tellFriends) {
             context.shareText("Share")
         }
 
         DividerContent()
 
-        NavigateContent(title = "${stringResource(id = R.string.app_version)} ($appVersion)") {
+        NavigateContent(title = "${strings.appVersion} ($appVersion)") {
             context.gotoUrl(appUrl)
         }
     }
@@ -234,14 +230,13 @@ private fun OthersContent(context: Context) {
 
 @Composable
 private fun HeaderContent(
-    title: Int,
-    content: @Composable ColumnScope.() -> Unit
+    title: String, content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = stringResource(id = title),
+            text = title,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.SemiBold,
             fontSize = 15.sp
@@ -264,9 +259,7 @@ private fun HeaderContent(
 
 @Composable
 private fun NavigateContent(
-    title: String,
-    hasSubscription: Boolean = true,
-    onClick: () -> Unit
+    title: String, hasSubscription: Boolean = true, onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -277,8 +270,7 @@ private fun NavigateContent(
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = title,
-            style = MaterialTheme.typography.bodyLarge
+            text = title, style = MaterialTheme.typography.bodyLarge
         )
 
         if (!hasSubscription) {
@@ -299,7 +291,7 @@ private fun NavigateContent(
 
 @Composable
 private fun SwitchContent(
-    title: Int,
+    title: String,
     hasSubscription: Boolean = true,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -312,8 +304,7 @@ private fun SwitchContent(
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = stringResource(id = title),
-            style = MaterialTheme.typography.bodyLarge
+            text = title, style = MaterialTheme.typography.bodyLarge
         )
 
         if (!hasSubscription) {

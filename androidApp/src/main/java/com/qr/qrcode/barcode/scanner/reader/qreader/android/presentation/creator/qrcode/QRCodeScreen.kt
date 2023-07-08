@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +38,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CustomizeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
@@ -142,6 +142,8 @@ private fun CustomizeContent(
     hasSubscription: Boolean,
     onNavigate: (Direction) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.TopEnd
@@ -175,7 +177,7 @@ private fun CustomizeContent(
             )
 
             Text(
-                text = stringResource(id = R.string.customize),
+                text = strings.customize,
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -208,19 +210,21 @@ private fun ActionsContent(
     onSave: () -> Unit,
     onShare: () -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         QROutlinedButton(
-            text = stringResource(id = R.string.action_save),
+            text = strings.save,
             onClick = onSave,
             modifier = Modifier.weight(1f),
             leadingIcon = painterResource(id = R.drawable.ic_save)
         )
 
         QRFilledButton(
-            text = stringResource(id = R.string.action_share),
+            text = strings.share,
             onClick = onShare,
             modifier = Modifier.weight(1f),
             leadingIcon = painterResource(id = R.drawable.ic_share)

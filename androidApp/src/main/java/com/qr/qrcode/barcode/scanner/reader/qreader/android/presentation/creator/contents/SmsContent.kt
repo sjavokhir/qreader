@@ -15,13 +15,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.sms.SmsContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.sms.SmsContentViewModel
 
@@ -30,6 +29,8 @@ fun SmsContent(
     viewModel: SmsContentViewModel = viewModel(),
     onContent: (Boolean, String) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
@@ -44,8 +45,8 @@ fun SmsContent(
             onValueChange = {
                 viewModel.onEvent(SmsContentEvent.PhoneChanged(it))
             },
-            placeholder = stringResource(id = R.string.eg_placeholder_phone),
-            hint = stringResource(id = R.string.phone_number),
+            placeholder = strings.egPlaceholderPhone,
+            hint = strings.phoneNumber,
             keyboardType = KeyboardType.Phone
         )
 
@@ -55,8 +56,8 @@ fun SmsContent(
             onValueChange = {
                 viewModel.onEvent(SmsContentEvent.MessageChanged(it))
             },
-            placeholder = stringResource(id = R.string.eg_placeholder_sms_message),
-            hint = stringResource(id = R.string.message),
+            placeholder = strings.egPlaceholderSmsMessage,
+            hint = strings.message,
         )
 
         Row(
@@ -76,7 +77,7 @@ fun SmsContent(
             )
 
             Text(
-                text = stringResource(id = R.string.use_mms),
+                text = strings.useMms,
                 style = MaterialTheme.typography.bodyLarge
             )
         }

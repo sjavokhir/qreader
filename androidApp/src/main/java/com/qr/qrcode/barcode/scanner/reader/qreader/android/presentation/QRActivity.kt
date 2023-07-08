@@ -31,6 +31,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.Q
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.QRApp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.premium.PremiumViewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.datastore.AppStore
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.LanguageType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.Event
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.EventChannel
@@ -49,24 +50,36 @@ class QRActivity : ComponentActivity() {
 
         setContent {
             val hasAcknowledged = viewModel.hasAcknowledged.collectAsStateWithLifecycle().value
+            val language = getSelectedLanguage()
             val themeMode = getSelectedThemeMode()
 
             if (hasAcknowledged != null) {
                 QRApp(
                     hasSubscription = hasAcknowledged,
                     isOnBoarding = appStore.isOnBoarding(),
-                    themeMode = themeMode
+                    language = language,
+                    themeMode = themeMode,
                 )
             } else {
-                BillingLoadingContent(themeMode)
+                BillingLoadingContent(
+                    language = language,
+                    themeMode = themeMode
+                )
             }
         }
     }
 
     @OptIn(ExperimentalLayoutApi::class)
     @Composable
-    private fun BillingLoadingContent(themeMode: ThemeMode) {
-        QRTheme(false, themeMode) {
+    private fun BillingLoadingContent(
+        language: LanguageType,
+        themeMode: ThemeMode,
+    ) {
+        QRTheme(
+            hasSubscription = false,
+            language = language,
+            themeMode = themeMode
+        ) {
             Scaffold(
                 containerColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground
@@ -102,12 +115,33 @@ class QRActivity : ComponentActivity() {
         ).value
 
         when (event) {
-            Event.Idle -> {}
             is Event.ThemeModeChanged -> {
                 themeMode = event.themeMode
             }
+
+            else -> {}
         }
 
         return themeMode
+    }
+
+    @Composable
+    private fun getSelectedLanguage(): LanguageType {
+        var language by remember { mutableStateOf(appStore.getSelectedLanguage()) }
+
+        val event = EventChannel.receiveEvent().collectAsStateWithLifecycle(
+            initialValue = Event.Idle,
+            lifecycle = lifecycle
+        ).value
+
+        when (event) {
+            is Event.LanguageChanged -> {
+                language = event.language
+            }
+
+            else -> {}
+        }
+
+        return language
     }
 }

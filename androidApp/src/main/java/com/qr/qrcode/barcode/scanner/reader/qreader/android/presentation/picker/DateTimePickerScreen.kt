@@ -21,12 +21,11 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.actualDateMillis
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.currentTimestamp
 import com.ramcosta.composedestinations.annotation.Destination
@@ -38,6 +37,8 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 fun DateTimePickerScreen(
     resultNavigator: ResultBackNavigator<Long>
 ) {
+    val strings = LocalStrings.current
+
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = currentTimestamp(),
         initialDisplayMode = DisplayMode.Input
@@ -57,7 +58,7 @@ fun DateTimePickerScreen(
                         state = datePickerState,
                         title = {
                             Text(
-                                text = stringResource(id = R.string.select_date),
+                                text = strings.selectDate,
                                 style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.padding(
@@ -73,7 +74,7 @@ fun DateTimePickerScreen(
                 }
                 item {
                     Text(
-                        text = stringResource(id = R.string.select_time),
+                        text = strings.selectTime,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(
@@ -104,7 +105,7 @@ fun DateTimePickerScreen(
                 DividerContent()
 
                 QRFilledButton(
-                    text = stringResource(id = R.string.action_select),
+                    text = strings.select,
                     onClick = {
                         val actualDateMillis = datePickerState.selectedDateMillis.actualDateMillis(
                             hour = timePickerState.hour,

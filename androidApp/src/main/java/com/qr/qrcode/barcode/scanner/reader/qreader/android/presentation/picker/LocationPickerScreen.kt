@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -39,6 +38,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.GeoPosition
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.result.ResultBackNavigator
@@ -48,6 +48,8 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 fun LocationPickerScreen(
     resultNavigator: ResultBackNavigator<String>
 ) {
+    val strings = LocalStrings.current
+
     var currentPosition by remember { mutableStateOf(GeoPosition()) }
 
     QRBackground {
@@ -75,7 +77,7 @@ fun LocationPickerScreen(
                 DividerContent()
 
                 QRFilledButton(
-                    text = stringResource(id = R.string.action_select),
+                    text = strings.select,
                     onClick = {
                         resultNavigator.navigateBack(
                             "${currentPosition.latitude},${currentPosition.longitude}"

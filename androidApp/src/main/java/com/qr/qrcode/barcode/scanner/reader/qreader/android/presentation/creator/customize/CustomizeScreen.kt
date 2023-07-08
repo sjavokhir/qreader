@@ -44,7 +44,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -62,6 +61,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.toModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.toState
@@ -105,6 +105,7 @@ private fun CustomizeScreenContent(
     resultNavigator: ResultBackNavigator<QRCustomizeModel>
 ) {
     val context = LocalContext.current
+    val strings = LocalStrings.current
 
     var logoUri by remember { mutableStateOf<Uri?>(null) }
     val logoBitmap = rememberOwnLogo(context, logoUri)
@@ -210,7 +211,7 @@ private fun CustomizeScreenContent(
                 horizontalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 QROutlinedButton(
-                    text = stringResource(id = R.string.action_preview),
+                    text = strings.preview,
                     onClick = {
                         onEvent(CustomizeEvent.ShowHidePreview(true))
                     },
@@ -218,7 +219,7 @@ private fun CustomizeScreenContent(
                 )
 
                 QRFilledButton(
-                    text = stringResource(id = R.string.customize),
+                    text = strings.customize,
                     onClick = {
                         resultNavigator.navigateBack(state.toModel(logoUri))
                     },
@@ -235,11 +236,13 @@ private fun QRCodePatternContent(
     state: CustomizeState,
     onEvent: (CustomizeEvent) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Text(
-            text = stringResource(id = R.string.qr_code_pattern),
+            text = strings.qrCodePattern,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(horizontal = 20.dp)
@@ -275,7 +278,7 @@ private fun QRCodePatternContent(
                 ),
                 value = "#${state.patternDotHex}",
                 onValueChange = {},
-                hint = stringResource(id = R.string.dot_color),
+                hint = strings.dotColor,
                 trailingIcon = {
                     Box(
                         modifier = Modifier
@@ -302,7 +305,7 @@ private fun QRCodePatternContent(
                 ),
                 value = "#${state.patternBackgroundHex}",
                 onValueChange = {},
-                hint = stringResource(id = R.string.background_color),
+                hint = strings.backgroundColor,
                 trailingIcon = {
                     Box(
                         modifier = Modifier
@@ -363,11 +366,13 @@ private fun CornerStyleContent(
     state: CustomizeState,
     onEvent: (CustomizeEvent) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Text(
-            text = stringResource(id = R.string.corner_style),
+            text = strings.cornerStyle,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(horizontal = 20.dp)
@@ -377,7 +382,7 @@ private fun CornerStyleContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.frame_style),
+                text = strings.frameStyle,
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
@@ -406,7 +411,7 @@ private fun CornerStyleContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.dots_style),
+                text = strings.dotsStyle,
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
@@ -445,7 +450,7 @@ private fun CornerStyleContent(
                 ),
                 value = "#${state.frameHex}",
                 onValueChange = {},
-                hint = stringResource(id = R.string.frame_color),
+                hint = strings.frameColor,
                 trailingIcon = {
                     Box(
                         modifier = Modifier
@@ -472,7 +477,7 @@ private fun CornerStyleContent(
                 ),
                 value = "#${state.frameDotHex}",
                 onValueChange = {},
-                hint = stringResource(id = R.string.dots_color),
+                hint = strings.dotsColor,
                 trailingIcon = {
                     Box(
                         modifier = Modifier
@@ -502,9 +507,11 @@ private fun AddLogoContent(
     onUpload: () -> Unit,
     onDelete: () -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Column {
         Text(
-            text = stringResource(id = R.string.add_logo),
+            text = strings.addLogo,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(horizontal = 20.dp)
@@ -544,7 +551,7 @@ private fun AddLogoContent(
         }
 
         Text(
-            text = stringResource(id = R.string.upload_your_own_logo),
+            text = strings.uploadYourOwnLogo,
             style = MaterialTheme.typography.bodyLarge,
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
@@ -573,7 +580,7 @@ private fun AddLogoContent(
                 )
 
                 Text(
-                    text = stringResource(id = R.string.action_delete),
+                    text = strings.delete,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.primary,
@@ -610,12 +617,12 @@ private fun AddLogoContent(
                 )
 
                 Text(
-                    text = stringResource(id = R.string.upload_image),
+                    text = strings.uploadImage,
                     style = MaterialTheme.typography.titleMedium
                 )
 
                 Text(
-                    text = stringResource(id = R.string.maximum_size),
+                    text = strings.maximumSize,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.outline
                 )

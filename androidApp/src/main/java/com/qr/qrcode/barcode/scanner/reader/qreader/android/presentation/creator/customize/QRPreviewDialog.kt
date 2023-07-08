@@ -14,17 +14,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.rememberQrDrawable
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize.CustomizeState
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
 
 @Composable
@@ -34,6 +32,8 @@ fun QRPreviewDialog(
     onDismissRequest: () -> Unit,
     properties: DialogProperties = DialogProperties()
 ) {
+    val strings = LocalStrings.current
+
     val qrDrawable = rememberQrDrawable(
         content = appUrl,
         model = model,
@@ -55,7 +55,7 @@ fun QRPreviewDialog(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.action_preview),
+                    text = strings.preview,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -63,7 +63,7 @@ fun QRPreviewDialog(
                 QrImageContent(qrDrawable)
 
                 QRFilledButton(
-                    text = stringResource(id = R.string.action_ok),
+                    text = strings.ok,
                     onClick = onDismissRequest
                 )
             }

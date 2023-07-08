@@ -27,13 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.BizContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.BusinessContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.ContactContent
@@ -64,6 +63,7 @@ fun AddContentScreen(
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
 ) {
     val context = LocalContext.current
+    val strings = LocalStrings.current
 
     var isEnabled by remember { mutableStateOf(false) }
     var generateText by remember { mutableStateOf("") }
@@ -124,7 +124,7 @@ fun AddContentScreen(
                 DividerContent()
 
                 QRFilledButton(
-                    text = stringResource(id = R.string.action_next),
+                    text = strings.next,
                     enabled = isEnabled,
                     onClick = {
                         navigator.navigate(QRCodeScreenDestination(generateText))

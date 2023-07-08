@@ -21,9 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,6 +30,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clic
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.bottomNavigateTo
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
@@ -59,16 +58,13 @@ private fun HistoryScreenContent(
     pageCount: Int = 2,
     onBottomNavigateTo: (Direction) -> Unit
 ) {
-    val context = LocalContext.current
+    val strings = LocalStrings.current
 
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState { pageCount }
 
     val pages = remember {
-        listOf(
-            context.getString(R.string.scanned),
-            context.getString(R.string.created)
-        )
+        listOf(strings.scanned, strings.created)
     }
 
     Column(
@@ -104,7 +100,7 @@ private fun HistoryScreenContent(
                     modifier = Modifier.padding(horizontal = 20.dp),
                     value = "",
                     onValueChange = {},
-                    placeholder = stringResource(id = R.string.search_qr_code)
+                    placeholder = strings.searchQrCode
                 )
 
                 if (page == 1) {
@@ -160,6 +156,8 @@ private fun HistoryNotFoundContent(
     isScannedHistory: Boolean,
     onBottomNavigateTo: (DirectionDestination) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -185,20 +183,18 @@ private fun HistoryNotFoundContent(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.no_content_found),
+                text = strings.noContentFound,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = stringResource(
-                    id = if (isScannedHistory) {
-                        R.string.click_scan_button
-                    } else {
-                        R.string.click_create_button
-                    }
-                ),
+                text = if (isScannedHistory) {
+                    strings.clickScanButton
+                } else {
+                    strings.clickCreateButton
+                },
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.outline,
                 textAlign = TextAlign.Center
@@ -206,13 +202,11 @@ private fun HistoryNotFoundContent(
         }
 
         QRFilledButton(
-            text = stringResource(
-                id = if (isScannedHistory) {
-                    R.string.action_scan
-                } else {
-                    R.string.action_create
-                }
-            ),
+            text = if (isScannedHistory) {
+                strings.scan
+            } else {
+                strings.create
+            },
             onClick = {
                 if (isScannedHistory) {
                     onBottomNavigateTo(ScannerScreenDestination)

@@ -26,7 +26,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,6 +39,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.Constants
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -91,6 +91,7 @@ private fun PremiumScreenContent(
     onNavigateUp: () -> Unit
 ) {
     val context = LocalContext.current
+    val strings = LocalStrings.current
 
     LazyColumn(
         contentPadding = PaddingValues(
@@ -105,13 +106,13 @@ private fun PremiumScreenContent(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.welcome_to_premium),
+                    text = strings.welcomeToPremium,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
 
                 Text(
-                    text = stringResource(id = R.string.premium_description),
+                    text = strings.premiumDescription,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -150,7 +151,7 @@ private fun PremiumScreenContent(
 
         item {
             QRFilledButton(
-                text = stringResource(id = R.string.action_continue),
+                text = strings.actionContinue,
                 onClick = {
                     context.getActivity()?.let {
                         onEvent(PremiumEvent.Buy(it))
@@ -161,7 +162,7 @@ private fun PremiumScreenContent(
         item {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.cancel_anytime),
+                text = strings.cancelAnytime,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline,
                 textAlign = TextAlign.Center
@@ -177,15 +178,15 @@ private fun PremiumScreenContent(
                 )
             ) {
                 HyperlinkText(
-                    fullText = stringResource(id = R.string.terms),
-                    linkText = listOf(stringResource(id = R.string.terms)),
+                    fullText = strings.terms,
+                    linkText = listOf(strings.terms),
                     hyperlinks = listOf(Constants.TERMS_URL),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 HyperlinkText(
-                    fullText = stringResource(id = R.string.privacy),
-                    linkText = listOf(stringResource(id = R.string.privacy)),
+                    fullText = strings.privacy,
+                    linkText = listOf(strings.privacy),
                     hyperlinks = listOf(Constants.PRIVACY_URL),
                     style = MaterialTheme.typography.bodyLarge
                 )
@@ -226,6 +227,8 @@ private fun HeaderContent(
 
 @Composable
 private fun FeaturesContent() {
+    val strings = LocalStrings.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -239,15 +242,15 @@ private fun FeaturesContent() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        FeatureItem(feature = R.string.feature_1)
-        FeatureItem(feature = R.string.feature_2)
-        FeatureItem(feature = R.string.feature_3)
-        FeatureItem(feature = R.string.feature_4)
+        FeatureItem(feature = strings.feature1)
+        FeatureItem(feature = strings.feature2)
+        FeatureItem(feature = strings.feature3)
+        FeatureItem(feature = strings.feature4)
     }
 }
 
 @Composable
-private fun FeatureItem(feature: Int) {
+private fun FeatureItem(feature: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -258,7 +261,7 @@ private fun FeatureItem(feature: Int) {
         )
 
         Text(
-            text = stringResource(id = feature),
+            text = feature,
             style = MaterialTheme.typography.bodyLarge
         )
     }

@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,6 +30,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clic
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.theme.ThemeModeEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.theme.ThemeModeState
@@ -59,6 +59,8 @@ private fun ThemeModeScreenContent(
     state: ThemeModeState,
     onEvent: (ThemeModeEvent) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -77,6 +79,11 @@ private fun ThemeModeScreenContent(
         ) {
             itemsIndexed(state.themeModes) { index, mode ->
                 ThemeModeItem(
+                    title = when (mode) {
+                        ThemeMode.System -> strings.systemDefault
+                        ThemeMode.Light -> strings.light
+                        ThemeMode.Dark -> strings.dark
+                    },
                     themeMode = mode,
                     selectedThemeMode = state.selectedTheme,
                     hasDivider = index != state.themeModes.lastIndex,
@@ -93,6 +100,7 @@ private fun ThemeModeScreenContent(
 
 @Composable
 private fun ThemeModeItem(
+    title: String,
     themeMode: ThemeMode,
     selectedThemeMode: ThemeMode,
     hasDivider: Boolean,
@@ -110,11 +118,7 @@ private fun ThemeModeItem(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = when (themeMode) {
-                    ThemeMode.System -> stringResource(id = R.string.system_default)
-                    ThemeMode.Light -> stringResource(id = R.string.light)
-                    ThemeMode.Dark -> stringResource(id = R.string.dark)
-                },
+                text = title,
                 style = MaterialTheme.typography.bodyLarge,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.primary

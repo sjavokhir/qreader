@@ -11,6 +11,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.OnBoardingScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.LanguageType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.rememberNavHostEngine
@@ -20,6 +21,7 @@ import com.ramcosta.composedestinations.rememberNavHostEngine
 fun QRApp(
     hasSubscription: Boolean,
     isOnBoarding: Boolean,
+    language: LanguageType,
     themeMode: ThemeMode
 ) {
     val engine = rememberNavHostEngine()
@@ -31,7 +33,11 @@ fun QRApp(
         ScannerScreenDestination
     }
 
-    QRTheme(hasSubscription, themeMode) {
+    QRTheme(
+        hasSubscription = hasSubscription,
+        language = language,
+        themeMode = themeMode
+    ) {
         QRScaffold(
             navController = navController,
             startRoute = startDestination,

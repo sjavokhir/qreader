@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -20,12 +19,14 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.sendMail
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination
 @Composable
 fun FeedbackScreen() {
     val context = LocalContext.current
+    val strings = LocalStrings.current
 
     QRBackground {
         LazyColumn(
@@ -41,7 +42,7 @@ fun FeedbackScreen() {
             }
             item {
                 Text(
-                    text = stringResource(id = R.string.help_us_improve),
+                    text = strings.helpUsImprove,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center
@@ -50,7 +51,7 @@ fun FeedbackScreen() {
             item {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.feedback_description),
+                    text = strings.feedbackDescription,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.outline,
                     textAlign = TextAlign.Start
@@ -58,7 +59,7 @@ fun FeedbackScreen() {
             }
             item {
                 QRFilledButton(
-                    text = stringResource(id = R.string.action_send_us),
+                    text = strings.sendUs,
                     onClick = { context.sendMail() }
                 )
             }

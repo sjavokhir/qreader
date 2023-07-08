@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,7 +25,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 
 @Composable
 fun QRTopAppBar(
-    @StringRes title: Int,
+    title: String,
     onNavigateUp: (() -> Unit)? = null
 ) {
     if (onNavigateUp != null) {
@@ -43,7 +41,7 @@ fun QRTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun QRTopAppBarContent(
-    @StringRes title: Int,
+    title: String,
     onNavigateUp: (() -> Unit)? = null
 ) {
     Column(
@@ -70,7 +68,7 @@ private fun QRTopAppBarContent(
             }
 
             Text(
-                text = stringResource(id = title),
+                text = title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 19.sp,

@@ -34,6 +34,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.LanguageType
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.language.LanguageEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.language.LanguageState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.language.LanguageViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.Event
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.EventChannel
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination
@@ -79,6 +81,8 @@ private fun LanguageScreenContent(
                     hasDivider = index != state.languages.lastIndex,
                     onClick = {
                         onEvent(LanguageEvent.SelectLanguage(language))
+
+                        EventChannel.sendEvent(Event.LanguageChanged(language))
                     }
                 )
             }

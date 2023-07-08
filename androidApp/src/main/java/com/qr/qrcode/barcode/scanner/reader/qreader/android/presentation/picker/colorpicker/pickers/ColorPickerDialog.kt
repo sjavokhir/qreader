@@ -25,15 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalThemeMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.data.Colors
 
@@ -48,6 +47,7 @@ fun ColorPickerDialog(
     properties: DialogProperties = DialogProperties(),
     onPickedColor: (Color) -> Unit
 ) {
+    val strings = LocalStrings.current
     val darkMode = LocalThemeMode.current
 
     var color by remember {
@@ -68,7 +68,7 @@ fun ColorPickerDialog(
                 modifier = Modifier.padding(20.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.color),
+                    text = strings.color,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -104,7 +104,7 @@ fun ColorPickerDialog(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = stringResource(id = R.string.library),
+                    text = strings.library,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -124,13 +124,13 @@ fun ColorPickerDialog(
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     QROutlinedButton(
-                        text = stringResource(id = R.string.action_cancel),
+                        text = strings.cancel,
                         onClick = onDismissRequest,
                         modifier = Modifier.weight(1f)
                     )
 
                     QRFilledButton(
-                        text = stringResource(id = R.string.action_select),
+                        text = strings.select,
                         onClick = { onPickedColor(color) },
                         modifier = Modifier.weight(1f)
                     )

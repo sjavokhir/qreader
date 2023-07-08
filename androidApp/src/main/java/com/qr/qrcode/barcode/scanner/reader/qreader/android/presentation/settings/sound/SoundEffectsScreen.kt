@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,6 +33,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clic
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.sound.SoundEffectsEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.sound.SoundEffectsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.sound.SoundEffectsViewModel
@@ -112,6 +112,8 @@ private fun SwitchContent(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
 ) {
+    val strings = LocalStrings.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,7 +127,7 @@ private fun SwitchContent(
         )
 
         Text(
-            text = stringResource(id = R.string.sound_effects),
+            text = strings.soundEffects,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.weight(1f)
         )
@@ -148,6 +150,8 @@ private fun SoundItem(
     hasDivider: Boolean,
     onClick: () -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Column {
         Row(
             modifier = Modifier
@@ -158,7 +162,7 @@ private fun SoundItem(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "${stringResource(id = R.string.sound_effects)} $sound",
+                text = "${strings.soundEffects} $sound",
                 style = MaterialTheme.typography.bodyLarge,
                 color = if (sound == selectedSound) {
                     MaterialTheme.colorScheme.primary

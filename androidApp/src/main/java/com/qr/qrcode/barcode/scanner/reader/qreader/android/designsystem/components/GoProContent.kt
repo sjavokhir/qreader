@@ -3,7 +3,6 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,16 +18,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 
 @Composable
 fun GoProContent(
     onClick: () -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,23 +53,23 @@ fun GoProContent(
 
         Column {
             Text(
-                text = stringResource(id = R.string.go_pro),
+                text = strings.goPro,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.primary
             )
 
             Spacer(modifier = Modifier.height(8.dp))
-            FeatureItem(feature = R.string.feature_3)
+            FeatureItem(feature = strings.feature3)
 
             Spacer(modifier = Modifier.height(4.dp))
-            FeatureItem(feature = R.string.feature_4)
+            FeatureItem(feature = strings.feature4)
         }
     }
 }
 
 @Composable
-private fun FeatureItem(feature: Int) {
+private fun FeatureItem(feature: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -80,7 +81,7 @@ private fun FeatureItem(feature: Int) {
         )
 
         Text(
-            text = stringResource(id = feature),
+            text = feature,
             style = MaterialTheme.typography.bodyMedium
         )
     }

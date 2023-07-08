@@ -15,6 +15,10 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.stringResourcesEn
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.stringResourcesUz
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.LanguageType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
 
 private val LightColorScheme = lightColorScheme(
@@ -91,9 +95,15 @@ val LocalThemeMode = staticCompositionLocalOf { false }
 @Composable
 fun QRTheme(
     hasSubscription: Boolean,
+    language: LanguageType,
     themeMode: ThemeMode,
     content: @Composable () -> Unit
 ) {
+    val stringResources = when (language) {
+        LanguageType.Uzbek -> stringResourcesUz()
+        else -> stringResourcesEn()
+    }
+
     val darkMode = when (themeMode) {
         ThemeMode.System -> isSystemInDarkTheme()
         ThemeMode.Light -> false
@@ -125,8 +135,9 @@ fun QRTheme(
 
     CompositionLocalProvider(
         LocalBackgroundTheme provides backgroundTheme,
-        LocalSubscription provides true,
+        LocalSubscription provides hasSubscription,
         LocalThemeMode provides darkMode,
+        LocalStrings provides stringResources,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

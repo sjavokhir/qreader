@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,6 +35,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locatio
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.storagePermissions
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination
@@ -49,6 +49,8 @@ fun ManagePermissionsScreen() {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun ManagePermissionsScreenContent() {
+    val strings = LocalStrings.current
+
     val cameraPermissionState = rememberPermissionState(cameraPermission)
     val locationPermissionState = rememberMultiplePermissionsState(locationPermissions)
     val storagePermissionState = rememberMultiplePermissionsState(storagePermissions)
@@ -80,8 +82,8 @@ private fun ManagePermissionsScreenContent() {
             ) {
                 if (!cameraPermissionState.status.isGranted) {
                     SwitchContent(
-                        title = R.string.allow_camera_access,
-                        description = R.string.grant_camera_permission,
+                        title = strings.allowCameraAccess,
+                        description = strings.grantCameraPermission,
                         onCheckedChange = {
                             cameraPermissionState.launchPermissionRequest()
                         }
@@ -94,8 +96,8 @@ private fun ManagePermissionsScreenContent() {
                     )
 
                     SwitchContent(
-                        title = R.string.allow_location_access,
-                        description = R.string.grant_location_permission,
+                        title = strings.allowLocationAccess,
+                        description = strings.grantLocationPermission,
                         onCheckedChange = {
                             locationPermissionState.launchMultiplePermissionRequest()
                         }
@@ -108,8 +110,8 @@ private fun ManagePermissionsScreenContent() {
                     )
 
                     SwitchContent(
-                        title = R.string.allow_storage_access,
-                        description = R.string.grant_storage_permission,
+                        title = strings.allowStorageAccess,
+                        description = strings.grantStoragePermission,
                         onCheckedChange = {
                             storagePermissionState.launchMultiplePermissionRequest()
                         }
@@ -122,6 +124,8 @@ private fun ManagePermissionsScreenContent() {
 
 @Composable
 private fun PermissionsGrantedContent() {
+    val strings = LocalStrings.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -141,14 +145,14 @@ private fun PermissionsGrantedContent() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.permissions_granted),
+                text = strings.permissionsGranted,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = stringResource(id = R.string.permissions_granted_description),
+                text = strings.permissionsGrantedDescription,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.outline,
                 textAlign = TextAlign.Center
@@ -161,8 +165,8 @@ private fun PermissionsGrantedContent() {
 
 @Composable
 private fun SwitchContent(
-    title: Int,
-    description: Int,
+    title: String,
+    description: String,
     onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
@@ -177,13 +181,13 @@ private fun SwitchContent(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(id = title),
+                text = title,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium
             )
 
             Text(
-                text = stringResource(id = description),
+                text = description,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline
             )

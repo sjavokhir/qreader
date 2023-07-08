@@ -1,7 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 
 import android.content.Context
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +27,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,6 +36,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clic
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
@@ -68,7 +67,6 @@ fun CreatorScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun GenerateContentsContent(
     hasSubscription: Boolean,
@@ -95,7 +93,7 @@ private fun GenerateContentsContent(
                 state.contents.forEach { content ->
                     item {
                         Text(
-                            text = stringResource(id = content.key.headerTitle()),
+                            text = content.key.headerTitle(),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier
@@ -133,6 +131,8 @@ private fun GenerateContentItem(
     isLastItem: Boolean,
     onClick: () -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -164,7 +164,7 @@ private fun GenerateContentItem(
 
                 if (!hasSubscription && mode.isPremium) {
                     Text(
-                        text = stringResource(id = R.string.premium),
+                        text = strings.premium,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier
@@ -196,11 +196,14 @@ private fun GenerateContentItem(
     }
 }
 
-private fun GenerateHeader.headerTitle(): Int {
+@Composable
+private fun GenerateHeader.headerTitle(): String {
+    val strings = LocalStrings.current
+
     return when (this) {
-        GenerateHeader.Web -> R.string.web
-        GenerateHeader.Communication -> R.string.communication
-        GenerateHeader.Other -> R.string.other
-        GenerateHeader.SocialMedia -> R.string.social_media
+        GenerateHeader.Web -> strings.web
+        GenerateHeader.Communication -> strings.communication
+        GenerateHeader.Other -> strings.other
+        GenerateHeader.SocialMedia -> strings.socialMedia
     }
 }
