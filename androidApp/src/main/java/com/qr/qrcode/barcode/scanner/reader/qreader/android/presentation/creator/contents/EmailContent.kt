@@ -13,20 +13,29 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.BusinessContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.email.EmailContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.email.EmailContentViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website.WebsiteContentEvent
 
 @Composable
 fun EmailContent(
     viewModel: EmailContentViewModel = viewModel(),
-    onContent: (Boolean, String) -> Unit
+    encoded: String,
+    onContent: (Boolean, String, String) -> Unit
 ) {
     val strings = LocalStrings.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.encode())
+        onContent(state.isEnabled, state.encode(), state.decode())
+    }
+
+    LaunchedEffect(encoded) {
+        if (!state.isSetEncoded) {
+            viewModel.onEvent(EmailContentEvent.Encoded(encoded))
+        }
     }
 
     Column(

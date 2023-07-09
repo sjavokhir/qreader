@@ -1,12 +1,10 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.customize
 
 import android.graphics.drawable.Drawable
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -18,11 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRImageContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.QRCustomizeModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.rememberQrDrawable
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode.QRCustomizeModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode.rememberQRDrawable
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
 
 @Composable
@@ -34,7 +32,7 @@ fun QRPreviewDialog(
 ) {
     val strings = LocalStrings.current
 
-    val qrDrawable = rememberQrDrawable(
+    val qrDrawable = rememberQRDrawable(
         content = appUrl,
         model = model,
         ownLogo = ownLogo
@@ -60,7 +58,7 @@ fun QRPreviewDialog(
                     fontWeight = FontWeight.SemiBold
                 )
 
-                QrImageContent(qrDrawable)
+                QRImageContent(qrDrawable)
 
                 QRFilledButton(
                     text = strings.ok,
@@ -69,15 +67,4 @@ fun QRPreviewDialog(
             }
         }
     }
-}
-
-@Composable
-private fun QrImageContent(qrDrawable: Drawable) {
-    Image(
-        painter = rememberDrawablePainter(drawable = qrDrawable),
-        contentDescription = null,
-        modifier = Modifier
-            .aspectRatio(1f)
-            .clip(MaterialTheme.shapes.medium)
-    )
 }

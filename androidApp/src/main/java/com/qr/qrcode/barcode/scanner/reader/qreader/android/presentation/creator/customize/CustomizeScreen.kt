@@ -62,9 +62,9 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.QRCustomizeModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.toModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode.toState
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode.QRCustomizeModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode.toModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode.toState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.extensions.toColor
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.extensions.toHex
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker.colorpicker.pickers.ColorPickerDialog

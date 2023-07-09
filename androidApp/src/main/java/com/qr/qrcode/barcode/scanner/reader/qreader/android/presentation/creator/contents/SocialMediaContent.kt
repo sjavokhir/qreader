@@ -19,7 +19,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialM
 fun SocialMediaContent(
     viewModel: SocialMediaContentViewModel = viewModel(),
     mode: GenerateMode,
-    onContent: (Boolean, String) -> Unit
+    encoded: String,
+    onContent: (Boolean, String, String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -28,7 +29,13 @@ fun SocialMediaContent(
     }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.encode())
+        onContent(state.isEnabled, state.encode(), state.decode())
+    }
+
+    LaunchedEffect(encoded) {
+        if (!state.isSetEncoded) {
+            viewModel.onEvent(SocialMediaContentEvent.Encoded(encoded))
+        }
     }
 
     Column(

@@ -41,3 +41,8 @@ enum class GenerateHeader {
     SocialMedia,
     Other
 }
+
+fun Long.toGenerateMode(): GenerateMode {
+    return GenerateMode.values()
+        .firstOrNull { it.ordinal.toLong() == this } ?: GenerateMode.Text
+}

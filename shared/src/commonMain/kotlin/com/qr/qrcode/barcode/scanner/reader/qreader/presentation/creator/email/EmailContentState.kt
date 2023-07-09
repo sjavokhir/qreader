@@ -6,26 +6,23 @@ data class EmailContentState(
     val email: String = "",
     val subject: String = "",
     val message: String = "",
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
+    val isSetEncoded: Boolean = false
 ) : QrData {
 
-    override fun encode(): String {
-        return buildString {
-            append("mailto:$email")
+    override fun encode(): String = create(email, subject, message)
 
-            if (listOf(subject, message).any { it.isNotEmpty() }) {
-                append("?")
-            }
+    override fun decode(): String = if (message.isNotEmpty()) {
+        "$message ($email)"
+    } else email
 
-            val querries = buildList {
-                if (subject.isNotEmpty()) {
-                    add("subject=$subject")
-                }
-                if (message.isNotEmpty()) {
-                    add("body=$message")
-                }
-            }
-            append(querries.joinToString(separator = "&"))
+    companion object {
+        fun create(
+            email: String,
+            subject: String,
+            message: String,
+        ): String {
+            return "mailto:$email?subject=$subject?body=$message"
         }
     }
 }

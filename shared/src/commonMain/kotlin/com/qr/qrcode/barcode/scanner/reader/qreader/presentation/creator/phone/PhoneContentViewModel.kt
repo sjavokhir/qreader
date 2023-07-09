@@ -15,7 +15,14 @@ class PhoneContentViewModel : KMMViewModel() {
 
     fun onEvent(event: PhoneContentEvent) {
         when (event) {
-            is PhoneContentEvent.PhoneChanged -> onPhoneChanged(phone = event.phone)
+            is PhoneContentEvent.Encoded -> onEncoded(event.value)
+            is PhoneContentEvent.PhoneChanged -> onPhoneChanged(event.phone)
+        }
+    }
+
+    private fun onEncoded(value: String) {
+        if (value.startsWith("tel:")) {
+            onPhoneChanged(value.substringAfter("tel:"))
         }
     }
 
@@ -23,7 +30,8 @@ class PhoneContentViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 phone = phone,
-                isEnabled = phone.isNotEmpty()
+                isEnabled = phone.isNotEmpty(),
+                isSetEncoded = true
             )
         }
     }

@@ -6,11 +6,11 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternMod
 
 data class CustomizeState(
     val patterns: List<QRPatternMode> = emptyList(),
-    val selectedPattern: QRPatternMode = QRPatternMode.Square,
+    val selectedPattern: QRPatternMode = QRPatternMode.Default,
     val corners: List<QRCornerMode> = emptyList(),
-    val selectedCorner: QRCornerMode = QRCornerMode.Square,
+    val selectedCorner: QRCornerMode = QRCornerMode.Default,
     val dots: List<QRDotMode> = emptyList(),
-    val selectedDot: QRDotMode = QRDotMode.Square,
+    val selectedDot: QRDotMode = QRDotMode.Default,
     val showColorPicker: Boolean = false,
     val colorPickerType: ColorPickerType = ColorPickerType.PatternDotColor,
     val patternDotHex: String = "FF000000",

@@ -24,6 +24,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clic
 @Composable
 fun QRNavigationBar(
     modifier: Modifier = Modifier,
+    show: Boolean,
+    showAds: Boolean,
     hasSubscription: Boolean,
     content: @Composable RowScope.() -> Unit
 ) {
@@ -40,19 +42,29 @@ fun QRNavigationBar(
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
             )
 
-            if (!hasSubscription) {
-                BannerAdView()
+            if (!hasSubscription && showAds) {
+                BannerAdView(
+                    modifier = if (show) {
+                        Modifier.fillMaxWidth()
+                    } else {
+                        Modifier
+                            .fillMaxWidth()
+                            .windowInsetsPadding(windowInsets)
+                    }
+                )
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .windowInsetsPadding(windowInsets)
-                    .height(65.dp)
-                    .selectableGroup(),
-                verticalAlignment = Alignment.CenterVertically,
-                content = content
-            )
+            if (show) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .windowInsetsPadding(windowInsets)
+                        .height(65.dp)
+                        .selectableGroup(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    content = content
+                )
+            }
         }
     }
 }

@@ -44,6 +44,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateHead
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.randomUUID
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
@@ -112,7 +113,12 @@ private fun GenerateContentsContent(
                                 if (!hasSubscription && mode.isPremium) {
                                     onNavigate(PremiumScreenDestination)
                                 } else {
-                                    onNavigate(AddContentScreenDestination(mode = mode))
+                                    onNavigate(
+                                        AddContentScreenDestination(
+                                            id = randomUUID(),
+                                            generateMode = mode
+                                        )
+                                    )
                                 }
                             }
                         )

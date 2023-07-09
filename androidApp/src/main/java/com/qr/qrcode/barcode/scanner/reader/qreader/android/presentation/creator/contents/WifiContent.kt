@@ -33,6 +33,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.BusinessContentEvent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website.WebsiteContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.WifiContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.WifiContentState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.WifiContentViewModel
@@ -40,7 +42,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.Wi
 @Composable
 fun WifiContent(
     viewModel: WifiContentViewModel = viewModel(),
-    onContent: (Boolean, String) -> Unit
+    encoded: String,
+    onContent: (Boolean, String, String) -> Unit,
 ) {
     val strings = LocalStrings.current
 
@@ -49,7 +52,13 @@ fun WifiContent(
     var expanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.encode())
+        onContent(state.isEnabled, state.encode(), state.decode())
+    }
+
+    LaunchedEffect(encoded) {
+        if (!state.isSetEncoded) {
+            viewModel.onEvent(WifiContentEvent.Encoded(encoded))
+        }
     }
 
     Column(

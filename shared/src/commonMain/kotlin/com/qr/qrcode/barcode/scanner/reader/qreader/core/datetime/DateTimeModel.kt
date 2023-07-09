@@ -16,6 +16,10 @@ data class DateTimeModel(
 
     val defaultDateTime =
         "${dayOfMonth.az()} $monthShortName $year, ${hour.az()}:${minute.az()}" // dd MMM yyyy, HH:mm
+
     val defaultDate =
         "${dayOfMonth.az()} $monthShortName $year" // dd MMM yyyy
+
+    val dateTime =
+        "${dayOfMonth.az()}.${month.az()}.$year, ${hour.az()}:${minute.az()}" // dd.mm.yyyy, HH:mm
 }

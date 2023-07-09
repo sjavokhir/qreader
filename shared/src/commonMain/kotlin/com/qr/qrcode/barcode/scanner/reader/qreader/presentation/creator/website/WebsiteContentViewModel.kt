@@ -16,15 +16,21 @@ class WebsiteContentViewModel : KMMViewModel() {
 
     fun onEvent(event: WebsiteContentEvent) {
         when (event) {
-            is WebsiteContentEvent.WebsiteChanged -> onWebsiteChanged(website = event.website)
+            is WebsiteContentEvent.Encoded -> onEncoded(event.value)
+            is WebsiteContentEvent.WebsiteChanged -> onWebsiteChanged(event.website)
         }
+    }
+
+    private fun onEncoded(value: String) {
+        onWebsiteChanged(value)
     }
 
     private fun onWebsiteChanged(website: String) {
         stateData.update {
             it.copy(
                 website = website,
-                isEnabled = website.isUrlValid()
+                isEnabled = website.isUrlValid(),
+                isSetEncoded = true
             )
         }
     }

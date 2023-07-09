@@ -65,7 +65,6 @@ fun OnBoardingScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun OnBoardingScreenContent(
-    pageCount: Int = 4,
     state: OnBoardingState,
     onEvent: (OnBoardingEvent) -> Unit,
     onNavigate: (Direction) -> Unit
@@ -73,7 +72,7 @@ private fun OnBoardingScreenContent(
     val strings = LocalStrings.current
 
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState { pageCount }
+    val pagerState = rememberPagerState { 4 }
 
     val isStart = remember(pagerState.currentPage) { pagerState.currentPage == 3 }
     val resources = remember(pagerState.currentPage) {

@@ -1,47 +1,37 @@
-package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode
+package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode
 
-import android.graphics.drawable.Drawable
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.ImageUtils
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.storagePermissions
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.CustomizeContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRImageContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CustomizeScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.qrCode.QRCodeEvent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.qrCode.QRCodeViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.NavResult
@@ -51,28 +41,43 @@ import com.ramcosta.composedestinations.spec.Direction
 @Destination
 @Composable
 fun QRCodeScreen(
-    generateText: String,
+    id: String,
+    generateMode: GenerateMode,
+    encoded: String,
+    decoded: String,
+    model: QRCustomizeModel,
+    viewModel: QRCodeViewModel = viewModel(),
     navigator: DestinationsNavigator,
     resultCustomization: ResultRecipient<CustomizeScreenDestination, QRCustomizeModel>
 ) {
-    val hasSubscription = LocalSubscription.current
-
-    var qrCustomizeModel by rememberSaveable { mutableStateOf(QRCustomizeModel()) }
+    var customizeModel by rememberSaveable { mutableStateOf(model) }
 
     resultCustomization.onNavResult { result ->
         when (result) {
             NavResult.Canceled -> {}
             is NavResult.Value -> {
-                qrCustomizeModel = result.value
+                customizeModel = result.value
             }
         }
     }
 
+    LaunchedEffect(id, encoded, customizeModel) {
+        viewModel.onEvent(
+            QRCodeEvent.InsertHistory(
+                id = id,
+                mode = generateMode,
+                encoded = encoded,
+                decoded = decoded,
+                customize = model.toState()
+            )
+        )
+    }
+
     QRBackground {
         QRCodeScreenContent(
-            hasSubscription = hasSubscription,
-            generateText = generateText,
-            model = qrCustomizeModel,
+            hasSubscription = LocalSubscription.current,
+            encodedValue = encoded,
+            model = customizeModel,
             onNavigate = navigator::navigate
         )
     }
@@ -82,13 +87,13 @@ fun QRCodeScreen(
 @Composable
 private fun QRCodeScreenContent(
     hasSubscription: Boolean,
-    generateText: String,
+    encodedValue: String,
     model: QRCustomizeModel,
     onNavigate: (Direction) -> Unit
 ) {
     val context = LocalContext.current
-    val qrDrawable = rememberQrDrawable(
-        content = generateText,
+    val qrDrawable = rememberQRDrawable(
+        content = encodedValue,
         model = model,
         ownLogo = ImageUtils.getDrawableFromPath(context, model.ownLogoPath)
     )
@@ -107,7 +112,7 @@ private fun QRCodeScreenContent(
             )
         }
         item {
-            QrImageContent(qrDrawable)
+            QRImageContent(qrDrawable)
         }
         item {
             ActionsContent(
@@ -134,75 +139,6 @@ private fun QRCodeScreenContent(
             )
         }
     }
-}
-
-@Composable
-private fun CustomizeContent(
-    model: QRCustomizeModel,
-    hasSubscription: Boolean,
-    onNavigate: (Direction) -> Unit
-) {
-    val strings = LocalStrings.current
-
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.TopEnd
-    ) {
-        Row(
-            modifier = Modifier
-                .clip(MaterialTheme.shapes.medium)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                    shape = MaterialTheme.shapes.medium
-                )
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
-                .clickableSingle {
-                    if (hasSubscription) {
-                        onNavigate(CustomizeScreenDestination(model))
-                    } else {
-                        onNavigate(PremiumScreenDestination)
-                    }
-                }
-                .padding(
-                    horizontal = 14.dp,
-                    vertical = 10.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            QRIcon(
-                painter = painterResource(id = R.drawable.ic_customize),
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            Text(
-                text = strings.customize,
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            if (!hasSubscription) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_subscription),
-                    contentDescription = null
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun QrImageContent(qrDrawable: Drawable) {
-    Image(
-        painter = rememberDrawablePainter(drawable = qrDrawable),
-        contentDescription = null,
-        modifier = Modifier
-            .aspectRatio(1f)
-            .clip(MaterialTheme.shapes.medium)
-    )
 }
 
 @Composable

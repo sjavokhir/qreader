@@ -16,9 +16,13 @@ class SocialMediaContentViewModel : KMMViewModel() {
 
     fun onEvent(event: SocialMediaContentEvent) {
         when (event) {
+            is SocialMediaContentEvent.Encoded -> onEncoded(event.value)
             is SocialMediaContentEvent.SetGenerateMode -> setGenerateMode(event.mode)
             is SocialMediaContentEvent.UsernameChanged -> onUsernameChanged(event.username)
         }
+    }
+
+    private fun onEncoded(value: String) {
     }
 
     private fun setGenerateMode(mode: GenerateMode) {
@@ -29,7 +33,8 @@ class SocialMediaContentViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 username = username,
-                isEnabled = username.isNotEmpty()
+                isEnabled = username.isNotEmpty(),
+                isSetEncoded = true
             )
         }
     }

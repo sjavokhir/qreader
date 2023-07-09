@@ -30,7 +30,8 @@ internal class QrEncoder(private val options: QrOptions)  {
     }
 
     suspend fun encode(
-        contents: QrData, charset: Charset?
+        contents: QrData,
+        charset: Charset?
     ): QrRenderResult = coroutineScope {
 
         val text = contents.encode()

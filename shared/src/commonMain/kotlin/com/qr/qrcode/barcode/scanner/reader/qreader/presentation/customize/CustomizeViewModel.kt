@@ -37,18 +37,18 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 
     private fun getAllStyles() {
         val patterns = listOf(
-            QRPatternMode.Square, QRPatternMode.Rounded, QRPatternMode.ExtraRounded,
+            QRPatternMode.Default, QRPatternMode.Rounded, QRPatternMode.ExtraRounded,
             QRPatternMode.Circle, QRPatternMode.CirclePadding, QRPatternMode.Horizontal,
             QRPatternMode.Vertical, QRPatternMode.Rhombus, QRPatternMode.Star,
             QRPatternMode.Classy, QRPatternMode.ClassyRounded,
         )
         val corners = listOf(
-            QRCornerMode.Square, QRCornerMode.Rounded, QRCornerMode.Circle,
+            QRCornerMode.Default, QRCornerMode.Rounded, QRCornerMode.Circle,
             QRCornerMode.Two, QRCornerMode.Three, QRCornerMode.Dots,
             QRCornerMode.DotsPadding, QRCornerMode.Rhombus
         )
         val dots = listOf(
-            QRDotMode.Square, QRDotMode.Rounded, QRDotMode.Circle,
+            QRDotMode.Default, QRDotMode.Rounded, QRDotMode.Circle,
             QRDotMode.Rhombus, QRDotMode.CornerTwo, QRDotMode.CornerThree,
             QRDotMode.Dots, QRDotMode.DotsPadding, QRDotMode.Horizontal,
             QRDotMode.Vertical

@@ -15,6 +15,7 @@ class BizContentViewModel : KMMViewModel() {
 
     fun onEvent(event: BizContentEvent) {
         when (event) {
+            is BizContentEvent.Encoded -> onEncoded(event.value)
             is BizContentEvent.FirstNameChanged -> onValueChanged(firstName = event.firstName)
             is BizContentEvent.LastNameChanged -> onValueChanged(lastName = event.lastName)
             is BizContentEvent.JobChanged -> onValueChanged(job = event.job)
@@ -24,6 +25,9 @@ class BizContentViewModel : KMMViewModel() {
             is BizContentEvent.WebsiteChanged -> onValueChanged(website = event.website)
             is BizContentEvent.AddressChanged -> onValueChanged(address = event.address)
         }
+    }
+
+    private fun onEncoded(value: String) {
     }
 
     private fun onValueChanged(

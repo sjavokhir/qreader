@@ -22,8 +22,8 @@ object EventChannel {
 }
 
 sealed class Event {
-    object Idle : Event()
-
-    data class ThemeModeChanged(val themeMode: ThemeMode) : Event()
     data class LanguageChanged(val language: LanguageType) : Event()
+    data class ThemeModeChanged(val themeMode: ThemeMode) : Event()
+
+    object Idle : Event()
 }

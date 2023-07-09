@@ -16,9 +16,21 @@ class EmailContentViewModel : KMMViewModel() {
 
     fun onEvent(event: EmailContentEvent) {
         when (event) {
+            is EmailContentEvent.Encoded -> onEncoded(event.value)
             is EmailContentEvent.EmailChanged -> onValueChanged(email = event.email)
             is EmailContentEvent.SubjectChanged -> onValueChanged(subject = event.subject)
             is EmailContentEvent.MessageChanged -> onValueChanged(message = event.message)
+        }
+    }
+
+    private fun onEncoded(value: String) {
+        if (value.startsWith("mailto:")) {
+            val parts = value.split("?subject=", "?body=")
+            val email = parts[0].removePrefix("mailto:")
+            val subject = parts[1]
+            val message = parts[2]
+
+            onValueChanged(email, subject, message)
         }
     }
 

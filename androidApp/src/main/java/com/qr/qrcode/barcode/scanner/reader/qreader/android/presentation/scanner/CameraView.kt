@@ -37,10 +37,7 @@ fun CameraView(
     val cameraPermissionState = rememberPermissionState(cameraPermission)
     val locationPermissionState = rememberMultiplePermissionsState(locationPermissions)
 
-    if (
-        cameraPermissionState.status.isGranted &&
-        locationPermissionState.allPermissionsGranted
-    ) {
+    if (cameraPermissionState.status.isGranted) {
         CameraWithGrantedPermission(
             modifier = modifier,
             isFlashlightOn = isFlashlightOn,

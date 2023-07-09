@@ -1,17 +1,19 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type
 
-enum class QRDotMode(
-    val id: Int,
-    val icon: String
-) {
-    Square(1, "ic_customize_dot_square"),
-    Rounded(2, "ic_customize_dot_rounded"),
-    Circle(3, "ic_customize_dot_circle"),
-    Rhombus(4, "ic_customize_dot_rhombus"),
-    CornerTwo(5, "ic_customize_dot_two"),
-    CornerThree(6, "ic_customize_dot_three"),
-    Dots(7, "ic_customize_dot_dots"),
-    DotsPadding(8, "ic_customize_dot_dots_padding"),
-    Horizontal(9, "ic_customize_dot_horizontal"),
-    Vertical(10, "ic_customize_dot_vertical")
+enum class QRDotMode(val icon: String) {
+    Default("ic_customize_dot_square"),
+    Rounded("ic_customize_dot_rounded"),
+    Circle("ic_customize_dot_circle"),
+    Rhombus("ic_customize_dot_rhombus"),
+    CornerTwo("ic_customize_dot_two"),
+    CornerThree("ic_customize_dot_three"),
+    Dots("ic_customize_dot_dots"),
+    DotsPadding("ic_customize_dot_dots_padding"),
+    Horizontal("ic_customize_dot_horizontal"),
+    Vertical("ic_customize_dot_vertical")
+}
+
+fun Long.toQRDotMode(): QRDotMode {
+    return QRDotMode.values()
+        .firstOrNull { it.ordinal.toLong() == this } ?: QRDotMode.Default
 }

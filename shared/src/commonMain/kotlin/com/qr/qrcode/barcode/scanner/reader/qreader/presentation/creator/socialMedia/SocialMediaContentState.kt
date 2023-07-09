@@ -6,7 +6,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 data class SocialMediaContentState(
     val username: String = "",
     val mode: GenerateMode = GenerateMode.Text,
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
+    val isSetEncoded: Boolean = false
 ) : QrData {
 
     override fun encode(): String {
@@ -28,4 +29,6 @@ data class SocialMediaContentState(
             else -> ""
         } + username
     }
+
+    override fun decode(): String = encode()
 }

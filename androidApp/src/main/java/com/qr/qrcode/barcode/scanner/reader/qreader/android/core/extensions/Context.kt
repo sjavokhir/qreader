@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
+import android.provider.ContactsContract
 import android.widget.Toast
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.Constants
 import kotlin.system.exitProcess
 
 fun Context.drawableId(name: String): Int? {
@@ -49,30 +49,88 @@ fun Context.toast(message: String?) {
     }
 }
 
-fun Context.gotoUrl(url: String) {
-    tryCatch {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(intent)
-    }
-}
-
 fun Context.shareText(text: String) {
     tryCatch {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, text)
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
         startActivity(Intent.createChooser(intent, null))
     }
 }
 
-fun Context.sendMail() {
+fun Context.openUrl(url: String) {
     tryCatch {
-        val intent = Intent(
-            Intent.ACTION_SENDTO,
-            Uri.fromParts("mailto", Constants.EMAIL, null)
-        )
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Simple Vocabulary")
-        intent.putExtra(Intent.EXTRA_TEXT, "Contact developer")
-        startActivity(Intent.createChooser(intent, "Send mail"))
+        val intent = Intent(Intent.ACTION_VIEW)
+
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+            intent.data = Uri.parse(url)
+        } else {
+            intent.data = Uri.parse("https://$url")
+        }
+
+        startActivity(intent)
+    }
+}
+
+fun Context.searchText(text: String) {
+    openUrl("https://www.google.com/search?q=$text")
+}
+
+fun Context.sendMail(uriString: String) {
+    tryCatch {
+        if (uriString.startsWith("mailto:")) {
+            val parts = uriString.split("?subject=", "?body=")
+            val email = parts[0].removePrefix("mailto:")
+            val subject = parts[1]
+            val message = parts[2]
+
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "message/rfc822"
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                putExtra(Intent.EXTRA_SUBJECT, subject)
+                putExtra(Intent.EXTRA_TEXT, message)
+            }
+            startActivity(Intent.createChooser(intent, "Send email"))
+        }
+    }
+}
+
+fun Context.sendSms(uriString: String) {
+    tryCatch {
+        if (uriString.startsWith("smsto:")) {
+            val parts = uriString.split("?body=")
+            val phone = parts[0].removePrefix("smsto:")
+            val message = parts[1]
+
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("smsto:$phone")
+                putExtra("sms_body", message)
+            }
+            startActivity(intent)
+        }
+    }
+}
+
+fun Context.addContact(uriString: String) {
+    tryCatch {
+        if (uriString.startsWith("smsto:")) {
+            val parts = uriString.split("?body=")
+            val phone = parts[0].removePrefix("smsto:")
+
+            val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+                type = ContactsContract.RawContacts.CONTENT_TYPE
+                putExtra(ContactsContract.Intents.Insert.PHONE, phone)
+            }
+            startActivity(intent)
+        } else if (uriString.startsWith("tel:")) {
+            val recipient = uriString.substringAfter("tel:")
+
+            val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+                type = ContactsContract.RawContacts.CONTENT_TYPE
+                putExtra(ContactsContract.Intents.Insert.PHONE, recipient)
+            }
+            startActivity(intent)
+        }
     }
 }

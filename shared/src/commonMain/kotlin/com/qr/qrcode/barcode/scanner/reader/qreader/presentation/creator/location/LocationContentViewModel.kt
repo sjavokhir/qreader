@@ -16,6 +16,7 @@ class LocationContentViewModel : KMMViewModel() {
 
     fun onEvent(event: LocationContentEvent) {
         when (event) {
+            is LocationContentEvent.Encoded -> onEncoded(event.value)
             is LocationContentEvent.LocationChanged -> onLocationChanged(event.location)
 
             is LocationContentEvent.LatitudeChanged -> onValueChanged(
@@ -26,6 +27,9 @@ class LocationContentViewModel : KMMViewModel() {
                 longitude = event.longitude.toDoubleOrNull()
             )
         }
+    }
+
+    private fun onEncoded(value: String) {
     }
 
     private fun onLocationChanged(location: String) {

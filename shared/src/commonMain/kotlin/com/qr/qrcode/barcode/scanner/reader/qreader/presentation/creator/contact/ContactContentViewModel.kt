@@ -15,11 +15,15 @@ class ContactContentViewModel : KMMViewModel() {
 
     fun onEvent(event: ContactContentEvent) {
         when (event) {
+            is ContactContentEvent.Encoded -> onEncoded(event.value)
             is ContactContentEvent.NameChanged -> onValueChanged(name = event.name)
             is ContactContentEvent.PhoneChanged -> onValueChanged(phone = event.phone)
             is ContactContentEvent.EmailChanged -> onValueChanged(email = event.email)
             is ContactContentEvent.AddressChanged -> onValueChanged(address = event.address)
         }
+    }
+
+    private fun onEncoded(value: String) {
     }
 
     private fun onValueChanged(

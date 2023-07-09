@@ -26,8 +26,10 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.BusinessContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event.EventContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event.EventContentViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website.WebsiteContentEvent
 import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
 import com.ramcosta.composedestinations.spec.Direction
@@ -35,7 +37,8 @@ import com.ramcosta.composedestinations.spec.Direction
 @Composable
 fun EventContent(
     viewModel: EventContentViewModel = viewModel(),
-    onContent: (Boolean, String) -> Unit,
+    encoded: String,
+    onContent: (Boolean, String, String) -> Unit,
     onNavigate: (Direction) -> Unit,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>
 ) {
@@ -53,7 +56,13 @@ fun EventContent(
     }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.encode())
+        onContent(state.isEnabled, state.encode(), state.decode())
+    }
+
+    LaunchedEffect(encoded) {
+        if (!state.isSetEncoded) {
+            viewModel.onEvent(EventContentEvent.Encoded(encoded))
+        }
     }
 
     Column(

@@ -4,6 +4,5 @@ import android.app.Activity
 
 sealed class PremiumEvent {
     data class SelectProduct(val price: String) : PremiumEvent()
-
     data class Buy(val activity: Activity) : PremiumEvent()
 }

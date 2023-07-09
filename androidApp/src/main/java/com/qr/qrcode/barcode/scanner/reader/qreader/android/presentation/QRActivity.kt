@@ -50,8 +50,20 @@ class QRActivity : ComponentActivity() {
 
         setContent {
             val hasAcknowledged = viewModel.hasAcknowledged.collectAsStateWithLifecycle().value
-            val language = getSelectedLanguage()
-            val themeMode = getSelectedThemeMode()
+
+            var language by remember { mutableStateOf(appStore.getSelectedLanguage()) }
+            var themeMode by remember { mutableStateOf(appStore.getSelectedThemeMode()) }
+
+            val event = EventChannel.receiveEvent().collectAsStateWithLifecycle(
+                initialValue = Event.Idle,
+                lifecycle = lifecycle
+            ).value
+
+            when (event) {
+                is Event.LanguageChanged -> language = event.language
+                is Event.ThemeModeChanged -> themeMode = event.themeMode
+                else -> {}
+            }
 
             if (hasAcknowledged != null) {
                 QRApp(
@@ -103,45 +115,5 @@ class QRActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    @Composable
-    private fun getSelectedThemeMode(): ThemeMode {
-        var themeMode by remember { mutableStateOf(appStore.getSelectedThemeMode()) }
-
-        val event = EventChannel.receiveEvent().collectAsStateWithLifecycle(
-            initialValue = Event.Idle,
-            lifecycle = lifecycle
-        ).value
-
-        when (event) {
-            is Event.ThemeModeChanged -> {
-                themeMode = event.themeMode
-            }
-
-            else -> {}
-        }
-
-        return themeMode
-    }
-
-    @Composable
-    private fun getSelectedLanguage(): LanguageType {
-        var language by remember { mutableStateOf(appStore.getSelectedLanguage()) }
-
-        val event = EventChannel.receiveEvent().collectAsStateWithLifecycle(
-            initialValue = Event.Idle,
-            lifecycle = lifecycle
-        ).value
-
-        when (event) {
-            is Event.LanguageChanged -> {
-                language = event.language
-            }
-
-            else -> {}
-        }
-
-        return language
     }
 }

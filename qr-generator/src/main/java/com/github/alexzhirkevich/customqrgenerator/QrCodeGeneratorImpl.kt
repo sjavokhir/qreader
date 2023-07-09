@@ -41,7 +41,9 @@ internal class QrCodeGeneratorImpl(
         }
 
     private suspend fun createQrCodeInternal(
-        data: QrData, options: QrOptions, charset: Charset?
+        data: QrData,
+        options: QrOptions,
+        charset: Charset?
     ): Bitmap {
         val encoder = QrEncoder(
             options.copy(

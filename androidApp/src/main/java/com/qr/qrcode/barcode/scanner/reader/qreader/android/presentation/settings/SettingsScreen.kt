@@ -35,7 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.gotoUrl
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.openUrl
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.shareText
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
@@ -211,7 +211,7 @@ private fun OthersContent(context: Context) {
 
     HeaderContent(title = strings.others) {
         NavigateContent(title = strings.rateUs) {
-            context.gotoUrl(appUrl)
+            context.openUrl(appUrl)
         }
 
         DividerContent()
@@ -223,7 +223,7 @@ private fun OthersContent(context: Context) {
         DividerContent()
 
         NavigateContent(title = "${strings.appVersion} ($appVersion)") {
-            context.gotoUrl(appUrl)
+            context.openUrl(appUrl)
         }
     }
 }

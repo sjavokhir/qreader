@@ -60,7 +60,7 @@ fun FeedbackScreen() {
             item {
                 QRFilledButton(
                     text = strings.sendUs,
-                    onClick = { context.sendMail() }
+                    onClick = { context.sendMail("") }
                 )
             }
         }

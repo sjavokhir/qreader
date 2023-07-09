@@ -1,4 +1,4 @@
-package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrcode
+package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -23,7 +23,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternMode
 
 @Composable
-fun rememberQrDrawable(
+fun rememberQRDrawable(
     content: String,
     model: QRCustomizeModel,
     ownLogo: Drawable? = null
@@ -64,7 +64,7 @@ fun rememberQrDrawable(
 
             shapes {
                 darkPixel = when (model.selectedPattern) {
-                    QRPatternMode.Square -> QrVectorPixelShape.Default
+                    QRPatternMode.Default -> QrVectorPixelShape.Default
                     QRPatternMode.Rounded -> QrVectorPixelShape.RoundCorners(.25f)
                     QRPatternMode.ExtraRounded -> QrVectorPixelShape.RoundCorners(.5f)
                     QRPatternMode.Circle -> QrVectorPixelShape.Circle()
@@ -77,7 +77,7 @@ fun rememberQrDrawable(
                     QRPatternMode.ClassyRounded -> QrVectorPixelShape.Classy(.5f)
                 }
                 frame = when (model.selectedCorner) {
-                    QRCornerMode.Square -> QrVectorFrameShape.Default
+                    QRCornerMode.Default -> QrVectorFrameShape.Default
                     QRCornerMode.Rounded -> QrVectorFrameShape.RoundCorners(.25f)
                     QRCornerMode.Circle -> QrVectorFrameShape.Circle()
                     QRCornerMode.Two -> QrVectorFrameShape.RoundCorners(
@@ -104,7 +104,7 @@ fun rememberQrDrawable(
                     )
                 }
                 ball = when (model.selectedDot) {
-                    QRDotMode.Square -> QrVectorBallShape.Default
+                    QRDotMode.Default -> QrVectorBallShape.Default
                     QRDotMode.Rounded -> QrVectorBallShape.RoundCorners(.25f)
                     QRDotMode.Circle -> QrVectorBallShape.Circle()
                     QRDotMode.Rhombus -> QrVectorBallShape.Rhombus()

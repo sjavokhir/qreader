@@ -15,15 +15,21 @@ class TextContentViewModel : KMMViewModel() {
 
     fun onEvent(event: TextContentEvent) {
         when (event) {
-            is TextContentEvent.TextChanged -> onTextChanged(text = event.text)
+            is TextContentEvent.Encoded -> onEncoded(event.value)
+            is TextContentEvent.TextChanged -> onTextChanged(event.text)
         }
+    }
+
+    private fun onEncoded(value: String) {
+        onTextChanged(value)
     }
 
     private fun onTextChanged(text: String) {
         stateData.update {
             it.copy(
                 text = text,
-                isEnabled = text.isNotEmpty()
+                isEnabled = text.isNotEmpty(),
+                isSetEncoded = true
             )
         }
     }

@@ -15,11 +15,15 @@ class WifiContentViewModel : KMMViewModel() {
 
     fun onEvent(event: WifiContentEvent) {
         when (event) {
+            is WifiContentEvent.Encoded -> onEncoded(event.value)
             is WifiContentEvent.NetworkNameChanged -> onValueChanged(networkName = event.name)
             is WifiContentEvent.PasswordChanged -> onValueChanged(password = event.password)
             is WifiContentEvent.SelectAuthentication -> onValueChanged(authentication = event.authentication)
             is WifiContentEvent.HiddenChecked -> onValueChanged(isHidden = event.isHidden)
         }
+    }
+
+    private fun onEncoded(value: String) {
     }
 
     private fun onValueChanged(

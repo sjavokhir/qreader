@@ -19,6 +19,7 @@ class EventContentViewModel : KMMViewModel() {
 
     fun onEvent(event: EventContentEvent) {
         when (event) {
+            is EventContentEvent.Encoded -> onEncoded(event.value)
             is EventContentEvent.NameChanged -> onValueChanged(name = event.name)
             is EventContentEvent.LocationChanged -> onValueChanged(location = event.location)
             is EventContentEvent.DescriptionChanged -> onValueChanged(description = event.description)
@@ -26,6 +27,9 @@ class EventContentViewModel : KMMViewModel() {
             is EventContentEvent.ShowPicker -> onShowPicker(event.isStart)
             is EventContentEvent.DateTimeChanged -> onDateTimeChanged(event.timestamp)
         }
+    }
+
+    private fun onEncoded(value: String) {
     }
 
     private fun onShowPicker(isStart: Boolean) {

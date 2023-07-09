@@ -45,20 +45,26 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.TextContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WebsiteContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WifiContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LocationPickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.result.ResultBackNavigator
 import com.ramcosta.composedestinations.result.ResultRecipient
 import com.ramcosta.composedestinations.spec.Direction
 
 @Destination
 @Composable
 fun AddContentScreen(
-    mode: GenerateMode,
+    id: String,
+    generateMode: GenerateMode,
+    encoded: String = "",
+    model: QRCustomizeModel = QRCustomizeModel(),
     navigator: DestinationsNavigator,
+    resultNavigator: ResultBackNavigator<QRCustomizeModel>,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
 ) {
@@ -66,7 +72,8 @@ fun AddContentScreen(
     val strings = LocalStrings.current
 
     var isEnabled by remember { mutableStateOf(false) }
-    var generateText by remember { mutableStateOf("") }
+    var encodedValue by remember { mutableStateOf("") }
+    var decodedValue by remember { mutableStateOf("") }
 
     QRBackground {
         Box(
@@ -81,17 +88,17 @@ fun AddContentScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(20.dp)
                     ) {
-                        context.drawableId(mode.icon)?.let { icon ->
+                        context.drawableId(generateMode.icon)?.let { icon ->
                             Image(
                                 painter = painterResource(id = icon),
-                                contentDescription = mode.title,
+                                contentDescription = generateMode.title,
                                 modifier = Modifier
                                     .size(44.dp)
                                     .clip(MaterialTheme.shapes.medium)
                             )
 
                             Text(
-                                text = mode.title,
+                                text = generateMode.title,
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -100,10 +107,12 @@ fun AddContentScreen(
                 }
                 item {
                     GenerateContent(
-                        mode = mode,
-                        onContent = { isReady, text ->
-                            isEnabled = isReady
-                            generateText = text
+                        mode = generateMode,
+                        encoded = encoded,
+                        onContent = { enabled, encoded, decoded ->
+                            isEnabled = enabled
+                            encodedValue = encoded
+                            decodedValue = decoded
                         },
                         onNavigate = navigator::navigate,
                         resultTimestamp = resultTimestamp,
@@ -127,7 +136,15 @@ fun AddContentScreen(
                     text = strings.next,
                     enabled = isEnabled,
                     onClick = {
-                        navigator.navigate(QRCodeScreenDestination(generateText))
+                        navigator.navigate(
+                            QRCodeScreenDestination(
+                                id = id,
+                                generateMode = generateMode,
+                                encoded = encodedValue,
+                                decoded = decodedValue,
+                                model = model
+                            )
+                        )
                     },
                     modifier = Modifier.padding(
                         horizontal = 20.dp,
@@ -142,28 +159,67 @@ fun AddContentScreen(
 @Composable
 private fun GenerateContent(
     mode: GenerateMode,
-    onContent: (Boolean, String) -> Unit,
+    encoded: String,
+    onContent: (Boolean, String, String) -> Unit,
     onNavigate: (Direction) -> Unit,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
 ) {
     when (mode) {
-        GenerateMode.Text -> TextContent(onContent = onContent)
-        GenerateMode.Website -> WebsiteContent(onContent = onContent)
-        GenerateMode.Sms -> SmsContent(onContent = onContent)
-        GenerateMode.PhoneNumber -> PhoneContent(onContent = onContent)
-        GenerateMode.EmailAddress -> EmailContent(onContent = onContent)
-        GenerateMode.Wifi -> WifiContent(onContent = onContent)
-        GenerateMode.ContactVCard -> ContactContent(onContent = onContent)
+        GenerateMode.Text -> TextContent(
+            encoded = encoded,
+            onContent = onContent
+        )
+
+        GenerateMode.Website -> WebsiteContent(
+            encoded = encoded,
+            onContent = onContent
+        )
+
+        GenerateMode.Sms -> SmsContent(
+            encoded = encoded,
+            onContent = onContent
+        )
+
+        GenerateMode.PhoneNumber -> PhoneContent(
+            encoded = encoded,
+            onContent = onContent
+        )
+
+        GenerateMode.EmailAddress -> EmailContent(
+            encoded = encoded,
+            onContent = onContent
+        )
+
+        GenerateMode.Wifi -> WifiContent(
+            encoded = encoded,
+            onContent = onContent
+        )
+
+        GenerateMode.ContactVCard -> ContactContent(
+            encoded = encoded,
+            onContent = onContent
+        )
+
         GenerateMode.CalendarEvent -> EventContent(
+            encoded = encoded,
             onContent = onContent,
             onNavigate = onNavigate,
             resultTimestamp = resultTimestamp
         )
 
-        GenerateMode.BizCard -> BizContent(onContent = onContent)
-        GenerateMode.BusinessVCard -> BusinessContent(onContent = onContent)
+        GenerateMode.BizCard -> BizContent(
+            encoded = encoded,
+            onContent = onContent
+        )
+
+        GenerateMode.BusinessVCard -> BusinessContent(
+            encoded = encoded,
+            onContent = onContent
+        )
+
         GenerateMode.Location -> LocationContent(
+            encoded = encoded,
             onContent = onContent,
             onNavigate = onNavigate,
             resultLocation = resultLocation
@@ -172,6 +228,7 @@ private fun GenerateContent(
         else -> {
             SocialMediaContent(
                 mode = mode,
+                encoded = encoded,
                 onContent = onContent
             )
         }

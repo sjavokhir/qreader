@@ -7,7 +7,8 @@ data class WifiContentState(
     val password: String = "",
     val authentication: Authentication = Authentication.WEP,
     val isHidden: Boolean = false,
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
+    val isSetEncoded: Boolean = false
 ) : QrData {
 
     val authentications: List<Authentication>
@@ -27,15 +28,30 @@ data class WifiContentState(
         }
     }
 
-    override fun encode(): String = buildString {
-        append("WIFI:")
-        append("S:$networkName;")
-        append("T:$authentication;")
+    override fun encode(): String {
+        return create(networkName, password, authentication, isHidden)
+    }
 
-        if (authentication != Authentication.OPEN) {
-            append("P:$password;")
+    override fun decode(): String = "$networkName, ${authentication.name}"
+
+    companion object {
+        fun create(
+            networkName: String,
+            password: String,
+            authentication: Authentication,
+            isHidden: Boolean
+        ): String {
+            return buildString {
+                append("WIFI:")
+                append("S:$networkName;")
+                append("T:$authentication;")
+
+                if (authentication != Authentication.OPEN) {
+                    append("P:$password;")
+                }
+
+                append("H:$isHidden;")
+            }
         }
-
-        append("H:$isHidden;")
     }
 }

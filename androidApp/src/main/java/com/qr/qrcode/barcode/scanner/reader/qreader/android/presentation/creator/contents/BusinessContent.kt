@@ -13,18 +13,26 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.compone
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.BusinessContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.BusinessContentViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website.WebsiteContentEvent
 
 @Composable
 fun BusinessContent(
     viewModel: BusinessContentViewModel = viewModel(),
-    onContent: (Boolean, String) -> Unit
+    encoded: String,
+    onContent: (Boolean, String, String) -> Unit
 ) {
     val strings = LocalStrings.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.encode())
+        onContent(state.isEnabled, state.encode(), state.decode())
+    }
+
+    LaunchedEffect(encoded) {
+        if (!state.isSetEncoded) {
+            viewModel.onEvent(BusinessContentEvent.Encoded(encoded))
+        }
     }
 
     Column(

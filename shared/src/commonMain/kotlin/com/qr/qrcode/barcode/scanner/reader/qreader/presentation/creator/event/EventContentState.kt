@@ -13,27 +13,45 @@ data class EventContentState(
     val startDateTime: String = "",
     val endTimestamp: Long = 0L,
     val endDateTime: String = "",
-    val isEnabled: Boolean = false
+    val isEnabled: Boolean = false,
+    val isSetEncoded: Boolean = false
 ) : QrData {
 
-    override fun encode(): String = buildString {
-        append("BEGIN:VEVENT\n")
-        append("SUMMARY:$name\n")
+    override fun encode(): String {
+        return create(name, location, description, isAllDay, startTimestamp, endTimestamp)
+    }
 
-        if (isAllDay) {
-            append("DTSTART;VALUE=DATE:${startTimestamp.timestampToString(isAllDay)}\n")
-        } else {
-            append("DTSTART:${startTimestamp.timestampToString(isAllDay)}\n")
+    override fun decode(): String = "$name, $location, $startDateTime-$endDateTime"
+
+    companion object {
+        fun create(
+            name: String,
+            location: String,
+            description: String,
+            isAllDay: Boolean,
+            startTimestamp: Long,
+            endTimestamp: Long,
+        ): String {
+            return buildString {
+                append("BEGIN:VEVENT\n")
+                append("SUMMARY:$name\n")
+
+                if (isAllDay) {
+                    append("DTSTART;VALUE=DATE:${startTimestamp.timestampToString(isAllDay)}\n")
+                } else {
+                    append("DTSTART:${startTimestamp.timestampToString(isAllDay)}\n")
+                }
+
+                if (isAllDay) {
+                    append("DTEND;VALUE=DATE:${endTimestamp.timestampToString(isAllDay)}\n")
+                } else {
+                    append("DTEND:${endTimestamp.timestampToString(isAllDay)}\n")
+                }
+
+                append("LOCATION:$location\n")
+                append("DESCRIPTION:$description\n")
+                append("END:VEVENT")
+            }
         }
-
-        if (isAllDay) {
-            append("DTEND;VALUE=DATE:${endTimestamp.timestampToString(isAllDay)}\n")
-        } else {
-            append("DTEND:${endTimestamp.timestampToString(isAllDay)}\n")
-        }
-
-        append("LOCATION:$location\n")
-        append("DESCRIPTION:$description\n")
-        append("END:VEVENT")
     }
 }

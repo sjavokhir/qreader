@@ -17,14 +17,21 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.text.Te
 @Composable
 fun TextContent(
     viewModel: TextContentViewModel = viewModel(),
-    onContent: (Boolean, String) -> Unit
+    encoded: String,
+    onContent: (Boolean, String, String) -> Unit,
 ) {
     val strings = LocalStrings.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.encode())
+        onContent(state.isEnabled, state.encode(), state.decode())
+    }
+
+    LaunchedEffect(encoded) {
+        if (!state.isSetEncoded) {
+            viewModel.onEvent(TextContentEvent.Encoded(encoded))
+        }
     }
 
     Column {
