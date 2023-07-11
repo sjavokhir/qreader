@@ -1,6 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settings
 
-import androidx.compose.foundation.Canvas
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,15 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -28,34 +25,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.toColorInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.gotoUrl
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.openUrl
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.shareText
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AboutScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.GoProContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FaqScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FeedbackScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LanguageScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ManagePermissionsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SoundEffectsScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ThemeModeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsViewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appVersion
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
@@ -63,13 +60,15 @@ import com.ramcosta.composedestinations.spec.Direction
 @Destination
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel = viewModel(),
-    navigator: DestinationsNavigator
+    viewModel: SettingsViewModel = viewModel(), navigator: DestinationsNavigator
 ) {
+    val hasSubscription = LocalSubscription.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     QRBackground {
         SettingsScreenContent(
+            hasSubscription = hasSubscription,
             state = state,
             onEvent = viewModel::onEvent,
             onNavigate = navigator::navigate
@@ -80,9 +79,12 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenContent(
     state: SettingsState,
+    hasSubscription: Boolean,
     onEvent: (SettingsEvent) -> Unit,
     onNavigate: (Direction) -> Unit
 ) {
+    val context = LocalContext.current
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -90,67 +92,51 @@ private fun SettingsScreenContent(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        item { GoProContent { onNavigate(PremiumScreenDestination) } }
-        item { CustomSettingContent(state, onEvent, onNavigate) }
-        item { ScanSettingContent(state, onEvent, onNavigate) }
-        item { ResultSettingContent(onNavigate) }
+        if (!hasSubscription) {
+            item { GoProContent { onNavigate(PremiumScreenDestination) } }
+        }
+
+        item { GeneralContent(onNavigate) }
+        item { ScanControlsContent(hasSubscription, state, onEvent, onNavigate) }
         item { GetHelpContent(onNavigate) }
-        item { OthersContent(onNavigate) }
+        item { OthersContent(context) }
     }
 }
 
 @Composable
-private fun CustomSettingContent(
-    state: SettingsState,
-    onEvent: (SettingsEvent) -> Unit,
+private fun GeneralContent(
     onNavigate: (Direction) -> Unit
 ) {
-    HeaderContent(title = R.string.custom_setting) {
-        SwitchContent(
-            title = R.string.app_lock,
-            hasSubscription = state.hasSubscription,
-            checked = state.isAppLockChecked,
-            onCheckedChange = {
-                if (state.hasSubscription) {
-                    onEvent(SettingsEvent.CheckAppLock(it))
-                } else {
-                    onNavigate(PremiumScreenDestination)
-                }
-            }
-        )
+    val strings = LocalStrings.current
 
-        return@HeaderContent
+    HeaderContent(title = strings.general) {
+        NavigateContent(title = strings.theme) {
+            onNavigate(ThemeModeScreenDestination)
+        }
 
         DividerContent()
 
-        ColorContent(
-            title = R.string.background_color,
-            hasSubscription = state.hasSubscription,
-            hexColor = "#FFFBFF"
-        )
-
-        DividerContent()
-
-        ColorContent(
-            title = R.string.foreground_color,
-            hasSubscription = state.hasSubscription,
-            hexColor = "#201A19"
-        )
+        NavigateContent(title = strings.language) {
+            onNavigate(LanguageScreenDestination)
+        }
     }
 }
 
 @Composable
-private fun ScanSettingContent(
+private fun ScanControlsContent(
+    hasSubscription: Boolean,
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
     onNavigate: (Direction) -> Unit
 ) {
-    HeaderContent(title = R.string.scan_setting) {
+    val strings = LocalStrings.current
+
+    HeaderContent(title = strings.scanControls) {
         NavigateContent(
-            title = R.string.sound_effects,
-            hasSubscription = state.hasSubscription
+            title = strings.soundEffects,
+            hasSubscription = hasSubscription
         ) {
-            if (state.hasSubscription) {
+            if (hasSubscription) {
                 onNavigate(SoundEffectsScreenDestination)
             } else {
                 onNavigate(PremiumScreenDestination)
@@ -160,7 +146,7 @@ private fun ScanSettingContent(
         DividerContent()
 
         SwitchContent(
-            title = R.string.vibrate,
+            title = strings.vibrate,
             checked = state.isVibrateChecked,
             onCheckedChange = {
                 onEvent(SettingsEvent.CheckVibrate(it))
@@ -170,7 +156,7 @@ private fun ScanSettingContent(
         DividerContent()
 
         SwitchContent(
-            title = R.string.open_web_pages,
+            title = strings.openWebPages,
             checked = state.isOpenWebPagesChecked,
             onCheckedChange = {
                 onEvent(SettingsEvent.CheckOpenWebPages(it))
@@ -180,11 +166,21 @@ private fun ScanSettingContent(
         DividerContent()
 
         SwitchContent(
-            title = R.string.batch_scan,
-            hasSubscription = state.hasSubscription,
-            checked = state.isBatchScanChecked,
+            title = strings.chromeCustomTabs,
+            checked = state.isChromeCustomTabsChecked,
             onCheckedChange = {
-                if (state.hasSubscription) {
+                onEvent(SettingsEvent.CheckChromeCustomTabs(it))
+            }
+        )
+
+        DividerContent()
+
+        SwitchContent(
+            title = strings.batchScan,
+            hasSubscription = hasSubscription,
+            checked = state.isBatchScanChecked && hasSubscription,
+            onCheckedChange = {
+                if (hasSubscription) {
                     onEvent(SettingsEvent.CheckBatchScan(it))
                 } else {
                     onNavigate(PremiumScreenDestination)
@@ -195,74 +191,63 @@ private fun ScanSettingContent(
 }
 
 @Composable
-private fun ResultSettingContent(
-    onNavigate: (Direction) -> Unit
-) {
-    HeaderContent(title = R.string.result_setting) {
-        NavigateContent(title = R.string.language) {
-            onNavigate(LanguageScreenDestination)
-        }
-    }
-}
-
-@Composable
 private fun GetHelpContent(
     onNavigate: (Direction) -> Unit
 ) {
-    HeaderContent(title = R.string.get_help) {
-        NavigateContent(title = R.string.feedback) {
+    val strings = LocalStrings.current
+
+    HeaderContent(title = strings.getHelp) {
+        NavigateContent(title = strings.feedback) {
             onNavigate(FeedbackScreenDestination)
         }
 
         DividerContent()
 
-        NavigateContent(title = R.string.frequently_asked_questions) {
+        NavigateContent(title = strings.frequentlyAskedQuestions) {
             onNavigate(FaqScreenDestination)
         }
 
         DividerContent()
 
-        NavigateContent(title = R.string.manage_permissions) {
+        NavigateContent(title = strings.managePermissions) {
             onNavigate(ManagePermissionsScreenDestination)
         }
     }
 }
 
 @Composable
-private fun OthersContent(
-    onNavigate: (Direction) -> Unit
-) {
-    val context = LocalContext.current
+private fun OthersContent(context: Context) {
+    val strings = LocalStrings.current
 
-    HeaderContent(title = R.string.others) {
-        NavigateContent(title = R.string.rate_us) {
-            context.gotoUrl(appUrl)
+    HeaderContent(title = strings.others) {
+        NavigateContent(title = strings.rateUs) {
+            context.openUrl(appUrl)
         }
 
         DividerContent()
 
-        NavigateContent(title = R.string.tell_friends) {
-            context.shareText("Share")
+        NavigateContent(title = strings.tellFriends) {
+            context.shareText(strings.shareDescription)
         }
 
         DividerContent()
 
-        NavigateContent(title = R.string.about_us) {
-            onNavigate(AboutScreenDestination)
+        NavigateContent(title = "${strings.appVersion} ($appVersion)") {
+            context.openUrl(appUrl)
         }
     }
 }
 
 @Composable
 private fun HeaderContent(
-    title: Int,
+    title: String,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = stringResource(id = title),
+            text = title,
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.SemiBold,
             fontSize = 15.sp
@@ -285,7 +270,7 @@ private fun HeaderContent(
 
 @Composable
 private fun NavigateContent(
-    title: Int,
+    title: String,
     hasSubscription: Boolean = true,
     onClick: () -> Unit
 ) {
@@ -297,19 +282,23 @@ private fun NavigateContent(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = stringResource(id = title),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        if (!hasSubscription) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_subscription),
-                contentDescription = null
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge
             )
-        }
 
-        Spacer(modifier = Modifier.weight(1f))
+            if (!hasSubscription) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_subscription),
+                    contentDescription = null
+                )
+            }
+        }
 
         QRIcon(
             painter = painterResource(id = R.drawable.ic_chevron_right),
@@ -320,7 +309,7 @@ private fun NavigateContent(
 
 @Composable
 private fun SwitchContent(
-    title: Int,
+    title: String,
     hasSubscription: Boolean = true,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -332,19 +321,23 @@ private fun SwitchContent(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = stringResource(id = title),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        if (!hasSubscription) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_subscription),
-                contentDescription = null
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge
             )
-        }
 
-        Spacer(modifier = Modifier.weight(1f))
+            if (!hasSubscription) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_subscription),
+                    contentDescription = null
+                )
+            }
+        }
 
         Switch(
             checked = checked,
@@ -354,45 +347,6 @@ private fun SwitchContent(
                 .height(24.dp)
                 .scale(.85f)
         )
-    }
-}
-
-@Composable
-private fun ColorContent(
-    title: Int,
-    hasSubscription: Boolean = true,
-    hexColor: String
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = stringResource(id = title),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        if (!hasSubscription) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_subscription),
-                contentDescription = null
-            )
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Canvas(
-            modifier = Modifier
-                .size(size = 24.dp)
-                .border(
-                    width = 1.dp, color = MaterialTheme.colorScheme.outline, shape = CircleShape
-                )
-        ) {
-            drawCircle(color = Color(hexColor.toColorInt()))
-        }
     }
 }
 

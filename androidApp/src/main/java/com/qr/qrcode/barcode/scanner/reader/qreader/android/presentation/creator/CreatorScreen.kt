@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,14 +34,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.DividerContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateHeaderType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateHeader
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.randomUUID
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
@@ -53,10 +55,13 @@ fun CreatorScreen(
     viewModel: GenerateContentsViewModel = viewModel(),
     navigator: DestinationsNavigator
 ) {
+    val hasSubscription = LocalSubscription.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     QRBackground {
         GenerateContentsContent(
+            hasSubscription = hasSubscription,
             state = state,
             onNavigate = navigator::navigate
         )
@@ -65,6 +70,7 @@ fun CreatorScreen(
 
 @Composable
 private fun GenerateContentsContent(
+    hasSubscription: Boolean,
     state: GenerateContentsState,
     onNavigate: (Direction) -> Unit
 ) {
@@ -88,7 +94,7 @@ private fun GenerateContentsContent(
                 state.contents.forEach { content ->
                     item {
                         Text(
-                            text = stringResource(id = content.key.headerTitle()),
+                            text = content.key.headerTitle(),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier
@@ -97,16 +103,22 @@ private fun GenerateContentsContent(
                                 .padding(bottom = 8.dp)
                         )
                     }
-                    itemsIndexed(content.value) { index, type ->
+                    itemsIndexed(content.value) { index, mode ->
                         GenerateContentItem(
                             context = context,
-                            type = type,
+                            mode = mode,
+                            hasSubscription = hasSubscription,
                             isLastItem = index == content.value.lastIndex,
                             onClick = {
-                                if (type.isPremium) {
+                                if (!hasSubscription && mode.isPremium) {
                                     onNavigate(PremiumScreenDestination)
                                 } else {
-                                    onNavigate(AddContentScreenDestination(type = type))
+                                    onNavigate(
+                                        AddContentScreenDestination(
+                                            id = randomUUID(),
+                                            generateMode = mode
+                                        )
+                                    )
                                 }
                             }
                         )
@@ -120,10 +132,13 @@ private fun GenerateContentsContent(
 @Composable
 private fun GenerateContentItem(
     context: Context,
-    type: GenerateType,
+    mode: GenerateMode,
+    hasSubscription: Boolean,
     isLastItem: Boolean,
     onClick: () -> Unit
 ) {
+    val strings = LocalStrings.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -136,47 +151,47 @@ private fun GenerateContentItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            context.drawableId(type.icon)?.let { icon ->
+            context.drawableId(mode.icon)?.let { icon ->
                 Image(
                     painter = painterResource(id = icon),
-                    contentDescription = type.title,
+                    contentDescription = mode.title,
                     modifier = Modifier
                         .size(42.dp)
                         .clip(MaterialTheme.shapes.medium)
                 )
+            }
 
+            Text(
+                text = mode.title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            if (!hasSubscription && mode.isPremium) {
                 Text(
-                    text = type.title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                if (type.isPremium) {
-                    Text(
-                        text = stringResource(id = R.string.premium),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onErrorContainer,
-                        modifier = Modifier
-                            .clip(MaterialTheme.shapes.small)
-                            .background(
-                                color = MaterialTheme.colorScheme.errorContainer,
-                                shape = MaterialTheme.shapes.small
-                            )
-                            .padding(
-                                horizontal = 4.dp,
-                                vertical = 2.dp
-                            )
-                    )
-                }
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_chevron_right),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outline)
+                    text = strings.premium,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.small)
+                        .background(
+                            color = MaterialTheme.colorScheme.errorContainer,
+                            shape = MaterialTheme.shapes.small
+                        )
+                        .padding(
+                            horizontal = 4.dp,
+                            vertical = 2.dp
+                        )
                 )
             }
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_chevron_right),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outline)
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -187,11 +202,14 @@ private fun GenerateContentItem(
     }
 }
 
-private fun GenerateHeaderType.headerTitle(): Int {
+@Composable
+private fun GenerateHeader.headerTitle(): String {
+    val strings = LocalStrings.current
+
     return when (this) {
-        GenerateHeaderType.Web -> R.string.web
-        GenerateHeaderType.Communication -> R.string.communication
-        GenerateHeaderType.Other -> R.string.other
-        GenerateHeaderType.SocialMedia -> R.string.social_media
+        GenerateHeader.Web -> strings.web
+        GenerateHeader.Communication -> strings.communication
+        GenerateHeader.Other -> strings.other
+        GenerateHeader.SocialMedia -> strings.socialMedia
     }
 }

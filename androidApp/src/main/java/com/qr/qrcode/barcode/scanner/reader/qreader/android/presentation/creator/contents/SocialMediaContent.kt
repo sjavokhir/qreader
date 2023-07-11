@@ -5,31 +5,37 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialMedia.SocialMediaContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialMedia.SocialMediaContentViewModel
 
 @Composable
 fun SocialMediaContent(
     viewModel: SocialMediaContentViewModel = viewModel(),
-    type: GenerateType,
-    onContent: (Boolean, String) -> Unit
+    mode: GenerateMode,
+    encoded: String,
+    onContent: (Boolean, String, String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(type) {
-        viewModel.onEvent(SocialMediaContentEvent.SetType(type))
+    LaunchedEffect(mode) {
+        viewModel.onEvent(SocialMediaContentEvent.SetGenerateMode(mode))
     }
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.generateText)
+        onContent(state.isEnabled, state.encode(), state.decode())
+    }
+
+    LaunchedEffect(encoded) {
+        if (!state.isSetEncoded) {
+            viewModel.onEvent(SocialMediaContentEvent.Encoded(encoded))
+        }
     }
 
     Column(
@@ -40,9 +46,9 @@ fun SocialMediaContent(
             onValueChange = {
                 viewModel.onEvent(SocialMediaContentEvent.UsernameChanged(it))
             },
-            placeholder = type.inputPlaceholder,
-            hint = type.inputHint,
-            keyboardType = if (type == GenerateType.WhatsApp) {
+            placeholder = mode.inputPlaceholder(),
+            hint = mode.inputHint(),
+            keyboardType = if (mode == GenerateMode.WhatsApp) {
                 KeyboardType.Phone
             } else {
                 KeyboardType.Text
@@ -51,46 +57,52 @@ fun SocialMediaContent(
     }
 }
 
-private val GenerateType.inputHint: String
-    @Composable
-    get() = when (this) {
-        GenerateType.Instagram,
-        GenerateType.Facebook,
-        GenerateType.Twitter,
-        GenerateType.TikTok,
-        GenerateType.Telegram,
-        GenerateType.VKontakte,
-        GenerateType.Github,
-        GenerateType.Medium -> stringResource(id = R.string.social_media_username, title)
+@Composable
+private fun GenerateMode.inputHint(): String {
+    val strings = LocalStrings.current
 
-        GenerateType.Youtube,
-        GenerateType.Twitch -> stringResource(id = R.string.social_media_channel, title)
+    return when (this) {
+        GenerateMode.Instagram,
+        GenerateMode.Facebook,
+        GenerateMode.Twitter,
+        GenerateMode.TikTok,
+        GenerateMode.Telegram,
+        GenerateMode.VKontakte,
+        GenerateMode.Github,
+        GenerateMode.Medium -> strings.socialMediaUsername(title)
 
-        GenerateType.LinkedIn,
-        GenerateType.Dribbble,
-        GenerateType.Behance -> stringResource(id = R.string.social_media_profile, title)
+        GenerateMode.Youtube,
+        GenerateMode.Twitch -> strings.socialMediaChannel(title)
 
-        GenerateType.WhatsApp -> stringResource(id = R.string.whatsapp_number)
+        GenerateMode.LinkedIn,
+        GenerateMode.Dribbble,
+        GenerateMode.Behance -> strings.socialMediaProfile(title)
 
-        else -> stringResource(id = R.string.text)
+        GenerateMode.WhatsApp -> strings.whatsappNumber
+
+        else -> strings.text
     }
+}
 
-private val GenerateType.inputPlaceholder: String
-    @Composable
-    get() = when (this) {
-        GenerateType.Instagram -> "e.g. cristiano"
-        GenerateType.Facebook -> "e.g. cristiano"
-        GenerateType.Twitter -> "e.g. elonmusk"
-        GenerateType.TikTok -> "e.g. khaby.lame"
-        GenerateType.Telegram -> "e.g. durov"
-        GenerateType.VKontakte -> "e.g. durov"
-        GenerateType.Github -> "e.g. freeCodeCamp"
-        GenerateType.Medium -> "e.g. swlh"
-        GenerateType.Youtube -> "e.g. MrBeast"
-        GenerateType.Twitch -> "e.g. ninja"
-        GenerateType.LinkedIn -> "e.g. williamhgates"
-        GenerateType.Dribbble -> "e.g. zhenyary"
-        GenerateType.Behance -> "e.g. zekadesign"
-        GenerateType.WhatsApp -> stringResource(id = R.string.eg_placeholder_phone)
-        else -> stringResource(id = R.string.enter_value)
+@Composable
+private fun GenerateMode.inputPlaceholder(): String {
+    val strings = LocalStrings.current
+
+    return when (this) {
+        GenerateMode.Instagram -> "e.g. cristiano"
+        GenerateMode.Facebook -> "e.g. cristiano"
+        GenerateMode.Twitter -> "e.g. elonmusk"
+        GenerateMode.TikTok -> "e.g. khaby.lame"
+        GenerateMode.Telegram -> "e.g. durov"
+        GenerateMode.VKontakte -> "e.g. durov"
+        GenerateMode.Github -> "e.g. freeCodeCamp"
+        GenerateMode.Medium -> "e.g. swlh"
+        GenerateMode.Youtube -> "e.g. MrBeast"
+        GenerateMode.Twitch -> "e.g. ninja"
+        GenerateMode.LinkedIn -> "e.g. williamhgates"
+        GenerateMode.Dribbble -> "e.g. zhenyary"
+        GenerateMode.Behance -> "e.g. zekadesign"
+        GenerateMode.WhatsApp -> strings.egPlaceholderPhone
+        else -> strings.enterValue
     }
+}

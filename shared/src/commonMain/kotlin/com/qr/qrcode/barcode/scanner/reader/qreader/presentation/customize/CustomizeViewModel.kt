@@ -1,8 +1,8 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRCornerType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotType
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRCornerMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRDotMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.QRPatternMode
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -23,6 +23,7 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 
     fun onEvent(event: CustomizeEvent) {
         when (event) {
+            is CustomizeEvent.Customize -> onCustomize(event.state)
             is CustomizeEvent.SelectPattern -> onPatternSelected(event.pattern)
             is CustomizeEvent.SelectCorner -> onCornerSelected(event.corner)
             is CustomizeEvent.SelectDot -> onDotSelected(event.dot)
@@ -36,15 +37,21 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 
     private fun getAllStyles() {
         val patterns = listOf(
-            QRPatternType.Square, QRPatternType.Rounded, QRPatternType.Dots,
-            QRPatternType.Classy, QRPatternType.ClassyRounded, QRPatternType.ExtraRounded
+            QRPatternMode.Default, QRPatternMode.Rounded, QRPatternMode.ExtraRounded,
+            QRPatternMode.Circle, QRPatternMode.CirclePadding, QRPatternMode.Horizontal,
+            QRPatternMode.Vertical, QRPatternMode.Rhombus, QRPatternMode.Star,
+            QRPatternMode.Classy, QRPatternMode.ClassyRounded,
         )
         val corners = listOf(
-            QRCornerType.NoStyle, QRCornerType.Square,
-            QRCornerType.Rounded, QRCornerType.RoundedEdge
+            QRCornerMode.Default, QRCornerMode.Rounded, QRCornerMode.Circle,
+            QRCornerMode.Two, QRCornerMode.Three, QRCornerMode.Dots,
+            QRCornerMode.DotsPadding, QRCornerMode.Rhombus
         )
         val dots = listOf(
-            QRDotType.NoStyle, QRDotType.Square, QRDotType.Rounded
+            QRDotMode.Default, QRDotMode.Rounded, QRDotMode.Circle,
+            QRDotMode.Rhombus, QRDotMode.CornerTwo, QRDotMode.CornerThree,
+            QRDotMode.Dots, QRDotMode.DotsPadding, QRDotMode.Horizontal,
+            QRDotMode.Vertical
         )
 
         stateData.update {
@@ -57,15 +64,31 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
         }
     }
 
-    private fun onPatternSelected(pattern: QRPatternType) {
+    private fun onCustomize(state: CustomizeState) {
+        stateData.update {
+            it.copy(
+                selectedPattern = state.selectedPattern,
+                selectedCorner = state.selectedCorner,
+                selectedDot = state.selectedDot,
+                patternDotHex = state.patternDotHex,
+                patternBackgroundHex = state.patternBackgroundHex,
+                frameHex = state.frameHex,
+                frameDotHex = state.frameDotHex,
+                selectedLogo = state.selectedLogo,
+                ownLogoPath = state.ownLogoPath
+            )
+        }
+    }
+
+    private fun onPatternSelected(pattern: QRPatternMode) {
         stateData.update { it.copy(selectedPattern = pattern) }
     }
 
-    private fun onCornerSelected(corner: QRCornerType) {
+    private fun onCornerSelected(corner: QRCornerMode) {
         stateData.update { it.copy(selectedCorner = corner) }
     }
 
-    private fun onDotSelected(dot: QRDotType) {
+    private fun onDotSelected(dot: QRDotMode) {
         stateData.update { it.copy(selectedDot = dot) }
     }
 
@@ -86,17 +109,17 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
                     )
                 }
 
-                ColorPickerType.CornerColor -> {
+                ColorPickerType.FrameColor -> {
                     it.copy(
                         showColorPicker = false,
-                        cornerHex = hex
+                        frameHex = hex
                     )
                 }
 
-                ColorPickerType.CornerDotColor -> {
+                ColorPickerType.FrameDotColor -> {
                     it.copy(
                         showColorPicker = false,
-                        cornerDotHex = hex
+                        frameDotHex = hex
                     )
                 }
             }
@@ -132,6 +155,7 @@ class CustomizeViewModel : KMMViewModel(), KoinComponent {
 private val logos: List<String>
     get() = listOf(
         "ic_logo_behance",
+        "ic_logo_bitcoin",
         "ic_logo_discord",
         "ic_logo_dribbble",
         "ic_logo_facebook",
@@ -153,5 +177,9 @@ private val logos: List<String>
         "ic_logo_twitch",
         "ic_logo_twitter",
         "ic_logo_whatsapp",
-        "ic_logo_youtube"
+        "ic_logo_youtube",
+        "ic_logo_play_google",
+        "ic_logo_app_store",
+        "ic_logo_share",
+        "ic_logo_wifi"
     )

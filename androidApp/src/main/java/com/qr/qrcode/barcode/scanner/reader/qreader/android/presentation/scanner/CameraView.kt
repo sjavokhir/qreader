@@ -13,8 +13,12 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.accompanist.permissions.rememberPermissionState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.camera.detector.QRDetector
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.cameraPermission
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locationPermissions
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import java.util.*
 import java.util.concurrent.Executors
@@ -30,15 +34,10 @@ fun CameraView(
     isFlashlightOn: Boolean,
     onResult: () -> Unit
 ) {
-    val cameraPermissionState = rememberMultiplePermissionsState(
-        listOf(
-            android.Manifest.permission.CAMERA,
-            android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.ACCESS_FINE_LOCATION
-        )
-    )
+    val cameraPermissionState = rememberPermissionState(cameraPermission)
+    val locationPermissionState = rememberMultiplePermissionsState(locationPermissions)
 
-    if (cameraPermissionState.allPermissionsGranted) {
+    if (cameraPermissionState.status.isGranted) {
         CameraWithGrantedPermission(
             modifier = modifier,
             isFlashlightOn = isFlashlightOn,
@@ -46,7 +45,8 @@ fun CameraView(
         )
     } else {
         LaunchedEffect(Unit) {
-            cameraPermissionState.launchMultiplePermissionRequest()
+            cameraPermissionState.launchPermissionRequest()
+            locationPermissionState.launchMultiplePermissionRequest()
         }
     }
 }

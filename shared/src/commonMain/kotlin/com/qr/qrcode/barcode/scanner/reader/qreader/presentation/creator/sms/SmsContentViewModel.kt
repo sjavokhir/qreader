@@ -16,28 +16,35 @@ class SmsContentViewModel : KMMViewModel(), KoinComponent {
 
     fun onEvent(event: SmsContentEvent) {
         when (event) {
+            is SmsContentEvent.Encoded -> onEncoded(event.value)
             is SmsContentEvent.MessageChanged -> onValueChanged(message = event.message)
             is SmsContentEvent.PhoneChanged -> onValueChanged(phone = event.phone)
         }
     }
 
-    private fun onValueChanged(
-        message: String? = null, phone: String? = null
-    ) {
-        stateData.update {
-            val mMessage = message ?: it.message
-            val mPhone = phone ?: it.phone
+    private fun onEncoded(value: String) {
+        val content = value.toSmsContent() ?: return
 
-            it.copy(
-                message = mMessage,
-                phone = mPhone,
-                isEnabled = mMessage.isNotEmpty() && mPhone.isNotEmpty(),
-                generateText = it.generateText()
-            )
-        }
+        onValueChanged(
+            phone = content.phone,
+            message = content.message
+        )
     }
 
-    private fun SmsContentState.generateText(): String {
-        return "sms:$phone?body=$message"
+    private fun onValueChanged(
+        phone: String? = null,
+        message: String? = null
+    ) {
+        stateData.update {
+            val mPhone = phone ?: it.phone
+            val mMessage = message ?: it.message
+
+            it.copy(
+                phone = mPhone,
+                message = mMessage,
+                isEnabled = mMessage.isNotEmpty() && mPhone.isNotEmpty(),
+                isSetEncoded = true
+            )
+        }
     }
 }

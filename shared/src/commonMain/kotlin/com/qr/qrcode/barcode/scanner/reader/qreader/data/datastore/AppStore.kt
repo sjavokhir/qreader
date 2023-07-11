@@ -1,56 +1,37 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.data.datastore
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.EntryType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.LanguageType
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.util.Keys
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.set
 
 class AppStore(private val settings: ObservableSettings) {
 
-    fun getEntryType(): EntryType {
-        return EntryType.valueOf(settings.getString(Keys.ENTRY_TYPE, EntryType.OnBoarding.name))
+    fun isOnBoarding(): Boolean {
+        return settings.getBoolean(Keys.IS_ON_BOARDING, true)
     }
 
-    fun setEntryType(entryType: EntryType) {
-        settings[Keys.ENTRY_TYPE] = entryType.name
+    fun setOnBoarding(isOnBoarding: Boolean) {
+        settings[Keys.IS_ON_BOARDING] = isOnBoarding
     }
 
-    fun isAppLockEnabled(): Boolean {
-        return settings.getBoolean(Keys.APP_LOCK, false)
+    fun getSelectedThemeMode(): ThemeMode {
+        return try {
+            val themeMode = settings.getString(Keys.SELECTED_THEME_MODE, ThemeMode.System.name)
+            ThemeMode.valueOf(themeMode)
+        } catch (_: Throwable) {
+            ThemeMode.System
+        }
     }
 
-    fun setAppLock(isEnabled: Boolean) {
-        settings[Keys.APP_LOCK] = isEnabled
-    }
-
-    fun isVibrateEnabled(): Boolean {
-        return settings.getBoolean(Keys.VIBRATE, true)
-    }
-
-    fun setVibrate(isEnabled: Boolean) {
-        settings[Keys.VIBRATE] = isEnabled
-    }
-
-    fun isOpenWebPagesEnabled(): Boolean {
-        return settings.getBoolean(Keys.OPEN_WEB_PAGES, false)
-    }
-
-    fun setOpenWebPages(isEnabled: Boolean) {
-        settings[Keys.OPEN_WEB_PAGES] = isEnabled
-    }
-
-    fun isBatchScanEnabled(): Boolean {
-        return settings.getBoolean(Keys.BATCH_SCAN, false)
-    }
-
-    fun setBatchScan(isEnabled: Boolean) {
-        settings[Keys.BATCH_SCAN] = isEnabled
+    fun setSelectedThemeMode(themeMode: ThemeMode) {
+        settings[Keys.SELECTED_THEME_MODE] = themeMode.name
     }
 
     fun getSelectedLanguage(): LanguageType {
         return try {
-            val language = settings.getString(Keys.LANGUAGE, LanguageType.English.name)
+            val language = settings.getString(Keys.SELECTED_LANGUAGE, LanguageType.English.name)
             LanguageType.valueOf(language)
         } catch (_: Throwable) {
             LanguageType.English
@@ -58,22 +39,54 @@ class AppStore(private val settings: ObservableSettings) {
     }
 
     fun setSelectedLanguage(language: LanguageType) {
-        settings[Keys.LANGUAGE] = language.name
+        settings[Keys.SELECTED_LANGUAGE] = language.name
+    }
+
+    fun isVibrateEnabled(): Boolean {
+        return settings.getBoolean(Keys.IS_VIBRATE, true)
+    }
+
+    fun setVibrate(isEnabled: Boolean) {
+        settings[Keys.IS_VIBRATE] = isEnabled
+    }
+
+    fun isOpenWebPagesEnabled(): Boolean {
+        return settings.getBoolean(Keys.IS_OPEN_WEB_PAGES, false)
+    }
+
+    fun setOpenWebPages(isEnabled: Boolean) {
+        settings[Keys.IS_OPEN_WEB_PAGES] = isEnabled
+    }
+
+    fun isChromeCustomTabsEnabled(): Boolean {
+        return settings.getBoolean(Keys.IS_CHROME_CUSTOM_TABS, false)
+    }
+
+    fun setChromeCustomTabs(isEnabled: Boolean) {
+        settings[Keys.IS_CHROME_CUSTOM_TABS] = isEnabled
+    }
+
+    fun isBatchScanEnabled(): Boolean {
+        return settings.getBoolean(Keys.IS_BATCH_SCAN, false)
+    }
+
+    fun setBatchScan(isEnabled: Boolean) {
+        settings[Keys.IS_BATCH_SCAN] = isEnabled
     }
 
     fun isSoundEffectsEnabled(): Boolean {
-        return settings.getBoolean(Keys.SOUND_EFFECTS, false)
+        return settings.getBoolean(Keys.IS_SOUND_EFFECTS, false)
     }
 
     fun setSoundEffects(isEnabled: Boolean) {
-        settings[Keys.SOUND_EFFECTS] = isEnabled
+        settings[Keys.IS_SOUND_EFFECTS] = isEnabled
     }
 
     fun getSelectedSound(): Int {
-        return settings.getInt(Keys.SOUND, 1)
+        return settings.getInt(Keys.SELECTED_SOUND, 1)
     }
 
     fun setSelectedSound(sound: Int) {
-        settings[Keys.SOUND] = sound
+        settings[Keys.SELECTED_SOUND] = sound
     }
 }

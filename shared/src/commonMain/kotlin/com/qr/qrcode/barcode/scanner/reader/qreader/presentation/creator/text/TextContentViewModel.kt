@@ -15,8 +15,13 @@ class TextContentViewModel : KMMViewModel() {
 
     fun onEvent(event: TextContentEvent) {
         when (event) {
-            is TextContentEvent.TextChanged -> onTextChanged(text = event.text)
+            is TextContentEvent.Encoded -> onEncoded(event.value)
+            is TextContentEvent.TextChanged -> onTextChanged(event.text)
         }
+    }
+
+    private fun onEncoded(value: String) {
+        onTextChanged(value)
     }
 
     private fun onTextChanged(text: String) {
@@ -24,10 +29,8 @@ class TextContentViewModel : KMMViewModel() {
             it.copy(
                 text = text,
                 isEnabled = text.isNotEmpty(),
-                generateText = it.generateText()
+                isSetEncoded = true
             )
         }
     }
-
-    private fun TextContentState.generateText(): String = text
 }

@@ -9,8 +9,7 @@ package com.github.alexzhirkevich.customqrgenerator.vector.style
  * */
 sealed interface QrVectorLogoPadding {
 
-    val value : Float
-
+    val value: Float
 
     /**
      * Logo will be drawn on top of QR code without any padding.
@@ -23,7 +22,6 @@ sealed interface QrVectorLogoPadding {
         override val value: Float get() = 0f
     }
 
-
     /**
      * Padding will be applied directly according to the shape of logo.
      * Some QR code pixels can be cut.
@@ -32,7 +30,6 @@ sealed interface QrVectorLogoPadding {
      * large amount out data
      * */
     data class Accurate(override val value: Float) : QrVectorLogoPadding
-
 
     /**
      * Works like [Accurate] but all clipped pixels will be removed.

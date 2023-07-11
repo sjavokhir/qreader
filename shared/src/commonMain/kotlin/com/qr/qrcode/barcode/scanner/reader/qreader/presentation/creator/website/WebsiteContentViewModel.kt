@@ -16,8 +16,13 @@ class WebsiteContentViewModel : KMMViewModel() {
 
     fun onEvent(event: WebsiteContentEvent) {
         when (event) {
-            is WebsiteContentEvent.WebsiteChanged -> onWebsiteChanged(website = event.website)
+            is WebsiteContentEvent.Encoded -> onEncoded(event.value)
+            is WebsiteContentEvent.WebsiteChanged -> onWebsiteChanged(event.website)
         }
+    }
+
+    private fun onEncoded(value: String) {
+        onWebsiteChanged(value)
     }
 
     private fun onWebsiteChanged(website: String) {
@@ -25,10 +30,8 @@ class WebsiteContentViewModel : KMMViewModel() {
             it.copy(
                 website = website,
                 isEnabled = website.isUrlValid(),
-                generateText = it.generateText()
+                isSetEncoded = true
             )
         }
     }
-
-    private fun WebsiteContentState.generateText(): String = website
 }

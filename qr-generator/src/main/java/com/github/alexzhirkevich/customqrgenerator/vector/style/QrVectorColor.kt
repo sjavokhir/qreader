@@ -14,7 +14,6 @@ interface QrVectorColor {
 
     fun createPaint(width: Float, height: Float): Paint
 
-    
     object Transparent : QrVectorColor {
         override fun createPaint(width: Float, height: Float): Paint {
             return Paint().apply {
@@ -36,17 +35,15 @@ interface QrVectorColor {
             }
         }
     }
-    
+
     object Unspecified : QrVectorColor by Transparent
 
-    
     data class Solid(@ColorInt val color: Int) : QrVectorColor {
         override fun createPaint(width: Float, height: Float) = Paint().apply {
             color = this@Solid.color
         }
     }
 
-    
     data class LinearGradient(
         val colors: List<Pair<Float, Int>>,
         val orientation: Orientation
@@ -76,7 +73,6 @@ interface QrVectorColor {
         }
     }
 
-    
     data class RadialGradient(
         val colors: List<Pair<Float, Int>>,
         @FloatRange(from = 0.0)
@@ -93,7 +89,6 @@ interface QrVectorColor {
         }
     }
 
-    
     data class SweepGradient(
         val colors: List<Pair<Float, Int>>
     ) : QrVectorColor {
@@ -108,6 +103,6 @@ interface QrVectorColor {
     }
 }
 
-internal val QrVectorColor.isTransparent : Boolean
+internal val QrVectorColor.isTransparent: Boolean
     get() = this is QrVectorColor.Transparent || this is QrVectorColor.Unspecified ||
             this is QrVectorColor.Solid && this.color.alpha == 0

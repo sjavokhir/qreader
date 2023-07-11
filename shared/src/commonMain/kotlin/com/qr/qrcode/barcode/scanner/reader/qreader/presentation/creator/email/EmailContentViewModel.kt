@@ -16,19 +16,38 @@ class EmailContentViewModel : KMMViewModel() {
 
     fun onEvent(event: EmailContentEvent) {
         when (event) {
-            is EmailContentEvent.EmailChanged -> onEmailChanged(email = event.email)
+            is EmailContentEvent.Encoded -> onEncoded(event.value)
+            is EmailContentEvent.EmailChanged -> onValueChanged(email = event.email)
+            is EmailContentEvent.SubjectChanged -> onValueChanged(subject = event.subject)
+            is EmailContentEvent.MessageChanged -> onValueChanged(message = event.message)
         }
     }
 
-    private fun onEmailChanged(email: String) {
+    private fun onEncoded(value: String) {
+        val content = value.toEmailContent() ?: return
+
+        onValueChanged(
+            email = content.email,
+            subject = content.subject,
+            message = content.message
+        )
+    }
+
+    private fun onValueChanged(
+        email: String? = null,
+        subject: String? = null,
+        message: String? = null
+    ) {
         stateData.update {
+            val mEmail = email ?: it.email
+
             it.copy(
-                email = email,
-                isEnabled = email.isEmailValid(),
-                generateText = it.generateText()
+                email = mEmail,
+                subject = subject ?: it.subject,
+                message = message ?: it.message,
+                isEnabled = mEmail.isEmailValid(),
+                isSetEncoded = true
             )
         }
     }
-
-    private fun EmailContentState.generateText(): String = "mailto:$email"
 }

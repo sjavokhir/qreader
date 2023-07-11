@@ -23,15 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.GoProContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -44,8 +45,11 @@ import com.ramcosta.composedestinations.spec.Direction
 fun ScannerScreen(
     navigator: DestinationsNavigator
 ) {
+    val hasSubscription = LocalSubscription.current
+
     QRBackground {
         ScannerScreenContent(
+            hasSubscription = hasSubscription,
             onNavigate = navigator::navigate
         )
     }
@@ -53,15 +57,20 @@ fun ScannerScreen(
 
 @Composable
 private fun ScannerScreenContent(
+    hasSubscription: Boolean,
     onNavigate: (Direction) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     var isFlashlightOn by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        GoProContent { onNavigate(PremiumScreenDestination) }
+        if (!hasSubscription) {
+            GoProContent { onNavigate(PremiumScreenDestination) }
+        }
 
         Box(
             modifier = Modifier
@@ -84,7 +93,7 @@ private fun ScannerScreenContent(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.align_qr_code),
+                    text = strings.alignQrCode,
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.White,
                     fontWeight = FontWeight.Medium,

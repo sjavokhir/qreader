@@ -15,8 +15,15 @@ class PhoneContentViewModel : KMMViewModel() {
 
     fun onEvent(event: PhoneContentEvent) {
         when (event) {
-            is PhoneContentEvent.PhoneChanged -> onPhoneChanged(phone = event.phone)
+            is PhoneContentEvent.Encoded -> onEncoded(event.value)
+            is PhoneContentEvent.PhoneChanged -> onPhoneChanged(event.phone)
         }
+    }
+
+    private fun onEncoded(value: String) {
+        val content = value.toPhoneContent() ?: return
+
+        onPhoneChanged(content.phone)
     }
 
     private fun onPhoneChanged(phone: String) {
@@ -24,10 +31,8 @@ class PhoneContentViewModel : KMMViewModel() {
             it.copy(
                 phone = phone,
                 isEnabled = phone.isNotEmpty(),
-                generateText = it.generateText()
+                isSetEncoded = true
             )
         }
     }
-
-    private fun PhoneContentState.generateText(): String = "tel:$phone"
 }

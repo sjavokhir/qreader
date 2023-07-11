@@ -1,7 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.onBoarding
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.datastore.AppStore
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.EntryType
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmm.viewmodel.coroutineScope
@@ -30,7 +29,7 @@ class OnBoardingViewModel : KMMViewModel(), KoinComponent {
 
     private fun onStart() {
         viewModelScope.coroutineScope.launch {
-            appStore.setEntryType(EntryType.Scanner)
+            appStore.setOnBoarding(false)
 
             stateData.update { it.copy(isStart = true) }
         }

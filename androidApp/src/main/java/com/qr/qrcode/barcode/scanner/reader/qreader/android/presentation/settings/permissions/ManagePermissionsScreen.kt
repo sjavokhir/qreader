@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.settings.permissions
 
-import android.Manifest
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,8 +30,12 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.cameraPermission
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locationPermissions
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.storagePermissions
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.DividerContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination
@@ -47,17 +49,16 @@ fun ManagePermissionsScreen() {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun ManagePermissionsScreenContent() {
-    val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
-    val locationPermissionState = rememberMultiplePermissionsState(
-        listOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-    )
+    val strings = LocalStrings.current
+
+    val cameraPermissionState = rememberPermissionState(cameraPermission)
+    val locationPermissionState = rememberMultiplePermissionsState(locationPermissions)
+    val storagePermissionState = rememberMultiplePermissionsState(storagePermissions)
 
     if (
         cameraPermissionState.status.isGranted &&
-        locationPermissionState.allPermissionsGranted
+        locationPermissionState.allPermissionsGranted &&
+        storagePermissionState.allPermissionsGranted
     ) {
         PermissionsGrantedContent()
     } else {
@@ -81,8 +82,8 @@ private fun ManagePermissionsScreenContent() {
             ) {
                 if (!cameraPermissionState.status.isGranted) {
                     SwitchContent(
-                        title = R.string.allow_camera_access,
-                        description = R.string.grant_camera_permission,
+                        title = strings.allowCameraAccess,
+                        description = strings.grantCameraPermission,
                         onCheckedChange = {
                             cameraPermissionState.launchPermissionRequest()
                         }
@@ -95,10 +96,24 @@ private fun ManagePermissionsScreenContent() {
                     )
 
                     SwitchContent(
-                        title = R.string.allow_location_access,
-                        description = R.string.grant_location_permission,
+                        title = strings.allowLocationAccess,
+                        description = strings.grantLocationPermission,
                         onCheckedChange = {
                             locationPermissionState.launchMultiplePermissionRequest()
+                        }
+                    )
+                }
+
+                if (!storagePermissionState.allPermissionsGranted) {
+                    DividerContent(
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+
+                    SwitchContent(
+                        title = strings.allowStorageAccess,
+                        description = strings.grantStoragePermission,
+                        onCheckedChange = {
+                            storagePermissionState.launchMultiplePermissionRequest()
                         }
                     )
                 }
@@ -109,6 +124,8 @@ private fun ManagePermissionsScreenContent() {
 
 @Composable
 private fun PermissionsGrantedContent() {
+    val strings = LocalStrings.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -128,14 +145,14 @@ private fun PermissionsGrantedContent() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.permissions_granted),
+                text = strings.permissionsGranted,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = stringResource(id = R.string.permissions_granted_description),
+                text = strings.permissionsGrantedDescription,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.outline,
                 textAlign = TextAlign.Center
@@ -148,8 +165,8 @@ private fun PermissionsGrantedContent() {
 
 @Composable
 private fun SwitchContent(
-    title: Int,
-    description: Int,
+    title: String,
+    description: String,
     onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
@@ -164,13 +181,13 @@ private fun SwitchContent(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(id = title),
+                text = title,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium
             )
 
             Text(
-                text = stringResource(id = description),
+                text = description,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline
             )

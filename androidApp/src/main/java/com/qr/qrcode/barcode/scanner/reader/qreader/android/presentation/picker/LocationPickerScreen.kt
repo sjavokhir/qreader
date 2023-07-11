@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.picker
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.background
@@ -21,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -35,10 +33,13 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locationPermissions
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.DividerContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.roundLast5
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.GeoPosition
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.result.ResultBackNavigator
@@ -48,6 +49,8 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 fun LocationPickerScreen(
     resultNavigator: ResultBackNavigator<String>
 ) {
+    val strings = LocalStrings.current
+
     var currentPosition by remember { mutableStateOf(GeoPosition()) }
 
     QRBackground {
@@ -75,10 +78,10 @@ fun LocationPickerScreen(
                 DividerContent()
 
                 QRFilledButton(
-                    text = stringResource(id = R.string.action_select),
+                    text = strings.select,
                     onClick = {
                         resultNavigator.navigateBack(
-                            "${currentPosition.latitude},${currentPosition.longitude}"
+                            "${currentPosition.latitude.roundLast5()},${currentPosition.longitude.roundLast5()}"
                         )
                     },
                     modifier = Modifier.padding(
@@ -98,15 +101,11 @@ private fun MapView(
     onMovePosition: (GeoPosition) -> Unit
 ) {
     val context = LocalContext.current
-    val cameraPermissionState = rememberMultiplePermissionsState(
-        listOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-    )
+    val locationPermissionsState = rememberMultiplePermissionsState(locationPermissions)
+
     var currentPosition by remember { mutableStateOf(GeoPosition()) }
 
-    if (cameraPermissionState.allPermissionsGranted) {
+    if (locationPermissionsState.allPermissionsGranted) {
         getLocation(context) { location ->
             currentPosition = location
         }
@@ -118,7 +117,7 @@ private fun MapView(
         )
     } else {
         LaunchedEffect(Unit) {
-            cameraPermissionState.launchMultiplePermissionRequest()
+            locationPermissionsState.launchMultiplePermissionRequest()
         }
     }
 }

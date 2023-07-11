@@ -9,7 +9,7 @@ import com.google.mlkit.vision.common.InputImage
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.camera.core.VisionProcessorBase
 
 class QRDetector(
-    private val context: Context,
+    context: Context,
     private val onQrResult: () -> Unit
 ) : VisionProcessorBase<MutableList<Barcode>>(context) {
 

@@ -1,13 +1,18 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime
 
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.az
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 fun currentTimestamp(): Long {
-    return Clock.System.now().toEpochMilliseconds()
+    return Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .toInstant(TimeZone.UTC)
+        .toEpochMilliseconds()
 }
 
 fun Long?.actualDateMillis(hour: Int, minute: Int): Long {
@@ -20,8 +25,11 @@ fun Long?.actualDateMillis(hour: Int, minute: Int): Long {
     return this + hour * millisecondsPerHour + minute * millisecondsPerMinute
 }
 
-fun Long.timestampToString(): String {
-    return Instant.fromEpochMilliseconds(this).toString()
+fun Long.timestampToString(isAllDay: Boolean): String {
+    val model = Instant.fromEpochMilliseconds(this).toDateTimeModel()
+    return "${model.year.az()}${model.month.az()}${model.dayOfMonth.az()}" + if (!isAllDay) {
+        "T${model.hour.az()}${model.minute.az()}${model.second.az()}"
+    } else ""
 }
 
 fun Long.timestampToDateTime(): DateTimeModel {

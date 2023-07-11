@@ -1,6 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.TopicModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -16,38 +16,54 @@ class WifiContentViewModel : KMMViewModel() {
 
     fun onEvent(event: WifiContentEvent) {
         when (event) {
+            is WifiContentEvent.Encoded -> onEncoded(event.value)
             is WifiContentEvent.NetworkNameChanged -> onValueChanged(networkName = event.name)
             is WifiContentEvent.PasswordChanged -> onValueChanged(password = event.password)
-            is WifiContentEvent.SelectType -> onTypeSelected(event.type)
+            is WifiContentEvent.SelectAuthentication -> onValueChanged(authentication = event.authentication)
+            is WifiContentEvent.HiddenChecked -> onValueChanged(isHidden = event.isHidden)
         }
     }
 
-    private fun onTypeSelected(type: TopicModel) {
-        stateData.update {
-            it.copy(
-                selectedType = type,
-                generateText = it.generateText()
-            )
-        }
+    private fun onEncoded(value: String) {
+        val content = value.toWifiContent() ?: return
+
+        onValueChanged(
+            networkName = content.networkName,
+            password = content.password,
+            authentication = content.authentication,
+            isHidden = content.isHidden
+        )
     }
 
     private fun onValueChanged(
         networkName: String? = null,
-        password: String? = null
+        password: String? = null,
+        authentication: WifiContentState.Authentication? = null,
+        isHidden: Boolean? = null
     ) {
         stateData.update {
             val mNetworkName = networkName ?: it.networkName
+            val mPassword = password ?: it.password
 
             it.copy(
                 networkName = mNetworkName,
-                password = password ?: it.password,
-                isEnabled = mNetworkName.isNotEmpty(),
-                generateText = it.generateText()
+                password = mPassword,
+                authentication = authentication ?: it.authentication,
+                isHidden = isHidden ?: it.isHidden,
+                isEnabled = when (authentication ?: it.authentication) {
+                    WifiContentState.Authentication.WEP -> {
+                        mNetworkName.isNotEmpty() && mPassword.isNotEmpty()
+                    }
+
+                    WifiContentState.Authentication.WPA_WPA2 -> {
+                        mNetworkName.isNotEmpty() && mPassword.length >= 8
+                    }
+
+                    WifiContentState.Authentication.OPEN -> {
+                        mNetworkName.isNotEmpty()
+                    }
+                }
             )
         }
-    }
-
-    private fun WifiContentState.generateText(): String {
-        return "WIFI:S:$networkName;P:$password;;"
     }
 }

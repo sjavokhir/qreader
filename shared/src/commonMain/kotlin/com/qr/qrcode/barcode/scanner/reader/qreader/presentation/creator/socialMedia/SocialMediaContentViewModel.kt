@@ -1,6 +1,7 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialMedia
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateType
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -16,13 +17,23 @@ class SocialMediaContentViewModel : KMMViewModel() {
 
     fun onEvent(event: SocialMediaContentEvent) {
         when (event) {
-            is SocialMediaContentEvent.SetType -> onGenerateType(event.type)
+            is SocialMediaContentEvent.Encoded -> onEncoded(event.value)
+            is SocialMediaContentEvent.SetGenerateMode -> setGenerateMode(event.mode)
             is SocialMediaContentEvent.UsernameChanged -> onUsernameChanged(event.username)
         }
     }
 
-    private fun onGenerateType(type: GenerateType) {
-        stateData.update { it.copy(type = type) }
+    private fun onEncoded(value: String) {
+        tryCatch {
+            detectSocialMedia(value)?.let { info ->
+                setGenerateMode(info.first)
+                onUsernameChanged(info.second)
+            }
+        }
+    }
+
+    private fun setGenerateMode(mode: GenerateMode) {
+        stateData.update { it.copy(mode = mode) }
     }
 
     private fun onUsernameChanged(username: String) {
@@ -30,28 +41,36 @@ class SocialMediaContentViewModel : KMMViewModel() {
             it.copy(
                 username = username,
                 isEnabled = username.isNotEmpty(),
-                generateText = it.generateText()
+                isSetEncoded = true
             )
         }
     }
 
-    private fun SocialMediaContentState.generateText(): String {
-        return when (type) {
-            GenerateType.Youtube -> "https://youtube.com/@"
-            GenerateType.WhatsApp -> "https://wa.me/"
-            GenerateType.Instagram -> "https://instagram.com/"
-            GenerateType.Facebook -> "https://facebook.com/"
-            GenerateType.Twitter -> "https://twitter.com/"
-            GenerateType.TikTok -> "https://tiktok.com/@"
-            GenerateType.Telegram -> "https://t.me/"
-            GenerateType.VKontakte -> "https://vk.com/"
-            GenerateType.Twitch -> "https://twitch.tv/"
-            GenerateType.LinkedIn -> "https://linkedin.com/in/"
-            GenerateType.Github -> "https://github.com/"
-            GenerateType.Medium -> "https://medium.com/"
-            GenerateType.Dribbble -> "https://dribbble.com/"
-            GenerateType.Behance -> "https://www.behance.net/"
-            else -> ""
-        } + username
+    private fun detectSocialMedia(link: String): Pair<GenerateMode, String>? {
+        val pair = when {
+            link.contains("youtube.com") -> GenerateMode.Youtube to """youtube\.com/@([^;/]+)"""
+            link.contains("wa.me") -> GenerateMode.WhatsApp to """wa\.me/([^;/]+)"""
+            link.contains("instagram.com") -> GenerateMode.Instagram to """instagram\.com/([^;/]+)"""
+            link.contains("facebook.com") -> GenerateMode.Facebook to """facebook\.com/([^;/]+)"""
+            link.contains("twitter.com") -> GenerateMode.Twitter to """twitter\.com/([^;/]+)"""
+            link.contains("tiktok.com") -> GenerateMode.TikTok to """tiktok\.com/@([^;/]+)"""
+            link.contains("t.me") -> GenerateMode.Telegram to """t\.me/([^;/]+)"""
+            link.contains("vk.com") -> GenerateMode.VKontakte to """vk\.com/([^;/]+)"""
+            link.contains("twitch.tv") -> GenerateMode.Twitch to """twitch\.tv/([^;/]+)"""
+            link.contains("linkedin.com") -> GenerateMode.LinkedIn to """linkedin\.com/in/([^;/]+)"""
+            link.contains("github.com") -> GenerateMode.Github to """github\.com/([^;/]+)"""
+            link.contains("medium.com") -> GenerateMode.Medium to """medium\.com/([^;/]+)"""
+            link.contains("dribbble.com") -> GenerateMode.Dribbble to """dribbble\.com/([^;/]+)"""
+            link.contains("behance.net") -> GenerateMode.Behance to """behance\.net/([^;/]+)"""
+            else -> return null
+        }
+
+        val matchResult = Regex(pair.second, RegexOption.IGNORE_CASE).find(link)
+        if (matchResult != null) {
+            val username = matchResult.groupValues[1]
+            return pair.first to username
+        }
+
+        return null
     }
 }

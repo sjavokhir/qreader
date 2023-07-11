@@ -15,6 +15,7 @@ class BusinessContentViewModel : KMMViewModel() {
 
     fun onEvent(event: BusinessContentEvent) {
         when (event) {
+            is BusinessContentEvent.Encoded -> onEncoded(event.value)
             is BusinessContentEvent.NameChanged -> onValueChanged(name = event.name)
             is BusinessContentEvent.IndustryChanged -> onValueChanged(industry = event.industry)
             is BusinessContentEvent.PhoneChanged -> onValueChanged(phone = event.phone)
@@ -22,6 +23,19 @@ class BusinessContentViewModel : KMMViewModel() {
             is BusinessContentEvent.WebsiteChanged -> onValueChanged(website = event.website)
             is BusinessContentEvent.AddressChanged -> onValueChanged(address = event.address)
         }
+    }
+
+    private fun onEncoded(value: String) {
+        val content = value.toBusinessContent() ?: return
+
+        onValueChanged(
+            name = content.name,
+            industry = content.industry,
+            phone = content.phone,
+            email = content.email,
+            website = content.website,
+            address = content.address,
+        )
     }
 
     private fun onValueChanged(
@@ -44,24 +58,8 @@ class BusinessContentViewModel : KMMViewModel() {
                 email = email ?: it.email,
                 website = website ?: it.website,
                 address = address ?: it.address,
-                isEnabled = (mName.isNotEmpty() || mIndustry.isNotEmpty()) &&
-                        mPhone.isNotEmpty(),
-                generateText = it.generateText()
+                isEnabled = (mName.isNotEmpty() || mIndustry.isNotEmpty()) && mPhone.isNotEmpty()
             )
-        }
-    }
-
-    private fun BusinessContentState.generateText(): String {
-        return buildString {
-            append("BEGIN:VCARD\n")
-            append("VERSION:3.0\n")
-            append("ORG:").append(name).append("\n")
-            append("INDUSTRY:").append(industry).append("\n")
-            append("TEL;TYPE=WORK,VOICE:").append(phone).append("\n")
-            append("EMAIL;TYPE=PREF,INTERNET:").append(email).append("\n")
-            append("URL:").append(website).append("\n")
-            append("ADR;TYPE=WORK:").append(address).append("\n")
-            append("END:VCARD")
         }
     }
 }

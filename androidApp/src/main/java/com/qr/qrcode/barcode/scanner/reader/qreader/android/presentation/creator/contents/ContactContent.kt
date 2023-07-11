@@ -5,46 +5,45 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.contact.ContactContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.contact.ContactContentViewModel
 
 @Composable
 fun ContactContent(
     viewModel: ContactContentViewModel = viewModel(),
-    onContent: (Boolean, String) -> Unit
+    encoded: String,
+    onContent: (Boolean, String, String) -> Unit
 ) {
+    val strings = LocalStrings.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
-        onContent(state.isEnabled, state.generateText)
+        onContent(state.isEnabled, state.encode(), state.decode())
+    }
+
+    LaunchedEffect(encoded) {
+        if (!state.isSetEncoded) {
+            viewModel.onEvent(ContactContentEvent.Encoded(encoded))
+        }
     }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         QRTextField(
-            value = state.firstName,
+            value = state.name,
             onValueChange = {
-                viewModel.onEvent(ContactContentEvent.FirstNameChanged(it))
+                viewModel.onEvent(ContactContentEvent.NameChanged(it))
             },
-            placeholder = stringResource(id = R.string.eg_placeholder_first_name),
-            hint = stringResource(id = R.string.first_name)
-        )
-
-        QRTextField(
-            value = state.lastName,
-            onValueChange = {
-                viewModel.onEvent(ContactContentEvent.LastNameChanged(it))
-            },
-            placeholder = stringResource(id = R.string.eg_placeholder_last_name),
-            hint = stringResource(id = R.string.last_name)
+            placeholder = strings.egPlaceholderFirstName,
+            hint = strings.name
         )
 
         QRTextField(
@@ -52,8 +51,8 @@ fun ContactContent(
             onValueChange = {
                 viewModel.onEvent(ContactContentEvent.PhoneChanged(it))
             },
-            placeholder = stringResource(id = R.string.eg_placeholder_phone),
-            hint = stringResource(id = R.string.phone_number),
+            placeholder = strings.egPlaceholderPhone,
+            hint = strings.phoneNumber,
             keyboardType = KeyboardType.Phone
         )
 
@@ -62,18 +61,9 @@ fun ContactContent(
             onValueChange = {
                 viewModel.onEvent(ContactContentEvent.EmailChanged(it))
             },
-            placeholder = stringResource(id = R.string.eg_placeholder_email),
-            hint = stringResource(id = R.string.email_address),
+            placeholder = strings.egPlaceholderEmail,
+            hint = strings.emailAddress,
             keyboardType = KeyboardType.Email
-        )
-
-        QRTextField(
-            value = state.website,
-            onValueChange = {
-                viewModel.onEvent(ContactContentEvent.WebsiteChanged(it))
-            },
-            placeholder = stringResource(id = R.string.eg_placeholder_website),
-            hint = stringResource(id = R.string.website)
         )
 
         QRTextField(
@@ -81,8 +71,8 @@ fun ContactContent(
             onValueChange = {
                 viewModel.onEvent(ContactContentEvent.AddressChanged(it))
             },
-            placeholder = stringResource(id = R.string.eg_placeholder_address),
-            hint = stringResource(id = R.string.address)
+            placeholder = strings.egPlaceholderAddress,
+            hint = strings.address
         )
     }
 }

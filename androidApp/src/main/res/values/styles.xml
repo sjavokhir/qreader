@@ -1,4 +1,4 @@
 <resources>
 
-    <style name="Theme.QR" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.QR" parent="Theme.Material3.DayNight" />
 </resources>

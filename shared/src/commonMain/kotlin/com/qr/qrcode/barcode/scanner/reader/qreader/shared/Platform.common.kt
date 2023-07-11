@@ -3,10 +3,9 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.shared
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainCoroutineDispatcher
 
-expect val developerUrl: String
 expect val appUrl: String
-
 expect val appVersion: String
+expect val deviceVersion: String
 
 expect fun randomUUID(): String
 
