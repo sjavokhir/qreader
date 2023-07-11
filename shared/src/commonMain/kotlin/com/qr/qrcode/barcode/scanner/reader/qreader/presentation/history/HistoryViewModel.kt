@@ -22,53 +22,63 @@ class HistoryViewModel : KMMViewModel(), KoinComponent {
     @NativeCoroutinesState
     val state = stateData.asStateFlow()
 
-    fun onEvent(event: HistoryEvent) {
-        when (event) {
-            is HistoryEvent.QueryChanged -> onQueryChanged(event.query)
-            is HistoryEvent.GetHistory -> getHistory(event.page)
+    init {
+        if (state.value.isScanned) {
+            getHistory(true, state.value.scannedQuery)
+        } else {
+            getHistory(false, state.value.createdQuery)
         }
     }
 
-    private fun onQueryChanged(query: String) {
-        stateData.update { it.copy(query = query) }
+    fun onEvent(event: HistoryEvent) {
+        when (event) {
+            is HistoryEvent.PageChanged -> {
+                if (event.page == 0) {
+                    getHistory(true, state.value.scannedQuery)
+                } else {
+                    getHistory(false, state.value.createdQuery)
+                }
+            }
+            is HistoryEvent.QueryChanged -> getHistory(event.isScanned, event.query)
+        }
     }
 
-    private fun getHistory(page: Int) {
-        val isScanned = page == 1
-
-        setLoading(isScanned)
+    private fun getHistory(isScanned: Boolean, query: String) {
+        setLoading(isScanned, query)
 
         viewModelScope.coroutineScope.launch {
-            historyDao.getHistory(isScanned, state.value.query).collectLatest {
-                setSuccess(isScanned, it)
+            historyDao.getHistory(isScanned, query).collectLatest { setSuccess(it) }
+        }
+    }
+
+    private fun setLoading(isScanned: Boolean, query: String) {
+        stateData.update {
+            if (isScanned) {
+                it.copy(
+                    scannedQuery = query,
+                    isScanned = isScanned,
+                    isLoading = true
+                )
+            } else {
+                it.copy(
+                    createdQuery = query,
+                    isScanned = isScanned,
+                    isLoading = true
+                )
             }
         }
     }
 
-    private fun setLoading(isScanned: Boolean) {
+    private fun setSuccess(result: List<HistoryEntity>) {
         stateData.update {
-            it.copy(
-                isScanned = isScanned,
-                isLoading = true
-            )
-        }
-    }
-
-    private fun setSuccess(
-        isScanned: Boolean,
-        result: List<HistoryEntity>
-    ) {
-        stateData.update {
-            if (isScanned) {
+            if (it.isScanned) {
                 it.copy(
                     scannedHistory = result,
-                    isScanned = isScanned,
                     isLoading = false
                 )
             } else {
                 it.copy(
                     createdHistory = result,
-                    isScanned = isScanned,
                     isLoading = false
                 )
             }

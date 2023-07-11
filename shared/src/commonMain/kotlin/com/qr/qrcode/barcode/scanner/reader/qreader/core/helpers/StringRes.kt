@@ -26,4 +26,9 @@ object StringRes {
     const val medium = "Medium"
     const val dribbble = "Dribbble"
     const val behance = "Behance"
+
+    const val copiedText = "Copied Text"
+    const val copiedToClipboard = "Copied to clipboard"
+    const val sendEmail = "Send email"
+    const val photoSaved = "Photo saved successfully"
 }

@@ -14,9 +14,6 @@ class EventContentViewModel : KMMViewModel() {
     @NativeCoroutinesState
     val state = stateData.asStateFlow()
 
-    private val currentState: EventContentState
-        get() = state.value
-
     fun onEvent(event: EventContentEvent) {
         when (event) {
             is EventContentEvent.Encoded -> onEncoded(event.value)
@@ -38,7 +35,7 @@ class EventContentViewModel : KMMViewModel() {
 
     private fun onDateTimeChanged(timestamp: Long) {
         stateData.update {
-            if (currentState.isStart) {
+            if (state.value.isStart) {
                 it.copy(
                     startTimestamp = timestamp,
                     startDateTime = if (it.isAllDay) {

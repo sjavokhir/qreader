@@ -23,9 +23,6 @@ class PremiumViewModel(application: Application) : AndroidViewModel(application)
     val isPurchaseAcknowledged = billingClient.isPurchaseAcknowledged
     val isLoading = billingClient.isLoading
 
-    private val currentState: PremiumState
-        get() = state.value
-
     override fun onCleared() {
         billingClient.terminateBillingConnection()
     }
@@ -56,12 +53,12 @@ class PremiumViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private fun buy(activity: Activity) {
-        val productDetails = currentState.productDetails
-            .firstOrNull { it.productId == currentState.selectedProductId }
+        val productDetails = state.value.productDetails
+            .firstOrNull { it.productId == state.value.selectedProductId }
             ?.productDetails ?: return
 
-        val offerToken = currentState.productDetails
-            .firstOrNull { it.productId == currentState.selectedProductId }
+        val offerToken = state.value.productDetails
+            .firstOrNull { it.productId == state.value.selectedProductId }
             ?.offerToken ?: return
 
         val productDetailsParamsList = listOf(

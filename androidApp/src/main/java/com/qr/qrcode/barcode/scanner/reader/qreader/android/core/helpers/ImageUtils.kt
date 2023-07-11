@@ -14,6 +14,7 @@ import android.os.StrictMode
 import android.provider.MediaStore
 import androidx.core.graphics.drawable.toBitmap
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.toast
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.StringRes
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -22,32 +23,18 @@ object ImageUtils {
 
     fun saveDrawableToGallery(
         context: Context,
-        drawable: Drawable,
-        successText: String? = null,
-        failureText: String? = null
+        drawable: Drawable
     ) {
         val bitmap = drawable.toBitmap(1024, 1024)
-        saveBitmapToGallery(
-            context = context,
-            bitmap = bitmap,
-            successText = successText,
-            failureText = failureText
-        )
+        saveBitmapToGallery(context, bitmap)
     }
 
     fun shareDrawable(
         context: Context,
-        drawable: Drawable,
-        successText: String? = null,
-        failureText: String? = null
+        drawable: Drawable
     ) {
         val bitmap = drawable.toBitmap(1024, 1024)
-        val uri = saveBitmapToGallery(
-            context = context,
-            bitmap = bitmap,
-            successText = successText,
-            failureText = failureText
-        )
+        val uri = saveBitmapToGallery(context, bitmap)
 
         // Grant temporary permissions to access the file URI
         StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder().build())
@@ -62,9 +49,7 @@ object ImageUtils {
 
     private fun saveBitmapToGallery(
         context: Context,
-        bitmap: Bitmap,
-        successText: String? = null,
-        failureText: String? = null
+        bitmap: Bitmap
     ): Uri {
         val title = "QR_${System.currentTimeMillis()}"
 
@@ -99,13 +84,9 @@ object ImageUtils {
                 null
             )
 
-            if (successText != null) {
-                context.toast(successText)
-            }
-        } catch (_: Throwable) {
-            if (failureText != null) {
-                context.toast(failureText)
-            }
+            context.toast(StringRes.photoSaved)
+        } catch (t: Throwable) {
+            context.toast(t.message)
         } finally {
             outputStream?.close()
         }

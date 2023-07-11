@@ -36,5 +36,13 @@ data class WifiContentState(
         append("H:$isHidden;")
     }
 
-    override fun decode(): String = "$networkName, ${authentication.name}"
+    override fun decode(): String = buildString {
+        append(networkName).append(", ")
+
+        when(authentication) {
+            Authentication.WEP -> append("WEP")
+            Authentication.WPA_WPA2 -> append("WPA")
+            Authentication.OPEN -> append("Open")
+        }
+    }
 }

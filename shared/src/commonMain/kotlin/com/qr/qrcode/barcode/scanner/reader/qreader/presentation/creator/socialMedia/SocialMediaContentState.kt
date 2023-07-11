@@ -5,7 +5,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 
 data class SocialMediaContentState(
     val username: String = "",
-    val mode: GenerateMode = GenerateMode.Text,
+    val mode: GenerateMode = GenerateMode.Instagram,
     val isEnabled: Boolean = false,
     val isSetEncoded: Boolean = false
 ) : QrData {

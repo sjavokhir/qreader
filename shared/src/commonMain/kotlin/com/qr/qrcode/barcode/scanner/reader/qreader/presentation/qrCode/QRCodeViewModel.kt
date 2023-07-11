@@ -13,13 +13,14 @@ class QRCodeViewModel : KMMViewModel(), KoinComponent {
 
     fun onEvent(event: QRCodeEvent) {
         when (event) {
-            is QRCodeEvent.InsertHistory -> insertHistory(event)
+            is QRCodeEvent.Insert -> insert(event)
+            is QRCodeEvent.Delete -> delete(event.id)
         }
     }
 
-    private fun insertHistory(event: QRCodeEvent.InsertHistory) {
+    private fun insert(event: QRCodeEvent.Insert) {
         viewModelScope.coroutineScope.launch {
-            historyDao.insertHistory(
+            historyDao.insert(
                 id = event.id,
                 isScanned = false,
                 generateMode = event.mode,
@@ -27,6 +28,12 @@ class QRCodeViewModel : KMMViewModel(), KoinComponent {
                 decoded = event.decoded,
                 customize = event.customize
             )
+        }
+    }
+
+    private fun delete(id: String) {
+        viewModelScope.coroutineScope.launch {
+            historyDao.delete(id)
         }
     }
 }

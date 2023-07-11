@@ -31,13 +31,18 @@ class WifiContentViewModel : KMMViewModel() {
 
             matchResult?.groupValues?.let { groups ->
                 val networkName = groups[1]
+                val authentication = when(groups[2]) {
+                    "WEP" -> WifiContentState.Authentication.WEP
+                    "WPA" -> WifiContentState.Authentication.WPA_WPA2
+                    else -> WifiContentState.Authentication.OPEN
+                }
                 val password = groups[3]
                 val isHidden = groups[4].toBooleanStrictOrNull() ?: false
 
                 onValueChanged(
                     networkName,
                     password,
-                    WifiContentState.Authentication.WEP,
+                    authentication,
                     isHidden
                 )
             }
@@ -59,7 +64,7 @@ class WifiContentViewModel : KMMViewModel() {
                 password = mPassword,
                 authentication = authentication ?: it.authentication,
                 isHidden = isHidden ?: it.isHidden,
-                isEnabled = when (it.authentication) {
+                isEnabled = when (authentication ?: it.authentication) {
                     WifiContentState.Authentication.WEP -> {
                         mNetworkName.isNotEmpty() && mPassword.isNotEmpty()
                     }

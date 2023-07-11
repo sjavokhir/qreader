@@ -6,8 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -29,6 +33,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.addContact
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.connectToWifi
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.copyToClipboard
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.copyWifiNetworkName
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.copyWifiPassword
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.openUrl
@@ -40,9 +45,8 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.ImageUt
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.storagePermissions
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.CustomizeContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRImageContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QROutlinedButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.rememberQRDrawable
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
@@ -58,7 +62,10 @@ fun QRDetailContent(
     decoded: String,
     customize: QRCustomizeModel,
     isEditable: Boolean = false,
-    onNavigate: (Direction) -> Unit
+    isDeletable: Boolean = false,
+    onNavigate: (Direction) -> Unit,
+    onEdit: () -> Unit = {},
+    onDelete: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val hasSubscription = LocalSubscription.current
@@ -104,26 +111,26 @@ fun QRDetailContent(
         item {
             ActionsContent(
                 isEditable = isEditable,
+                isDeletable = isDeletable,
                 onSave = {
                     if (storagePermissionsState.allPermissionsGranted) {
-                        ImageUtils.saveDrawableToGallery(
-                            context = context,
-                            drawable = qrDrawable
-                        )
+                        ImageUtils.saveDrawableToGallery(context, qrDrawable)
                     } else {
                         storagePermissionsState.launchMultiplePermissionRequest()
                     }
                 },
                 onShare = {
                     if (storagePermissionsState.allPermissionsGranted) {
-                        ImageUtils.shareDrawable(
-                            context = context,
-                            drawable = qrDrawable
-                        )
+                        ImageUtils.shareDrawable(context, qrDrawable)
                     } else {
                         storagePermissionsState.launchMultiplePermissionRequest()
                     }
-                }
+                },
+                onCopy = {
+                    context.copyToClipboard(encoded)
+                },
+                onEdit = onEdit,
+                onDelete = onDelete
             )
         }
     }
@@ -314,30 +321,94 @@ private fun ContentActionButton(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ActionsContent(
     isEditable: Boolean,
+    isDeletable: Boolean,
     onSave: () -> Unit,
-    onShare: () -> Unit
+    onShare: () -> Unit,
+    onCopy: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
 ) {
     val strings = LocalStrings.current
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(20.dp)
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 4.dp,
+            alignment = Alignment.CenterHorizontally
+        ),
+        verticalArrangement = Arrangement.spacedBy(
+            space = 12.dp,
+            alignment = Alignment.CenterVertically
+        )
     ) {
-        QROutlinedButton(
+        ActionButtonContent(
             text = strings.save,
-            onClick = onSave,
-            modifier = Modifier.weight(1f),
-            leadingIcon = painterResource(id = R.drawable.ic_save)
+            icon = R.drawable.ic_save,
+            onClick = onSave
         )
 
-        QRFilledButton(
+        ActionButtonContent(
             text = strings.share,
-            onClick = onShare,
-            modifier = Modifier.weight(1f),
-            leadingIcon = painterResource(id = R.drawable.ic_share)
+            icon = R.drawable.ic_share,
+            onClick = onShare
+        )
+
+        ActionButtonContent(
+            text = strings.copy,
+            icon = R.drawable.ic_copy,
+            onClick = onCopy
+        )
+
+        if (isEditable) {
+            ActionButtonContent(
+                text = strings.edit,
+                icon = R.drawable.ic_edit,
+                onClick = onEdit
+            )
+        }
+
+        if (isDeletable) {
+            ActionButtonContent(
+                text = strings.delete,
+                icon = R.drawable.ic_delete,
+                color = MaterialTheme.colorScheme.error,
+                onClick = onDelete
+            )
+        }
+    }
+}
+
+@Composable
+private fun ActionButtonContent(
+    text: String,
+    @DrawableRes icon: Int,
+    color: Color = MaterialTheme.colorScheme.onBackground,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .clip(MaterialTheme.shapes.small)
+            .clickableSingle(onClick = onClick)
+            .padding(
+                horizontal = 12.dp,
+                vertical = 4.dp
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        QRIcon(
+            painter = painterResource(id = icon),
+            color = color
+        )
+
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge,
+            color = color
         )
     }
 }

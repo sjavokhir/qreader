@@ -16,6 +16,7 @@ import android.os.Build
 import android.provider.ContactsContract
 import android.widget.Toast
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.StringRes
 import kotlin.system.exitProcess
 
 fun Context.drawableId(name: String): Int? {
@@ -59,8 +60,12 @@ fun Context.toast(message: String?) {
 
 fun Context.copyToClipboard(text: String) {
     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText("Copied Text", text)
+    val clip = ClipData.newPlainText(StringRes.copiedText, text)
     clipboard.setPrimaryClip(clip)
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        toast(StringRes.copiedToClipboard)
+    }
 }
 
 fun Context.shareText(text: String) {
@@ -105,7 +110,7 @@ fun Context.sendMail(uriString: String) {
                 putExtra(Intent.EXTRA_SUBJECT, subject)
                 putExtra(Intent.EXTRA_TEXT, message)
             }
-            startActivity(Intent.createChooser(intent, "Send email"))
+            startActivity(Intent.createChooser(intent, StringRes.sendEmail))
         }
     }
 }

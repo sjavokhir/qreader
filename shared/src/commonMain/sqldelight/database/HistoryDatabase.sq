@@ -17,12 +17,17 @@ CREATE TABLE History(
 );
 
 getHistory:
-SELECT * FROM History WHERE history_type = ?;
+SELECT *
+FROM History
+WHERE history_type = ?;
 
-insertHistory:
+insert:
 INSERT OR REPLACE
 INTO History(id, timestamp, history_type, generate_mode, encode, decode, selected_pattern, selected_corner, selected_dot, pattern_dot_hex, pattern_background_hex, frame_hex, frame_dot_hex, selected_logo, own_logo_path)
 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
 
-clearHistory:
+delete:
+DELETE FROM History WHERE id = ?;
+
+clearAll:
 DELETE FROM History WHERE history_type = ?;

@@ -5,11 +5,13 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.customize.Custo
 
 sealed class QRCodeEvent {
 
-    data class InsertHistory(
+    data class Insert(
         val id: String,
         val mode: GenerateMode,
         val encoded: String,
         val decoded: String,
         val customize: CustomizeState,
     ) : QRCodeEvent()
+
+    data class Delete(val id: String) : QRCodeEvent()
 }

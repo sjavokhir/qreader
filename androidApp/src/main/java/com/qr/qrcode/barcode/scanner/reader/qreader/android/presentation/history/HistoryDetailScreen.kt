@@ -3,9 +3,11 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.histor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.EditContentModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.toState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
@@ -19,6 +21,8 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Destination
 @Composable
@@ -32,8 +36,10 @@ fun HistoryDetailScreen(
     viewModel: QRCodeViewModel = viewModel(),
     navigator: DestinationsNavigator,
     resultCustomization: ResultRecipient<CustomizeScreenDestination, QRCustomizeModel>,
-    resultAddContent: ResultRecipient<AddContentScreenDestination, QRCustomizeModel>,
+    resultAddContent: ResultRecipient<AddContentScreenDestination, EditContentModel>,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     var customizeModel by rememberSaveable { mutableStateOf(customize) }
     var encodedValue by rememberSaveable { mutableStateOf(encoded) }
     var decodedValue by rememberSaveable { mutableStateOf(decoded) }
@@ -45,7 +51,7 @@ fun HistoryDetailScreen(
                 customizeModel = result.value
 
                 viewModel.onEvent(
-                    QRCodeEvent.InsertHistory(
+                    QRCodeEvent.Insert(
                         id = id,
                         mode = generateMode,
                         encoded = encodedValue,
@@ -60,11 +66,11 @@ fun HistoryDetailScreen(
         when (result) {
             NavResult.Canceled -> {}
             is NavResult.Value -> {
-                encodedValue = "result.value"
-                decodedValue = "result.value"
+                encodedValue = result.value.encoded
+                decodedValue = result.value.decoded
 
                 viewModel.onEvent(
-                    QRCodeEvent.InsertHistory(
+                    QRCodeEvent.Insert(
                         id = id,
                         mode = generateMode,
                         encoded = encodedValue,
@@ -84,7 +90,26 @@ fun HistoryDetailScreen(
             decoded = decodedValue,
             customize = customizeModel,
             isEditable = true,
-            onNavigate = navigator::navigate
+            isDeletable = true,
+            onNavigate = navigator::navigate,
+            onEdit = {
+                navigator.navigate(
+                    AddContentScreenDestination(
+                        id = id,
+                        generateMode = generateMode,
+                        encoded = encodedValue,
+                        isEditable = true
+                    )
+                )
+            },
+            onDelete = {
+                viewModel.onEvent(QRCodeEvent.Delete(id))
+
+                coroutineScope.launch {
+                    delay(200L)
+                    navigator.navigateUp()
+                }
+            }
         )
     }
 }

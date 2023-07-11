@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.EditContentModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
@@ -64,9 +65,9 @@ fun AddContentScreen(
     id: String,
     generateMode: GenerateMode,
     encoded: String = "",
-    customize: QRCustomizeModel = QRCustomizeModel(),
+    isEditable: Boolean = false,
     navigator: DestinationsNavigator,
-    resultNavigator: ResultBackNavigator<QRCustomizeModel>,
+    resultNavigator: ResultBackNavigator<EditContentModel>,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
     resultLocation: ResultRecipient<LocationPickerScreenDestination, String>,
 ) {
@@ -138,16 +139,20 @@ fun AddContentScreen(
                     text = strings.next,
                     enabled = isEnabled,
                     onClick = {
-                        navigator.navigate(
-                            QRCodeScreenDestination(
-                                id = id,
-                                dateTime = currentTimestamp().timestampToDateTime().defaultDateTime,
-                                generateMode = generateMode,
-                                encoded = encodedValue,
-                                decoded = decodedValue,
-                                customize = customize
+                        if (isEditable) {
+                            resultNavigator.navigateBack(
+                                EditContentModel(encodedValue, decodedValue)
                             )
-                        )
+                        } else {
+                            navigator.navigate(
+                                QRCodeScreenDestination(
+                                    id = id,
+                                    generateMode = generateMode,
+                                    encoded = encodedValue,
+                                    decoded = decodedValue
+                                )
+                            )
+                        }
                     },
                     modifier = Modifier.padding(
                         horizontal = 20.dp,

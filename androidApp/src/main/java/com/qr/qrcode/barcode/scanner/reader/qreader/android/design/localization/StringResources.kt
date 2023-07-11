@@ -175,6 +175,8 @@ data class StringResources(
     val connectToWifi: String = "Connect to Wi-Fi",
     val copyNetworkName: String = "Copy network name",
     val copyPassword: String = "Copy password",
+    val copy: String = "Copy",
+    val edit: String = "Edit",
 ) {
 
     fun socialMediaChannel(channel: String): String {

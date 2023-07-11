@@ -22,12 +22,17 @@ class HistoryDao(database: AppDatabase) {
             .asFlow()
             .mapToList(ioDispatcher)
             .map { log ->
-                log.map { it.toEntity() }.sortedByDescending { it.timestamp }
+                log.map { it.toEntity() }
+                    .filter {
+                        it.encoded.contains(query, ignoreCase = true)
+                                || it.decoded.contains(query, ignoreCase = true)
+                    }
+                    .sortedByDescending { it.timestamp }
             }
             .flowOn(ioDispatcher)
     }
 
-    fun insertHistory(
+    fun insert(
         id: String,
         isScanned: Boolean,
         generateMode: GenerateMode,
@@ -35,7 +40,7 @@ class HistoryDao(database: AppDatabase) {
         decoded: String,
         customize: CustomizeState
     ) {
-        queries.insertHistory(
+        queries.insert(
             id = id,
             timestamp = currentTimestamp(),
             history_type = if (isScanned) 0 else 1,
@@ -54,7 +59,11 @@ class HistoryDao(database: AppDatabase) {
         )
     }
 
-    fun clearHistory(isScanned: Boolean) {
-        queries.clearHistory(if (isScanned) 0 else 1)
+    fun delete(id: String) {
+        queries.delete(id)
+    }
+
+    fun clearAll(isScanned: Boolean) {
+        queries.clearAll(if (isScanned) 0 else 1)
     }
 }

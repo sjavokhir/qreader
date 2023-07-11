@@ -40,13 +40,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.toModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.DividerContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRTextField
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.bottomNavigateTo
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.toModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.HistoryDetailScreenDestination
@@ -95,8 +95,8 @@ private fun HistoryScreenContent(
     val pagerState = rememberPagerState { 2 }
     val pages = remember { listOf(strings.scanned, strings.created) }
 
-    LaunchedEffect(state.query) {
-        onEvent(HistoryEvent.GetHistory(pagerState.currentPage))
+    LaunchedEffect(pagerState.currentPage) {
+        onEvent(HistoryEvent.PageChanged(pagerState.currentPage))
     }
 
     Column(
@@ -130,22 +130,31 @@ private fun HistoryScreenContent(
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                QRTextField(
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                    value = state.query,
-                    onValueChange = {
-                        onEvent(HistoryEvent.QueryChanged(it))
-                    },
-                    placeholder = strings.searchQrCode
-                )
-
                 if (page == 0) {
+                    QRTextField(
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                        value = state.scannedQuery,
+                        onValueChange = {
+                            onEvent(HistoryEvent.QueryChanged(true, it))
+                        },
+                        placeholder = strings.searchQrCode
+                    )
+
                     if (state.scannedHistory.isEmpty()) {
                         HistoryNotFoundContent(true, onBottomNavigateTo)
                     } else {
                         HistoryContent(state.scannedHistory, onNavigate)
                     }
                 } else {
+                    QRTextField(
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                        value = state.createdQuery,
+                        onValueChange = {
+                            onEvent(HistoryEvent.QueryChanged(false, it))
+                        },
+                        placeholder = strings.searchQrCode
+                    )
+
                     if (state.createdHistory.isEmpty()) {
                         HistoryNotFoundContent(false, onBottomNavigateTo)
                     } else {
@@ -294,7 +303,7 @@ private fun RowScope.TabContent(
 
 @Composable
 private fun HistoryNotFoundContent(
-    isScannedHistory: Boolean,
+    isScanned: Boolean,
     onBottomNavigateTo: (DirectionDestination) -> Unit
 ) {
     val strings = LocalStrings.current
@@ -310,7 +319,7 @@ private fun HistoryNotFoundContent(
 
         Image(
             painter = painterResource(
-                id = if (isScannedHistory) {
+                id = if (isScanned) {
                     R.drawable.ic_history_scanned_empty_illustration
                 } else {
                     R.drawable.ic_history_created_empty_illustration
@@ -331,7 +340,7 @@ private fun HistoryNotFoundContent(
             )
 
             Text(
-                text = if (isScannedHistory) {
+                text = if (isScanned) {
                     strings.clickScanButton
                 } else {
                     strings.clickCreateButton
@@ -343,13 +352,13 @@ private fun HistoryNotFoundContent(
         }
 
         QRFilledButton(
-            text = if (isScannedHistory) {
+            text = if (isScanned) {
                 strings.scan
             } else {
                 strings.create
             },
             onClick = {
-                if (isScannedHistory) {
+                if (isScanned) {
                     onBottomNavigateTo(ScannerScreenDestination)
                 } else {
                     onBottomNavigateTo(CreatorScreenDestination)
