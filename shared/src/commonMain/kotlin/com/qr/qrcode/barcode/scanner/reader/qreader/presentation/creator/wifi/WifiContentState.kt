@@ -36,13 +36,44 @@ data class WifiContentState(
         append("H:$isHidden;")
     }
 
-    override fun decode(): String = buildString {
-        append(networkName).append(", ")
-
-        when(authentication) {
-            Authentication.WEP -> append("WEP")
-            Authentication.WPA_WPA2 -> append("WPA")
-            Authentication.OPEN -> append("Open")
+    override fun decode(): String {
+        val type = when (authentication) {
+            Authentication.WEP -> "WEP"
+            Authentication.WPA_WPA2 -> "WPA"
+            Authentication.OPEN -> "Open"
         }
+
+        return """
+            $networkName
+            $type
+            $password
+        """.trimIndent()
+    }
+}
+
+fun String.toWifiContent(): WifiContentState? {
+    return try {
+        val wifiRegex = Regex("""WIFI:S:(.*?);T:(.*?);P:(.*?);H:(.*?);""")
+        val matchResult = wifiRegex.find(this)
+
+        matchResult?.groupValues?.let { groups ->
+            val networkName = groups[1]
+            val authentication = when (groups[2]) {
+                "WEP" -> WifiContentState.Authentication.WEP
+                "WPA" -> WifiContentState.Authentication.WPA_WPA2
+                else -> WifiContentState.Authentication.OPEN
+            }
+            val password = groups[3]
+            val isHidden = groups[4].toBooleanStrictOrNull() ?: false
+
+            WifiContentState(
+                networkName = networkName,
+                password = password,
+                authentication = authentication,
+                isHidden = isHidden
+            )
+        }
+    } catch (_: Throwable) {
+        null
     }
 }

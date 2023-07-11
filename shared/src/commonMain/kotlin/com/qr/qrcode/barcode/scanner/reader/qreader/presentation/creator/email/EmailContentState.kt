@@ -13,10 +13,33 @@ data class EmailContentState(
     override fun encode(): String = "mailto:$email?subject=$subject?body=$message"
 
     override fun decode(): String = buildString {
-        if (message.isNotEmpty()) {
-            append("$message ($email)")
-        } else {
-            append(email)
+        append(email)
+
+        if (subject.isNotEmpty()) {
+            append("\n").append(subject)
         }
+
+        if (message.isNotEmpty()) {
+            append("\n").append(message)
+        }
+    }
+}
+
+fun String.toEmailContent(): EmailContentState? {
+    return try {
+        if (startsWith("mailto:")) {
+            val parts = split("?subject=", "?body=")
+            val email = parts[0].removePrefix("mailto:")
+            val subject = parts[1]
+            val message = parts[2]
+
+            EmailContentState(
+                email = email,
+                subject = subject,
+                message = message
+            )
+        } else null
+    } catch (_: Throwable) {
+        null
     }
 }

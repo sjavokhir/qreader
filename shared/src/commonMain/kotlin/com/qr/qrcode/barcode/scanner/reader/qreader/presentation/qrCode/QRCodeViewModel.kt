@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.qrCode
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.log
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.database.dao.HistoryDao
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.datastore.AppStore
 import com.rickclephas.kmm.viewmodel.KMMViewModel
@@ -24,8 +23,6 @@ class QRCodeViewModel : KMMViewModel(), KoinComponent {
     val state = stateData.asStateFlow()
 
     init {
-        appStore.isChromeCustomTabsEnabled().log()
-
         viewModelScope.coroutineScope.launch {
             stateData.update {
                 it.copy(isChromeCustomTabsEnabled = appStore.isChromeCustomTabsEnabled())

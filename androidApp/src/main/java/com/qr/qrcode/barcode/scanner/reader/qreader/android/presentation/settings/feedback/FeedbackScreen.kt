@@ -21,7 +21,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QR
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.Constants
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.email.EmailContentState
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appVersion
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.deviceVersion
 import com.ramcosta.composedestinations.annotation.Destination
@@ -65,12 +64,10 @@ fun FeedbackScreen() {
                 QRFilledButton(
                     text = strings.sendUs,
                     onClick = {
-                        val encode = EmailContentState(
+                        context.sendMail(
                             email = Constants.EMAIL,
                             subject = "Feedback regarding ${strings.appName} [$appVersion - $deviceVersion]"
-                        ).encode()
-
-                        context.sendMail(encode)
+                        )
                     }
                 )
             }

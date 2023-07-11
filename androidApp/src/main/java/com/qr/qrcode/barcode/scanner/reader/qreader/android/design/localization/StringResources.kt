@@ -170,20 +170,27 @@ data class StringResources(
     val copyPassword: String,
     val copy: String,
     val edit: String,
-    val channelName: String,
-    val profile: String,
-    val username: String,
+    val mChannelName: String,
+    val mProfile: String,
+    val mUsername: String,
+    val mDial: String,
+    val viewAddress: String,
+    val addToCalendar: String,
 ) {
 
     fun socialMediaChannel(channel: String): String {
-        return "$channel $channelName"
+        return "$channel $mChannelName"
     }
 
     fun socialMediaProfile(profile: String): String {
-        return "$profile $profile"
+        return "$profile $mProfile"
     }
 
     fun socialMediaUsername(username: String): String {
-        return "$username $username"
+        return "$username $mUsername"
+    }
+
+    fun dial(phone: String): String {
+        return "$mDial $phone"
     }
 }

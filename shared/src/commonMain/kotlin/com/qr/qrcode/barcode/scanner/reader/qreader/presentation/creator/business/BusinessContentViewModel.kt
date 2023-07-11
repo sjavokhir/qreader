@@ -26,6 +26,16 @@ class BusinessContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        val content = value.toBusinessContent() ?: return
+
+        onValueChanged(
+            name = content.name,
+            industry = content.industry,
+            phone = content.phone,
+            email = content.email,
+            website = content.website,
+            address = content.address,
+        )
     }
 
     private fun onValueChanged(

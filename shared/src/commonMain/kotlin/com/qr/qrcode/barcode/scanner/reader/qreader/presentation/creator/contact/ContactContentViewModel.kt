@@ -24,6 +24,14 @@ class ContactContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        val content = value.toContactContent() ?: return
+
+        onValueChanged(
+            name = content.name,
+            phone = content.phone,
+            email = content.email,
+            address = content.address,
+        )
     }
 
     private fun onValueChanged(

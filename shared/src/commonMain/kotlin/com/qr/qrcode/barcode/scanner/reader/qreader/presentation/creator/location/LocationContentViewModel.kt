@@ -30,20 +30,15 @@ class LocationContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
-        tryCatch {
-            if (value.startsWith("geo:")) {
-                val (latitude, longitude) = value
-                    .removePrefix("geo:")
-                    .split(",")
+        val content = value.toLocationContent() ?: return
 
-                onValueChanged(latitude, longitude)
-            }
-        }
+        onValueChanged(content.latitude, content.longitude)
     }
 
     private fun onLocationChanged(location: String) {
         tryCatch {
             val (latitude, longitude) = location.split(",")
+
             onValueChanged(latitude, longitude)
         }
     }

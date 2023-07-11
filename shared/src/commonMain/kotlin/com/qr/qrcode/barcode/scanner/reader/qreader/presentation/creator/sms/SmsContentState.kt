@@ -11,5 +11,25 @@ data class SmsContentState(
 
     override fun encode(): String = "smsto:$phone?body=$message"
 
-    override fun decode(): String = "$message ($phone)"
+    override fun decode(): String = """
+        $phone
+        $message
+    """.trimIndent()
+}
+
+fun String.toSmsContent(): SmsContentState? {
+    return try {
+        if (startsWith("smsto:")) {
+            val parts = split("?body=")
+            val phone = parts[0].removePrefix("smsto:")
+            val message = parts[1]
+
+            SmsContentState(
+                phone = phone,
+                message = message
+            )
+        } else null
+    } catch (_: Throwable) {
+        null
+    }
 }

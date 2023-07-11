@@ -27,6 +27,13 @@ class EventContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        val content = value.toEventContent() ?: return
+
+        onValueChanged(
+            name = content.name,
+            location = content.location,
+            description = content.description,
+        )
     }
 
     private fun onShowPicker(isStart: Boolean) {

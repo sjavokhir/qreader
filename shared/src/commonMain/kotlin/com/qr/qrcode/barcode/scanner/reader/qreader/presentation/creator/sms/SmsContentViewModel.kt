@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.sms
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -24,15 +23,12 @@ class SmsContentViewModel : KMMViewModel(), KoinComponent {
     }
 
     private fun onEncoded(value: String) {
-        tryCatch {
-            if (value.startsWith("smsto:")) {
-                val parts = value.split("?body=")
-                val phone = parts[0].removePrefix("smsto:")
-                val message = parts[1]
+        val content = value.toSmsContent() ?: return
 
-                onValueChanged(phone, message)
-            }
-        }
+        onValueChanged(
+            phone = content.phone,
+            message = content.message
+        )
     }
 
     private fun onValueChanged(

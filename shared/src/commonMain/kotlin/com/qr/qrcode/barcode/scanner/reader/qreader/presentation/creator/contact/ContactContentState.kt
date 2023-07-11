@@ -11,31 +11,50 @@ data class ContactContentState(
     val isSetEncoded: Boolean = false
 ) : QrData {
 
-    override fun encode(): String {
-        return create(name, phone, email, address)
+    override fun encode(): String = buildString {
+        append("BEGIN:VCARD\n")
+        append("VERSION:3.0\n")
+        append("N:$name\n")
+        append("FN:$name\n")
+        append("TEL:$phone\n")
+        append("EMAIL:$email\n")
+        append("ADR:$address\n")
+        append("END:VCARD")
     }
 
-    override fun decode(): String {
-        return "$name, $phone, $email, $address"
-    }
+    override fun decode(): String = buildString {
+        append(name).append("\n")
+        append(phone)
 
-    companion object {
-        fun create(
-            name: String,
-            phone: String,
-            email: String,
-            address: String,
-        ): String {
-            return buildString {
-                append("BEGIN:VCARD\n")
-                append("VERSION:3.0\n")
-                append("N:$name\n")
-                append("FN:$name\n")
-                append("TEL:$phone\n")
-                append("EMAIL:$email\n")
-                append("ADR:$address\n")
-                append("END:VCARD")
-            }
+        if (email.isNotEmpty()) {
+            append("\n").append(email)
         }
+
+        if (address.isNotEmpty()) {
+            append("\n").append(address)
+        }
+    }
+}
+
+fun String.toContactContent(): ContactContentState? {
+    return try {
+        val nameMatch = Regex("FN:(.*?)\\n").find(this)
+        val phoneMatch = Regex("TEL:(.*?)\\n").find(this)
+        val emailMatch = Regex("EMAIL:(.*?)\\n").find(this)
+        val addressMatch = Regex("ADR:(.*?)\\n").find(this)
+
+        val name = nameMatch?.groupValues?.get(1)
+        val phone = phoneMatch?.groupValues?.get(1)
+        val email = emailMatch?.groupValues?.get(1)
+        val address = addressMatch?.groupValues?.get(1)
+
+        ContactContentState(
+            name = name.orEmpty(),
+            phone = phone.orEmpty(),
+            email = email.orEmpty(),
+            address = address.orEmpty()
+        )
+    } catch (_: Throwable) {
+        null
     }
 }

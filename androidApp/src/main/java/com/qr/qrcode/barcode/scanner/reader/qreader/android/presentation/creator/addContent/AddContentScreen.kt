@@ -31,7 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.EditContentModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
@@ -50,8 +49,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LocationPickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.currentTimestamp
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDateTime
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -75,8 +72,8 @@ fun AddContentScreen(
     val strings = LocalStrings.current
 
     var isEnabled by remember { mutableStateOf(false) }
-    var encodedValue by remember { mutableStateOf("") }
-    var decodedValue by remember { mutableStateOf("") }
+    var encodedContent by remember { mutableStateOf("") }
+    var decodedContent by remember { mutableStateOf("") }
 
     QRBackground {
         Box(
@@ -114,8 +111,8 @@ fun AddContentScreen(
                         encoded = encoded,
                         onContent = { enabled, encoded, decoded ->
                             isEnabled = enabled
-                            encodedValue = encoded
-                            decodedValue = decoded
+                            encodedContent = encoded
+                            decodedContent = decoded
                         },
                         onNavigate = navigator::navigate,
                         resultTimestamp = resultTimestamp,
@@ -141,15 +138,15 @@ fun AddContentScreen(
                     onClick = {
                         if (isEditable) {
                             resultNavigator.navigateBack(
-                                EditContentModel(encodedValue, decodedValue)
+                                EditContentModel(encodedContent, decodedContent)
                             )
                         } else {
                             navigator.navigate(
                                 QRCodeScreenDestination(
                                     id = id,
                                     generateMode = generateMode,
-                                    encoded = encodedValue,
-                                    decoded = decodedValue
+                                    encoded = encodedContent,
+                                    decoded = decodedContent
                                 )
                             )
                         }

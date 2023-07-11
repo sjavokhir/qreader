@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -134,7 +133,8 @@ private fun ScanControlsContent(
 
     HeaderContent(title = strings.scanControls) {
         NavigateContent(
-            title = strings.soundEffects, hasSubscription = hasSubscription
+            title = strings.soundEffects,
+            hasSubscription = hasSubscription
         ) {
             if (hasSubscription) {
                 onNavigate(SoundEffectsScreenDestination)
@@ -145,29 +145,38 @@ private fun ScanControlsContent(
 
         DividerContent()
 
-        SwitchContent(title = strings.vibrate, checked = state.isVibrateChecked, onCheckedChange = {
-            onEvent(SettingsEvent.CheckVibrate(it))
-        })
+        SwitchContent(
+            title = strings.vibrate,
+            checked = state.isVibrateChecked,
+            onCheckedChange = {
+                onEvent(SettingsEvent.CheckVibrate(it))
+            }
+        )
 
         DividerContent()
 
-        SwitchContent(title = strings.openWebPages,
+        SwitchContent(
+            title = strings.openWebPages,
             checked = state.isOpenWebPagesChecked,
             onCheckedChange = {
                 onEvent(SettingsEvent.CheckOpenWebPages(it))
-            })
+            }
+        )
 
         DividerContent()
 
-        SwitchContent(title = strings.chromeCustomTabs,
+        SwitchContent(
+            title = strings.chromeCustomTabs,
             checked = state.isChromeCustomTabsChecked,
             onCheckedChange = {
                 onEvent(SettingsEvent.CheckChromeCustomTabs(it))
-            })
+            }
+        )
 
         DividerContent()
 
-        SwitchContent(title = strings.batchScan,
+        SwitchContent(
+            title = strings.batchScan,
             hasSubscription = hasSubscription,
             checked = state.isBatchScanChecked && hasSubscription,
             onCheckedChange = {
@@ -176,7 +185,8 @@ private fun ScanControlsContent(
                 } else {
                     onNavigate(PremiumScreenDestination)
                 }
-            })
+            }
+        )
     }
 }
 
@@ -230,7 +240,8 @@ private fun OthersContent(context: Context) {
 
 @Composable
 private fun HeaderContent(
-    title: String, content: @Composable ColumnScope.() -> Unit
+    title: String,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -259,7 +270,9 @@ private fun HeaderContent(
 
 @Composable
 private fun NavigateContent(
-    title: String, hasSubscription: Boolean = true, onClick: () -> Unit
+    title: String,
+    hasSubscription: Boolean = true,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -269,18 +282,23 @@ private fun NavigateContent(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = title, style = MaterialTheme.typography.bodyLarge
-        )
-
-        if (!hasSubscription) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_subscription),
-                contentDescription = null
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge
             )
-        }
 
-        Spacer(modifier = Modifier.weight(1f))
+            if (!hasSubscription) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_subscription),
+                    contentDescription = null
+                )
+            }
+        }
 
         QRIcon(
             painter = painterResource(id = R.drawable.ic_chevron_right),
@@ -303,18 +321,23 @@ private fun SwitchContent(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = title, style = MaterialTheme.typography.bodyLarge
-        )
-
-        if (!hasSubscription) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_subscription),
-                contentDescription = null
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge
             )
-        }
 
-        Spacer(modifier = Modifier.weight(1f))
+            if (!hasSubscription) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_subscription),
+                    contentDescription = null
+                )
+            }
+        }
 
         Switch(
             checked = checked,

@@ -1,6 +1,5 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.phone
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -22,11 +21,9 @@ class PhoneContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
-        tryCatch {
-            if (value.startsWith("tel:")) {
-                onPhoneChanged(value.substringAfter("tel:"))
-            }
-        }
+        val content = value.toPhoneContent() ?: return
+
+        onPhoneChanged(content.phone)
     }
 
     private fun onPhoneChanged(phone: String) {

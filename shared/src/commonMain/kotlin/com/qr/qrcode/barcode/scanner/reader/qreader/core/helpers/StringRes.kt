@@ -17,7 +17,7 @@ object StringRes {
     const val instagram = "Instagram"
     const val facebook = "Facebook"
     const val twitter = "Twitter"
-    const val tiktok = "TikTok "
+    const val tiktok = "TikTok"
     const val telegram = "Telegram"
     const val vkontakte = "ВКонтакте"
     const val twitch = "Twitch"

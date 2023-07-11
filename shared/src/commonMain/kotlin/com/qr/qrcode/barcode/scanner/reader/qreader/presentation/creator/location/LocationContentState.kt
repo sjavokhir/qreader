@@ -13,3 +13,15 @@ data class LocationContentState(
 
     override fun decode(): String = "$latitude, $longitude"
 }
+
+fun String.toLocationContent(): LocationContentState? {
+    return try {
+        if (startsWith("geo:")) {
+            val (latitude, longitude) = removePrefix("geo:").split(",")
+
+            LocationContentState(latitude, longitude)
+        } else null
+    } catch (_: Throwable) {
+        null
+    }
+}

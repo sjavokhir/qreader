@@ -17,41 +17,64 @@ data class EventContentState(
     val isSetEncoded: Boolean = false
 ) : QrData {
 
-    override fun encode(): String {
-        return create(name, location, description, isAllDay, startTimestamp, endTimestamp)
+    override fun encode(): String = buildString {
+        append("BEGIN:VEVENT\n")
+        append("SUMMARY:$name\n")
+
+        if (isAllDay) {
+            append("DTSTART;VALUE=DATE:${startTimestamp.timestampToString(isAllDay)}\n")
+        } else {
+            append("DTSTART:${startTimestamp.timestampToString(isAllDay)}\n")
+        }
+
+        if (isAllDay) {
+            append("DTEND;VALUE=DATE:${endTimestamp.timestampToString(isAllDay)}\n")
+        } else {
+            append("DTEND:${endTimestamp.timestampToString(isAllDay)}\n")
+        }
+
+        append("LOCATION:$location\n")
+        append("DESCRIPTION:$description\n")
+        append("END:VEVENT")
     }
 
-    override fun decode(): String = "$name, $location, $startDateTime-$endDateTime"
+    override fun decode(): String = buildString {
+        append(name)
 
-    companion object {
-        fun create(
-            name: String,
-            location: String,
-            description: String,
-            isAllDay: Boolean,
-            startTimestamp: Long,
-            endTimestamp: Long,
-        ): String {
-            return buildString {
-                append("BEGIN:VEVENT\n")
-                append("SUMMARY:$name\n")
-
-                if (isAllDay) {
-                    append("DTSTART;VALUE=DATE:${startTimestamp.timestampToString(isAllDay)}\n")
-                } else {
-                    append("DTSTART:${startTimestamp.timestampToString(isAllDay)}\n")
-                }
-
-                if (isAllDay) {
-                    append("DTEND;VALUE=DATE:${endTimestamp.timestampToString(isAllDay)}\n")
-                } else {
-                    append("DTEND:${endTimestamp.timestampToString(isAllDay)}\n")
-                }
-
-                append("LOCATION:$location\n")
-                append("DESCRIPTION:$description\n")
-                append("END:VEVENT")
-            }
+        if (startDateTime.isNotEmpty()) {
+            append("\n").append(startDateTime)
         }
+
+        if (endDateTime.isNotEmpty()) {
+            append("\n").append(endDateTime)
+        }
+
+        if (location.isNotEmpty()) {
+            append("\n").append(location)
+        }
+
+        if (description.isNotEmpty()) {
+            append("\n").append(description)
+        }
+    }
+}
+
+fun String.toEventContent(): EventContentState? {
+    return try {
+        val nameMatch = Regex("SUMMARY:(.*?)\\n").find(this)
+        val locationMatch = Regex("LOCATION:(.*?)\\n").find(this)
+        val descriptionMatch = Regex("DESCRIPTION:(.*?)\\n").find(this)
+
+        val name = nameMatch?.groupValues?.get(1)
+        val location = locationMatch?.groupValues?.get(1)
+        val description = descriptionMatch?.groupValues?.get(1)
+
+        EventContentState(
+            name = name.orEmpty(),
+            location = location.orEmpty(),
+            description = description.orEmpty()
+        )
+    } catch (_: Throwable) {
+        null
     }
 }

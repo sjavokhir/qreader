@@ -25,28 +25,14 @@ class WifiContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
-        tryCatch {
-            val wifiRegex = Regex("""WIFI:S:(.*?);T:(.*?);P:(.*?);H:(.*?);""")
-            val matchResult = wifiRegex.find(value)
+        val content = value.toWifiContent() ?: return
 
-            matchResult?.groupValues?.let { groups ->
-                val networkName = groups[1]
-                val authentication = when(groups[2]) {
-                    "WEP" -> WifiContentState.Authentication.WEP
-                    "WPA" -> WifiContentState.Authentication.WPA_WPA2
-                    else -> WifiContentState.Authentication.OPEN
-                }
-                val password = groups[3]
-                val isHidden = groups[4].toBooleanStrictOrNull() ?: false
-
-                onValueChanged(
-                    networkName,
-                    password,
-                    authentication,
-                    isHidden
-                )
-            }
-        }
+        onValueChanged(
+            networkName = content.networkName,
+            password = content.password,
+            authentication = content.authentication,
+            isHidden = content.isHidden
+        )
     }
 
     private fun onValueChanged(

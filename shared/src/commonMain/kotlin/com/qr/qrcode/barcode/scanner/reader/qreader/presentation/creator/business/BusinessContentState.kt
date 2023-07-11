@@ -13,35 +13,63 @@ data class BusinessContentState(
     val isSetEncoded: Boolean = false
 ) : QrData {
 
-    override fun encode(): String {
-        return create(name, industry, phone, email, website, address)
+    override fun encode(): String = buildString {
+        append("BEGIN:VCARD\n")
+        append("VERSION:3.0\n")
+        append("N:$name\n")
+        append("FN:$name\n")
+        append("ORG:$industry\n")
+        append("TEL:$phone\n")
+        append("EMAIL:$email\n")
+        append("ADR:$address\n")
+        append("URL:$website\n")
+        append("END:VCARD")
     }
 
-    override fun decode(): String {
-        return "$name, $industry, $phone, $email, $address, $website"
-    }
+    override fun decode(): String = buildString {
+        append(name).append("\n")
+        append(industry).append("\n")
+        append(phone)
 
-    companion object {
-        fun create(
-            name: String,
-            industry: String,
-            phone: String,
-            email: String,
-            website: String,
-            address: String,
-        ): String {
-            return buildString {
-                append("BEGIN:VCARD\n")
-                append("VERSION:3.0\n")
-                append("N:$name\n")
-                append("FN:$name\n")
-                append("ORG:$industry\n")
-                append("TEL:$phone\n")
-                append("EMAIL:$email\n")
-                append("ADR:$address\n")
-                append("URL:$website\n")
-                append("END:VCARD")
-            }
+        if (email.isNotEmpty()) {
+            append("\n").append(email)
         }
+
+        if (website.isNotEmpty()) {
+            append("\n").append(website)
+        }
+
+        if (address.isNotEmpty()) {
+            append("\n").append(address)
+        }
+    }
+}
+
+fun String.toBusinessContent(): BusinessContentState? {
+    return try {
+        val nameMatch = Regex("FN:(.*?)\\n").find(this)
+        val industryMatch = Regex("ORG:(.*?)\\n").find(this)
+        val phoneMatch = Regex("TEL:(.*?)\\n").find(this)
+        val emailMatch = Regex("EMAIL:(.*?)\\n").find(this)
+        val websiteMatch = Regex("URL:(.*?)\\n").find(this)
+        val addressMatch = Regex("ADR:(.*?)\\n").find(this)
+
+        val name = nameMatch?.groupValues?.get(1)
+        val industry = industryMatch?.groupValues?.get(1)
+        val phone = phoneMatch?.groupValues?.get(1)
+        val email = emailMatch?.groupValues?.get(1)
+        val website = websiteMatch?.groupValues?.get(1)
+        val address = addressMatch?.groupValues?.get(1)
+
+        BusinessContentState(
+            name = name.orEmpty(),
+            industry = industry.orEmpty(),
+            phone = phone.orEmpty(),
+            email = email.orEmpty(),
+            website = website.orEmpty(),
+            address = address.orEmpty()
+        )
+    } catch (_: Throwable) {
+        null
     }
 }

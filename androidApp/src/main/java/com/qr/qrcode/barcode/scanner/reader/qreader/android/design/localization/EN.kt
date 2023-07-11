@@ -169,7 +169,10 @@ fun stringResourcesEn() = StringResources(
     copyPassword = "Copy password",
     copy = "Copy",
     edit = "Edit",
-    channelName = "channel name",
-    profile = "profile",
-    username = "username",
+    mChannelName = "channel name",
+    mProfile = "profile",
+    mUsername = "username",
+    mDial = "Dial",
+    viewAddress = "View address",
+    addToCalendar = "Add to calendar"
 )

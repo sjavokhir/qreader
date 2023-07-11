@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,15 +32,16 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.addContact
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.addToCalendar
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.connectToWifi
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.copyToClipboard
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.copyWifiNetworkName
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.copyWifiPassword
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.dial
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.openUrl
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.searchText
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.searchGoogle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.sendMail
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.sendSms
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.showAddress
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.showLocation
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.ImageUtils
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.storagePermissions
@@ -51,6 +53,15 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.re
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.biz.toBizContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.toBusinessContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.contact.toContactContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.email.toEmailContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event.toEventContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.location.toLocationContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.phone.toPhoneContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.sms.toSmsContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.toWifiContent
 import com.ramcosta.composedestinations.spec.Direction
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -107,10 +118,16 @@ fun QRDetailContent(
                 GenerateMode.PhoneNumber -> PhoneContent(encoded, decoded, dateTime)
                 GenerateMode.EmailAddress -> EmailContent(encoded, decoded, dateTime)
                 GenerateMode.Wifi -> WifiContent(encoded, decoded, dateTime)
-                GenerateMode.ContactVCard -> TODO()
-                GenerateMode.CalendarEvent -> TODO()
-                GenerateMode.BizCard -> TODO()
-                GenerateMode.BusinessVCard -> TODO()
+                GenerateMode.ContactVCard -> ContactContent(encoded, decoded, dateTime)
+                GenerateMode.CalendarEvent -> EventContent(encoded, decoded, dateTime)
+                GenerateMode.BizCard -> {
+                    BizCardContent(encoded, decoded, dateTime, isChromeCustomTabs)
+                }
+
+                GenerateMode.BusinessVCard -> {
+                    BusinessContent(encoded, decoded, dateTime, isChromeCustomTabs)
+                }
+
                 GenerateMode.Location -> LocationContent(encoded, decoded, dateTime)
                 else -> {
                     WebsiteContent(encoded, decoded, dateTime, isChromeCustomTabs)
@@ -157,7 +174,7 @@ private fun TextContent(
 
     DecodeContent(decoded, dateTime) {
         ContentActionButton(strings.searchOnWeb, R.drawable.ic_search) {
-            context.searchText(encoded, isChromeCustomTabs)
+            context.searchGoogle(encoded, isChromeCustomTabs)
         }
     }
 }
@@ -188,13 +205,25 @@ private fun SmsContent(
     val strings = LocalStrings.current
     val context = LocalContext.current
 
-    DecodeContent(decoded, dateTime) {
-        ContentActionButton(strings.sendSms, R.drawable.ic_sms) {
-            context.sendSms(encoded)
-        }
+    val content = remember(encoded) { encoded.toSmsContent() }
+    val phone = remember(content) { content?.phone.orEmpty() }
+    val message = remember(content) { content?.message.orEmpty() }
 
-        ContentActionButton(strings.addContact, R.drawable.ic_add_contact) {
-            context.addContact(encoded)
+    DecodeContent(decoded, dateTime) {
+        if (phone.isNotEmpty()) {
+            if (message.isNotEmpty()) {
+                ContentActionButton(strings.sendSms, R.drawable.ic_sms) {
+                    context.sendSms(phone, message)
+                }
+            }
+
+            ContentActionButton(strings.addContact, R.drawable.ic_add_contact) {
+                context.addContact(phone)
+            }
+
+            ContentActionButton(strings.dial(phone), R.drawable.ic_call) {
+                context.dial(phone)
+            }
         }
     }
 }
@@ -208,9 +237,17 @@ private fun PhoneContent(
     val strings = LocalStrings.current
     val context = LocalContext.current
 
+    val phone = remember(encoded) { encoded.toPhoneContent()?.phone.orEmpty() }
+
     DecodeContent(decoded, dateTime) {
-        ContentActionButton(strings.addContact, R.drawable.ic_add_contact) {
-            context.addContact(encoded)
+        if (phone.isNotEmpty()) {
+            ContentActionButton(strings.addContact, R.drawable.ic_add_contact) {
+                context.addContact(phone)
+            }
+
+            ContentActionButton(strings.dial(phone), R.drawable.ic_call) {
+                context.dial(phone)
+            }
         }
     }
 }
@@ -224,9 +261,16 @@ private fun EmailContent(
     val strings = LocalStrings.current
     val context = LocalContext.current
 
+    val content = remember(encoded) { encoded.toEmailContent() }
+    val email = remember(content) { content?.email.orEmpty() }
+    val subject = remember(content) { content?.subject.orEmpty() }
+    val message = remember(content) { content?.message.orEmpty() }
+
     DecodeContent(decoded, dateTime) {
-        ContentActionButton(strings.sendEmail, R.drawable.ic_mail) {
-            context.sendMail(encoded)
+        if (email.isNotEmpty()) {
+            ContentActionButton(strings.sendEmail, R.drawable.ic_mail) {
+                context.sendMail(email, subject, message)
+            }
         }
     }
 }
@@ -240,9 +284,15 @@ private fun LocationContent(
     val strings = LocalStrings.current
     val context = LocalContext.current
 
+    val content = remember(encoded) { encoded.toLocationContent() }
+    val latitude = remember(content) { content?.latitude.orEmpty() }
+    val longitude = remember(content) { content?.longitude.orEmpty() }
+
     DecodeContent(decoded, dateTime) {
-        ContentActionButton(strings.showLocation, R.drawable.ic_show_location) {
-            context.showLocation(encoded)
+        if (latitude.isNotEmpty() && longitude.isNotEmpty()) {
+            ContentActionButton(strings.showLocation, R.drawable.ic_show_location) {
+                context.showLocation(latitude, longitude)
+            }
         }
     }
 }
@@ -256,17 +306,209 @@ private fun WifiContent(
     val strings = LocalStrings.current
     val context = LocalContext.current
 
+    val content = remember(encoded) { encoded.toWifiContent() }
+    val networkName = remember(content) { content?.networkName.orEmpty() }
+    val password = remember(content) { content?.password.orEmpty() }
+    val authentication = remember(content) { content?.authentication }
+    val isHidden = remember(content) { content?.isHidden ?: false }
+
     DecodeContent(decoded, dateTime) {
         ContentActionButton(strings.connectToWifi, R.drawable.ic_wifi) {
-            context.connectToWifi(encoded)
+            context.connectToWifi(
+                networkName,
+                password,
+                authentication,
+                isHidden
+            )
         }
 
-        ContentActionButton(strings.copyNetworkName, R.drawable.ic_copy) {
-            context.copyWifiNetworkName(encoded)
+        if (networkName.isNotEmpty()) {
+            ContentActionButton(strings.copyNetworkName, R.drawable.ic_copy) {
+                context.copyToClipboard(networkName)
+            }
         }
 
-        ContentActionButton(strings.copyPassword, R.drawable.ic_copy) {
-            context.copyWifiPassword(encoded)
+        if (password.isNotEmpty()) {
+            ContentActionButton(strings.copyPassword, R.drawable.ic_copy) {
+                context.copyToClipboard(password)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ContactContent(
+    encoded: String,
+    decoded: String,
+    dateTime: String
+) {
+    val strings = LocalStrings.current
+    val context = LocalContext.current
+
+    val content = remember(encoded) { encoded.toContactContent() }
+    val name = remember(content) { content?.name.orEmpty() }
+    val phone = remember(content) { content?.phone.orEmpty() }
+    val email = remember(content) { content?.email.orEmpty() }
+    val address = remember(content) { content?.address.orEmpty() }
+
+    DecodeContent(decoded, dateTime) {
+        if (phone.isNotEmpty()) {
+            ContentActionButton(strings.addContact, R.drawable.ic_add_contact) {
+                context.addContact(
+                    phone = phone,
+                    name = name,
+                    email = email,
+                    address = address
+                )
+            }
+
+            ContentActionButton(strings.dial(phone), R.drawable.ic_call) {
+                context.dial(phone)
+            }
+        }
+
+        if (email.isNotEmpty()) {
+            ContentActionButton(strings.sendEmail, R.drawable.ic_mail) {
+                context.sendMail(email)
+            }
+        }
+
+        if (address.isNotEmpty()) {
+            ContentActionButton(strings.viewAddress, R.drawable.ic_show_location) {
+                context.showAddress(address)
+            }
+        }
+    }
+}
+
+@Composable
+private fun BusinessContent(
+    encoded: String,
+    decoded: String,
+    dateTime: String,
+    isChromeCustomTabs: Boolean,
+) {
+    val strings = LocalStrings.current
+    val context = LocalContext.current
+
+    val content = remember(encoded) { encoded.toBusinessContent() }
+    val name = remember(content) { content?.name.orEmpty() }
+    val industry = remember(content) { content?.industry.orEmpty() }
+    val phone = remember(content) { content?.phone.orEmpty() }
+    val email = remember(content) { content?.email.orEmpty() }
+    val website = remember(content) { content?.website.orEmpty() }
+    val address = remember(content) { content?.address.orEmpty() }
+
+    DecodeContent(decoded, dateTime) {
+        if (phone.isNotEmpty()) {
+            ContentActionButton(strings.addContact, R.drawable.ic_add_contact) {
+                context.addContact(
+                    phone = phone,
+                    name = name,
+                    company = industry,
+                    email = email,
+                    address = address
+                )
+                context.addContact(phone)
+            }
+
+            ContentActionButton(strings.dial(phone), R.drawable.ic_call) {
+                context.dial(phone)
+            }
+        }
+
+        if (email.isNotEmpty()) {
+            ContentActionButton(strings.sendEmail, R.drawable.ic_mail) {
+                context.sendMail(email)
+            }
+        }
+
+        if (website.isNotEmpty()) {
+            ContentActionButton(strings.openWebsite, R.drawable.ic_open_website) {
+                context.openUrl(website, isChromeCustomTabs)
+            }
+        }
+
+        if (address.isNotEmpty()) {
+            ContentActionButton(strings.viewAddress, R.drawable.ic_show_location) {
+                context.showAddress(address)
+            }
+        }
+    }
+}
+
+@Composable
+private fun BizCardContent(
+    encoded: String,
+    decoded: String,
+    dateTime: String,
+    isChromeCustomTabs: Boolean,
+) {
+    val strings = LocalStrings.current
+    val context = LocalContext.current
+
+    val content = remember(encoded) { encoded.toBizContent() }
+    val firstName = remember(content) { content?.firstName.orEmpty() }
+    val lastName = remember(content) { content?.lastName.orEmpty() }
+    val company = remember(content) { content?.company.orEmpty() }
+    val job = remember(content) { content?.job.orEmpty() }
+    val phone = remember(content) { content?.phone.orEmpty() }
+    val email = remember(content) { content?.email.orEmpty() }
+    val website = remember(content) { content?.website.orEmpty() }
+    val address = remember(content) { content?.address.orEmpty() }
+
+    DecodeContent(decoded, dateTime) {
+        if (phone.isNotEmpty()) {
+            ContentActionButton(strings.addContact, R.drawable.ic_add_contact) {
+                context.addContact(
+                    phone = phone,
+                    name = "$firstName $lastName".trim(),
+                    company = company,
+                    job = job,
+                    email = email,
+                    address = address
+                )
+            }
+
+            ContentActionButton(strings.dial(phone), R.drawable.ic_call) {
+                context.dial(phone)
+            }
+        }
+
+        if (email.isNotEmpty()) {
+            ContentActionButton(strings.sendEmail, R.drawable.ic_mail) {
+                context.sendMail(email)
+            }
+        }
+
+        if (website.isNotEmpty()) {
+            ContentActionButton(strings.openWebsite, R.drawable.ic_open_website) {
+                context.openUrl(website, isChromeCustomTabs)
+            }
+        }
+
+        if (address.isNotEmpty()) {
+            ContentActionButton(strings.viewAddress, R.drawable.ic_show_location) {
+                context.showAddress(address)
+            }
+        }
+    }
+}
+
+@Composable
+private fun EventContent(
+    encoded: String,
+    decoded: String,
+    dateTime: String
+) {
+    val strings = LocalStrings.current
+    val context = LocalContext.current
+
+    val content = remember(encoded) { encoded.toEventContent() }
+
+    DecodeContent(decoded, dateTime) {
+        ContentActionButton(strings.viewAddress, R.drawable.ic_today) {
+            context.addToCalendar()
         }
     }
 }

@@ -12,3 +12,13 @@ data class PhoneContentState(
 
     override fun decode(): String = phone
 }
+
+fun String.toPhoneContent(): PhoneContentState? {
+    return try {
+        if (startsWith("tel:")) {
+            PhoneContentState(substringAfter("tel:"))
+        } else null
+    } catch (_: Throwable) {
+        null
+    }
+}

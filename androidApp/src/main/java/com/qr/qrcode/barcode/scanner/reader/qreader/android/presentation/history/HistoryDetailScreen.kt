@@ -44,8 +44,8 @@ fun HistoryDetailScreen(
     val coroutineScope = rememberCoroutineScope()
 
     var customizeModel by rememberSaveable { mutableStateOf(customize) }
-    var encodedValue by rememberSaveable { mutableStateOf(encoded) }
-    var decodedValue by rememberSaveable { mutableStateOf(decoded) }
+    var encodedContent by rememberSaveable { mutableStateOf(encoded) }
+    var decodedContent by rememberSaveable { mutableStateOf(decoded) }
 
     resultCustomization.onNavResult { result ->
         when (result) {
@@ -57,8 +57,8 @@ fun HistoryDetailScreen(
                     QRCodeEvent.Insert(
                         id = id,
                         mode = generateMode,
-                        encoded = encodedValue,
-                        decoded = decodedValue,
+                        encoded = encodedContent,
+                        decoded = decodedContent,
                         customize = result.value.toState()
                     )
                 )
@@ -69,15 +69,15 @@ fun HistoryDetailScreen(
         when (result) {
             NavResult.Canceled -> {}
             is NavResult.Value -> {
-                encodedValue = result.value.encoded
-                decodedValue = result.value.decoded
+                encodedContent = result.value.encoded
+                decodedContent = result.value.decoded
 
                 viewModel.onEvent(
                     QRCodeEvent.Insert(
                         id = id,
                         mode = generateMode,
-                        encoded = encodedValue,
-                        decoded = decodedValue,
+                        encoded = encodedContent,
+                        decoded = decodedContent,
                         customize = customizeModel.toState()
                     )
                 )
@@ -89,8 +89,8 @@ fun HistoryDetailScreen(
         QRDetailContent(
             dateTime = dateTime,
             generateMode = generateMode,
-            encoded = encodedValue,
-            decoded = decodedValue,
+            encoded = encodedContent,
+            decoded = decodedContent,
             customize = customizeModel,
             isEditable = true,
             isDeletable = true,
@@ -101,7 +101,7 @@ fun HistoryDetailScreen(
                     AddContentScreenDestination(
                         id = id,
                         generateMode = generateMode,
-                        encoded = encodedValue,
+                        encoded = encodedContent,
                         isEditable = true
                     )
                 )

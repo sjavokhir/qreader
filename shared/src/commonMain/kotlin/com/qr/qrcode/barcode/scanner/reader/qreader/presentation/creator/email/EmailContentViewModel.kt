@@ -1,7 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.email
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.isEmailValid
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -25,16 +24,13 @@ class EmailContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
-        tryCatch {
-            if (value.startsWith("mailto:")) {
-                val parts = value.split("?subject=", "?body=")
-                val email = parts[0].removePrefix("mailto:")
-                val subject = parts[1]
-                val message = parts[2]
+        val content = value.toEmailContent() ?: return
 
-                onValueChanged(email, subject, message)
-            }
-        }
+        onValueChanged(
+            email = content.email,
+            subject = content.subject,
+            message = content.message
+        )
     }
 
     private fun onValueChanged(

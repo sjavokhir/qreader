@@ -219,7 +219,7 @@ private fun CustomizeScreenContent(
                 )
 
                 QRFilledButton(
-                    text = strings.customize,
+                    text = strings.save,
                     onClick = {
                         resultNavigator.navigateBack(state.toModel(logoUri))
                     },
