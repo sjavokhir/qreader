@@ -152,17 +152,17 @@ private fun ScanControlsContent(
         DividerContent()
 
         SwitchContent(title = strings.openWebPages,
-            checked = state.isChromeCustomTabsChecked,
+            checked = state.isOpenWebPagesChecked,
             onCheckedChange = {
-                onEvent(SettingsEvent.CheckChromeCustomTabs(it))
+                onEvent(SettingsEvent.CheckOpenWebPages(it))
             })
 
         DividerContent()
 
         SwitchContent(title = strings.chromeCustomTabs,
-            checked = state.isOpenWebPagesChecked,
+            checked = state.isChromeCustomTabsChecked,
             onCheckedChange = {
-                onEvent(SettingsEvent.CheckOpenWebPages(it))
+                onEvent(SettingsEvent.CheckChromeCustomTabs(it))
             })
 
         DividerContent()

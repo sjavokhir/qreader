@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.toState
@@ -33,6 +34,8 @@ fun QRCodeScreen(
     navigator: DestinationsNavigator,
     resultCustomization: ResultRecipient<CustomizeScreenDestination, QRCustomizeModel>
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val dateTime = remember {
         currentTimestamp().timestampToDateTime().defaultDateTime
     }
@@ -67,6 +70,7 @@ fun QRCodeScreen(
             encoded = encoded,
             decoded = decoded,
             customize = customizeModel,
+            isChromeCustomTabs = state.isChromeCustomTabsEnabled,
             onNavigate = navigator::navigate
         )
     }

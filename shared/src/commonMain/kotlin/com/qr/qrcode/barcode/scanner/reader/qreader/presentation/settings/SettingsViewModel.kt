@@ -1,5 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings
 
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.log
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.datastore.AppStore
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
@@ -21,7 +22,10 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
     val state = stateData.asStateFlow()
 
     init {
+
         viewModelScope.coroutineScope.launch {
+            appStore.isChromeCustomTabsEnabled().log()
+
             stateData.update {
                 it.copy(
                     isVibrateChecked = appStore.isVibrateEnabled(),

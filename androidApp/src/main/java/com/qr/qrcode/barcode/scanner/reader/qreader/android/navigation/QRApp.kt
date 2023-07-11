@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.QRTheme
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.NavGraphs
@@ -36,10 +37,12 @@ fun QRApp(
     val engine = rememberNavHostEngine()
     val navController = engine.rememberNavController()
 
-    val startDestination = if (isOnBoarding) {
-        OnBoardingScreenDestination
-    } else {
-        ScannerScreenDestination
+    val startDestination = remember(isOnBoarding) {
+        if (isOnBoarding) {
+            OnBoardingScreenDestination
+        } else {
+            ScannerScreenDestination
+        }
     }
 
     QRTheme(

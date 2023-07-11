@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.EditContentModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
@@ -38,6 +39,8 @@ fun HistoryDetailScreen(
     resultCustomization: ResultRecipient<CustomizeScreenDestination, QRCustomizeModel>,
     resultAddContent: ResultRecipient<AddContentScreenDestination, EditContentModel>,
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val coroutineScope = rememberCoroutineScope()
 
     var customizeModel by rememberSaveable { mutableStateOf(customize) }
@@ -91,6 +94,7 @@ fun HistoryDetailScreen(
             customize = customizeModel,
             isEditable = true,
             isDeletable = true,
+            isChromeCustomTabs = state.isChromeCustomTabsEnabled,
             onNavigate = navigator::navigate,
             onEdit = {
                 navigator.navigate(

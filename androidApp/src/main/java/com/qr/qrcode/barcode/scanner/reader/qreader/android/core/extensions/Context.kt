@@ -15,6 +15,8 @@ import android.net.wifi.WifiNetworkSuggestion
 import android.os.Build
 import android.provider.ContactsContract
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.log
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.StringRes
 import kotlin.system.exitProcess
@@ -78,22 +80,37 @@ fun Context.shareText(text: String) {
     }
 }
 
-fun Context.openUrl(url: String) {
+fun Context.openUrl(
+    url: String,
+    isChromeCustomTabs: Boolean = false
+) {
     tryCatch {
-        val intent = Intent(Intent.ACTION_VIEW)
-
-        if (url.startsWith("http://") || url.startsWith("https://")) {
-            intent.data = Uri.parse(url)
+        val uri = if (url.startsWith("http://") || url.startsWith("https://")) {
+            Uri.parse(url)
         } else {
-            intent.data = Uri.parse("https://$url")
+            Uri.parse("https://$url")
         }
 
-        startActivity(intent)
+        isChromeCustomTabs.log()
+
+        if (isChromeCustomTabs) {
+            val intent = CustomTabsIntent.Builder().build()
+            intent.launchUrl(this, uri)
+        } else {
+            val intent = Intent(Intent.ACTION_VIEW).apply { data = uri }
+            startActivity(intent)
+        }
     }
 }
 
-fun Context.searchText(text: String) {
-    openUrl("https://www.google.com/search?q=$text")
+fun Context.searchText(
+    text: String,
+    isChromeCustomTabs: Boolean = false
+) {
+    openUrl(
+        "https://www.google.com/search?q=$text",
+        isChromeCustomTabs
+    )
 }
 
 fun Context.sendMail(uriString: String) {
@@ -196,12 +213,8 @@ fun Context.connectToWifi(uriString: String) {
                     else -> {}
                 }
 
-                val suggestionsList = listOf(suggestion.build())
-
-                val status = wifiManager.addNetworkSuggestions(suggestionsList)
-                if (status != WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS) {
-                    // do error handling here
-                }
+                val suggestions = listOf(suggestion.build())
+                wifiManager.addNetworkSuggestions(suggestions)
 
                 val intentFilter =
                     IntentFilter(WifiManager.ACTION_WIFI_NETWORK_SUGGESTION_POST_CONNECTION)

@@ -54,12 +54,12 @@ class QRActivity : ComponentActivity() {
             var language by remember { mutableStateOf(appStore.getSelectedLanguage()) }
             var themeMode by remember { mutableStateOf(appStore.getSelectedThemeMode()) }
 
-            val event = EventChannel.receiveEvent().collectAsStateWithLifecycle(
-                initialValue = Event.Idle,
-                lifecycle = lifecycle
-            ).value
-
-            when (event) {
+            when (
+                val event = EventChannel.receiveEvent().collectAsStateWithLifecycle(
+                    initialValue = Event.Idle,
+                    lifecycle = lifecycle
+                ).value
+            ) {
                 is Event.LanguageChanged -> language = event.language
                 is Event.ThemeModeChanged -> themeMode = event.themeMode
                 else -> {}

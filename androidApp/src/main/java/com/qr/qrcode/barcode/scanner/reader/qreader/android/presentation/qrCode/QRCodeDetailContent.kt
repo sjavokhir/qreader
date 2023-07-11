@@ -63,6 +63,7 @@ fun QRDetailContent(
     customize: QRCustomizeModel,
     isEditable: Boolean = false,
     isDeletable: Boolean = false,
+    isChromeCustomTabs: Boolean = false,
     onNavigate: (Direction) -> Unit,
     onEdit: () -> Unit = {},
     onDelete: () -> Unit = {}
@@ -94,8 +95,14 @@ fun QRDetailContent(
         }
         item {
             when (generateMode) {
-                GenerateMode.Text -> TextContent(encoded, decoded, dateTime)
-                GenerateMode.Website -> WebsiteContent(encoded, decoded, dateTime)
+                GenerateMode.Text -> {
+                    TextContent(encoded, decoded, dateTime, isChromeCustomTabs)
+                }
+
+                GenerateMode.Website -> {
+                    WebsiteContent(encoded, decoded, dateTime, isChromeCustomTabs)
+                }
+
                 GenerateMode.Sms -> SmsContent(encoded, decoded, dateTime)
                 GenerateMode.PhoneNumber -> PhoneContent(encoded, decoded, dateTime)
                 GenerateMode.EmailAddress -> EmailContent(encoded, decoded, dateTime)
@@ -105,7 +112,9 @@ fun QRDetailContent(
                 GenerateMode.BizCard -> TODO()
                 GenerateMode.BusinessVCard -> TODO()
                 GenerateMode.Location -> LocationContent(encoded, decoded, dateTime)
-                else -> WebsiteContent(encoded, decoded, dateTime)
+                else -> {
+                    WebsiteContent(encoded, decoded, dateTime, isChromeCustomTabs)
+                }
             }
         }
         item {
@@ -140,14 +149,15 @@ fun QRDetailContent(
 private fun TextContent(
     encoded: String,
     decoded: String,
-    dateTime: String
+    dateTime: String,
+    isChromeCustomTabs: Boolean
 ) {
     val strings = LocalStrings.current
     val context = LocalContext.current
 
     DecodeContent(decoded, dateTime) {
         ContentActionButton(strings.searchOnWeb, R.drawable.ic_search) {
-            context.searchText(encoded)
+            context.searchText(encoded, isChromeCustomTabs)
         }
     }
 }
@@ -156,14 +166,15 @@ private fun TextContent(
 private fun WebsiteContent(
     encoded: String,
     decoded: String,
-    dateTime: String
+    dateTime: String,
+    isChromeCustomTabs: Boolean
 ) {
     val strings = LocalStrings.current
     val context = LocalContext.current
 
     DecodeContent(decoded, dateTime) {
         ContentActionButton(strings.openWebsite, R.drawable.ic_open_website) {
-            context.openUrl(encoded)
+            context.openUrl(encoded, isChromeCustomTabs)
         }
     }
 }
