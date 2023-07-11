@@ -9,8 +9,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialMedia.SocialMediaContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.socialMedia.SocialMediaContentViewModel

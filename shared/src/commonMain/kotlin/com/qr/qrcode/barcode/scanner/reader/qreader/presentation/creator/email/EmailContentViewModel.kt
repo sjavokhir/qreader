@@ -1,6 +1,7 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.email
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.isEmailValid
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -24,13 +25,15 @@ class EmailContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
-        if (value.startsWith("mailto:")) {
-            val parts = value.split("?subject=", "?body=")
-            val email = parts[0].removePrefix("mailto:")
-            val subject = parts[1]
-            val message = parts[2]
+        tryCatch {
+            if (value.startsWith("mailto:")) {
+                val parts = value.split("?subject=", "?body=")
+                val email = parts[0].removePrefix("mailto:")
+                val subject = parts[1]
+                val message = parts[2]
 
-            onValueChanged(email, subject, message)
+                onValueChanged(email, subject, message)
+            }
         }
     }
 
@@ -46,7 +49,8 @@ class EmailContentViewModel : KMMViewModel() {
                 email = mEmail,
                 subject = subject ?: it.subject,
                 message = message ?: it.message,
-                isEnabled = mEmail.isEmailValid()
+                isEnabled = mEmail.isEmailValid(),
+                isSetEncoded = true
             )
         }
     }

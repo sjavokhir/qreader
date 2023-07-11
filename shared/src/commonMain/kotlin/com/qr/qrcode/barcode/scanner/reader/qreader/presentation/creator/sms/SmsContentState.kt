@@ -9,16 +9,7 @@ data class SmsContentState(
     val isSetEncoded: Boolean = false
 ) : QrData {
 
-    override fun encode(): String = create(phone, message)
+    override fun encode(): String = "smsto:$phone?body=$message"
 
     override fun decode(): String = "$message ($phone)"
-
-    companion object {
-        fun create(
-            phone: String,
-            message: String,
-        ): String {
-            return "smsto:$phone?body=$message"
-        }
-    }
 }

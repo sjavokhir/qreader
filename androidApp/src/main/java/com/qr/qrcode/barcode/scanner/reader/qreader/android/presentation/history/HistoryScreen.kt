@@ -40,14 +40,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.DividerContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.bottomNavigateTo
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode.toModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.toModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.HistoryDetailScreenDestination
@@ -182,7 +181,7 @@ fun HistoryContent(
                             generateMode = entity.generateMode.toGenerateMode(),
                             encoded = entity.encoded,
                             decoded = entity.decoded,
-                            model = entity.toModel()
+                            customize = entity.toModel()
                         )
                     )
                 }
@@ -219,31 +218,31 @@ private fun HistoryContentItem(
                         .size(42.dp)
                         .clip(MaterialTheme.shapes.medium)
                 )
-
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(3.dp)
-                ) {
-                    Text(
-                        text = mode.title,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium
-                    )
-
-                    Text(
-                        text = entity.decoded,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.outline,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(3.dp)
+            ) {
+                Text(
+                    text = mode.title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium
+                )
+
+                Text(
+                    text = entity.decoded,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.outline,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+            }
 
             Text(
                 text = entity.timestamp.timestampToDateTime().dateTime,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.outline
+                color = MaterialTheme.colorScheme.outline,
             )
         }
 

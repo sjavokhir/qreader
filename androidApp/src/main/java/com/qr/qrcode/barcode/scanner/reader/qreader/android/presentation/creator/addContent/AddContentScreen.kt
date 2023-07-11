@@ -30,9 +30,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.BizContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.BusinessContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.ContactContent
@@ -45,10 +46,11 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.TextContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WebsiteContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.contents.WifiContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator.qrCode.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LocationPickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.currentTimestamp
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDateTime
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -62,7 +64,7 @@ fun AddContentScreen(
     id: String,
     generateMode: GenerateMode,
     encoded: String = "",
-    model: QRCustomizeModel = QRCustomizeModel(),
+    customize: QRCustomizeModel = QRCustomizeModel(),
     navigator: DestinationsNavigator,
     resultNavigator: ResultBackNavigator<QRCustomizeModel>,
     resultTimestamp: ResultRecipient<DateTimePickerScreenDestination, Long>,
@@ -139,10 +141,11 @@ fun AddContentScreen(
                         navigator.navigate(
                             QRCodeScreenDestination(
                                 id = id,
+                                dateTime = currentTimestamp().timestampToDateTime().defaultDateTime,
                                 generateMode = generateMode,
                                 encoded = encodedValue,
                                 decoded = decodedValue,
-                                model = model
+                                customize = customize
                             )
                         )
                     },

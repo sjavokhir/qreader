@@ -28,30 +28,13 @@ data class WifiContentState(
         }
     }
 
-    override fun encode(): String {
-        return create(networkName, password, authentication, isHidden)
+    override fun encode(): String = buildString {
+        append("WIFI:")
+        append("S:$networkName;")
+        append("T:$authentication;")
+        append("P:$password;")
+        append("H:$isHidden;")
     }
 
     override fun decode(): String = "$networkName, ${authentication.name}"
-
-    companion object {
-        fun create(
-            networkName: String,
-            password: String,
-            authentication: Authentication,
-            isHidden: Boolean
-        ): String {
-            return buildString {
-                append("WIFI:")
-                append("S:$networkName;")
-                append("T:$authentication;")
-
-                if (authentication != Authentication.OPEN) {
-                    append("P:$password;")
-                }
-
-                append("H:$isHidden;")
-            }
-        }
-    }
 }

@@ -37,11 +37,11 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.openUrl
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.shareText
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.GoProContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FaqScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FeedbackScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LanguageScreenDestination
@@ -217,7 +217,7 @@ private fun OthersContent(context: Context) {
         DividerContent()
 
         NavigateContent(title = strings.tellFriends) {
-            context.shareText("Share")
+            context.shareText(strings.shareDescription)
         }
 
         DividerContent()

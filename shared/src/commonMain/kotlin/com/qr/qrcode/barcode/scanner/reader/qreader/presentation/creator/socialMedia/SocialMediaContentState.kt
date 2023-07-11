@@ -25,7 +25,7 @@ data class SocialMediaContentState(
             GenerateMode.Github -> "https://github.com/"
             GenerateMode.Medium -> "https://medium.com/"
             GenerateMode.Dribbble -> "https://dribbble.com/"
-            GenerateMode.Behance -> "https://www.behance.net/"
+            GenerateMode.Behance -> "https://behance.net/"
             else -> ""
         } + username
     }

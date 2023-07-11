@@ -34,11 +34,12 @@ import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locationPermissions
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.DividerContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.roundLast5
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.GeoPosition
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.result.ResultBackNavigator
@@ -80,7 +81,7 @@ fun LocationPickerScreen(
                     text = strings.select,
                     onClick = {
                         resultNavigator.navigateBack(
-                            "${currentPosition.latitude},${currentPosition.longitude}"
+                            "${currentPosition.latitude.roundLast5()},${currentPosition.longitude.roundLast5()}"
                         )
                     },
                     modifier = Modifier.padding(

@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRNavigationBar
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRNavigationBarItem
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRNavigationBar
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRNavigationBarItem
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.HistoryScreenDestination

@@ -8,11 +8,7 @@ data class PhoneContentState(
     val isSetEncoded: Boolean = false
 ) : QrData {
 
-    override fun encode(): String = create(phone)
+    override fun encode(): String = "tel:$phone"
 
     override fun decode(): String = phone
-
-    companion object {
-        fun create(phone: String) = "tel:$phone"
-    }
 }

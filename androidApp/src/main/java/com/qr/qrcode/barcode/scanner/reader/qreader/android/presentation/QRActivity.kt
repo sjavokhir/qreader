@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.ads.MobileAds
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.QRTheme
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.QRTheme
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.QRApp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.premium.PremiumViewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.datastore.AppStore

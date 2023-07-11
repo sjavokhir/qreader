@@ -20,40 +20,37 @@ class LocationContentViewModel : KMMViewModel() {
             is LocationContentEvent.LocationChanged -> onLocationChanged(event.location)
 
             is LocationContentEvent.LatitudeChanged -> onValueChanged(
-                latitude = event.latitude.toDoubleOrNull()
+                latitude = event.latitude
             )
 
             is LocationContentEvent.LongitudeChanged -> onValueChanged(
-                longitude = event.longitude.toDoubleOrNull()
+                longitude = event.longitude
             )
         }
     }
 
     private fun onEncoded(value: String) {
-    }
-
-    private fun onLocationChanged(location: String) {
         tryCatch {
-            val (latitude, longitude) = location
-                .split(",")
-                .map { it.toDoubleOrNull() }
+            if (value.startsWith("geo:")) {
+                val (latitude, longitude) = value
+                    .removePrefix("geo:")
+                    .split(",")
 
-            stateData.update {
-                val mLatitude = latitude ?: it.latitude
-                val mLongitude = longitude ?: it.longitude
-
-                it.copy(
-                    latitude = mLatitude,
-                    longitude = mLongitude,
-                    isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0
-                )
+                onValueChanged(latitude, longitude)
             }
         }
     }
 
+    private fun onLocationChanged(location: String) {
+        tryCatch {
+            val (latitude, longitude) = location.split(",")
+            onValueChanged(latitude, longitude)
+        }
+    }
+
     private fun onValueChanged(
-        latitude: Double? = null,
-        longitude: Double? = null
+        latitude: String? = null,
+        longitude: String? = null
     ) {
         stateData.update {
             val mLatitude = latitude ?: it.latitude
@@ -62,7 +59,8 @@ class LocationContentViewModel : KMMViewModel() {
             it.copy(
                 latitude = mLatitude,
                 longitude = mLongitude,
-                isEnabled = (mLatitude ?: 0.0) > 0.0 && (mLongitude ?: 0.0) > 0.0
+                isEnabled = mLatitude.isNotEmpty() && mLongitude.isNotEmpty(),
+                isSetEncoded = true
             )
         }
     }

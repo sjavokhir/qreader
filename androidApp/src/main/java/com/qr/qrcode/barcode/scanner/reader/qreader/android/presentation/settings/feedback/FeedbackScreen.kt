@@ -17,9 +17,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.sendMail
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.Constants
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.email.EmailContentState
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appVersion
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.deviceVersion
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination
@@ -60,7 +64,14 @@ fun FeedbackScreen() {
             item {
                 QRFilledButton(
                     text = strings.sendUs,
-                    onClick = { context.sendMail("") }
+                    onClick = {
+                        val encode = EmailContentState(
+                            email = Constants.EMAIL,
+                            subject = "Feedback regarding ${strings.appName} [$appVersion - $deviceVersion]"
+                        ).encode()
+
+                        context.sendMail(encode)
+                    }
                 )
             }
         }

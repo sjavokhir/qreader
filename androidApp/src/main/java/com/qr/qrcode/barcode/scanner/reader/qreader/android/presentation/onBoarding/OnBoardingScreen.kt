@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.HorizontalPagerIndicator
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRFilledButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QROutlinedButton
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.HorizontalPagerIndicator
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QROutlinedButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.onBoarding.OnBoardingEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.onBoarding.OnBoardingState

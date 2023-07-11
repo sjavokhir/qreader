@@ -28,11 +28,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.GoProContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRIcon
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.GoProContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph

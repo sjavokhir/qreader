@@ -9,12 +9,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTextField
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRTextField
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.biz.BizContentEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.biz.BizContentViewModel
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.BusinessContentEvent
-import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.website.WebsiteContentEvent
 
 @Composable
 fun BizContent(

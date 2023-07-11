@@ -34,10 +34,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.LocalSubscription
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.DividerContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateHeader
@@ -159,39 +159,39 @@ private fun GenerateContentItem(
                         .size(42.dp)
                         .clip(MaterialTheme.shapes.medium)
                 )
+            }
 
+            Text(
+                text = mode.title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            if (!hasSubscription && mode.isPremium) {
                 Text(
-                    text = mode.title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                if (!hasSubscription && mode.isPremium) {
-                    Text(
-                        text = strings.premium,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onErrorContainer,
-                        modifier = Modifier
-                            .clip(MaterialTheme.shapes.small)
-                            .background(
-                                color = MaterialTheme.colorScheme.errorContainer,
-                                shape = MaterialTheme.shapes.small
-                            )
-                            .padding(
-                                horizontal = 4.dp,
-                                vertical = 2.dp
-                            )
-                    )
-                }
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_chevron_right),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outline)
+                    text = strings.premium,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.small)
+                        .background(
+                            color = MaterialTheme.colorScheme.errorContainer,
+                            shape = MaterialTheme.shapes.small
+                        )
+                        .padding(
+                            horizontal = 4.dp,
+                            vertical = 2.dp
+                        )
                 )
             }
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_chevron_right),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.outline)
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))

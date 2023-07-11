@@ -2,9 +2,8 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRTopAppBar
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRTopAppBar
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CustomizeScreenDestination

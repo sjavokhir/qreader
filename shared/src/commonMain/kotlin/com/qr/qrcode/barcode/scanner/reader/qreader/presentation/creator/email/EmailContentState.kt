@@ -10,19 +10,13 @@ data class EmailContentState(
     val isSetEncoded: Boolean = false
 ) : QrData {
 
-    override fun encode(): String = create(email, subject, message)
+    override fun encode(): String = "mailto:$email?subject=$subject?body=$message"
 
-    override fun decode(): String = if (message.isNotEmpty()) {
-        "$message ($email)"
-    } else email
-
-    companion object {
-        fun create(
-            email: String,
-            subject: String,
-            message: String,
-        ): String {
-            return "mailto:$email?subject=$subject?body=$message"
+    override fun decode(): String = buildString {
+        if (message.isNotEmpty()) {
+            append("$message ($email)")
+        } else {
+            append(email)
         }
     }
 }

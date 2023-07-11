@@ -33,9 +33,9 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.cameraPermission
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locationPermissions
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.storagePermissions
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.DividerContent
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.components.QRBackground
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.localization.LocalStrings
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.DividerContent
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination

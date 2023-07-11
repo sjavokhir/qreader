@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.designsystem.theme.QRTheme
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.QRTheme
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.NavGraphs
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.Destination
