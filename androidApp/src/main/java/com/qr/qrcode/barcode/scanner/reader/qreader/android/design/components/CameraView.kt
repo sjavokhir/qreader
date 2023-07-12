@@ -19,7 +19,6 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.camera.detector.QRDetector
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.cameraPermission
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locationPermissions
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import java.util.*
@@ -37,8 +36,6 @@ fun CameraView(
     isVibrateEnabled: Boolean,
     isOpenWebPagesEnabled: Boolean,
     isChromeCustomTabsEnabled: Boolean,
-    isSoundEffectsEnabled: Boolean,
-    selectedSound: Int,
     onResult: (String, String, GenerateMode) -> Unit
 ) {
     val cameraPermissionState = rememberPermissionState(cameraPermission)
@@ -51,8 +48,6 @@ fun CameraView(
             isVibrateEnabled = isVibrateEnabled,
             isOpenWebPagesEnabled = isOpenWebPagesEnabled,
             isChromeCustomTabsEnabled = isChromeCustomTabsEnabled,
-            isSoundEffectsEnabled = isSoundEffectsEnabled,
-            selectedSound = selectedSound,
             onResult = onResult
         )
     } else {
@@ -71,13 +66,10 @@ private fun CameraWithGrantedPermission(
     isVibrateEnabled: Boolean,
     isOpenWebPagesEnabled: Boolean,
     isChromeCustomTabsEnabled: Boolean,
-    isSoundEffectsEnabled: Boolean,
-    selectedSound: Int,
     onResult: (String, String, GenerateMode) -> Unit
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val hasSubscription = LocalSubscription.current
 
     var camera by remember { mutableStateOf<Camera?>(null) }
 
@@ -100,12 +92,9 @@ private fun CameraWithGrantedPermission(
     val detector = remember {
         QRDetector(
             context = context,
-            hasSubscription = hasSubscription,
             isVibrateEnabled = isVibrateEnabled,
             isOpenWebPagesEnabled = isOpenWebPagesEnabled,
             isChromeCustomTabsEnabled = isChromeCustomTabsEnabled,
-            isSoundEffectsEnabled = isSoundEffectsEnabled,
-            selectedSound = selectedSound,
             onResult = onResult
         )
     }

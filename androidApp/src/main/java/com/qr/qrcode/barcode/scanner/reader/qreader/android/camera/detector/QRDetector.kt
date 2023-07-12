@@ -26,12 +26,9 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.Wi
 
 class QRDetector(
     private val context: Context,
-    private val hasSubscription: Boolean,
     private val isVibrateEnabled: Boolean,
     private val isOpenWebPagesEnabled: Boolean,
     private val isChromeCustomTabsEnabled: Boolean,
-    private val isSoundEffectsEnabled: Boolean,
-    private val selectedSound: Int,
     private val onResult: (String, String, GenerateMode) -> Unit
 ) : VisionProcessorBase<MutableList<Barcode>>(context) {
 
@@ -79,8 +76,11 @@ class QRDetector(
             val encoded: String
             val decoded: String
             val isNotBlank: Boolean
+            var isUrl = false
 
             if (code.url != null) {
+                isUrl = true
+
                 val social = detectSocialMedia(code.url?.url.orEmpty())
 
                 if (social != null) {
@@ -215,7 +215,7 @@ class QRDetector(
                     context.vibrate()
                 }
 
-                if (isOpenWebPagesEnabled && generateMode == GenerateMode.Website) {
+                if (isOpenWebPagesEnabled && isUrl) {
                     context.openUrl(decoded, isChromeCustomTabsEnabled)
                 }
 

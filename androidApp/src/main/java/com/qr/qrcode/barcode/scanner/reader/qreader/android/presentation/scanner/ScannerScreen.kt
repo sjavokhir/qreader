@@ -1,5 +1,7 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.scanner
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,6 +38,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QR
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ImageCropperScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.scanner.ScannerState
@@ -76,6 +79,21 @@ private fun ScannerScreenContent(
 
     var isFlashlightOn by remember { mutableStateOf(false) }
 
+    val photoPicker = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetMultipleContents()
+    ) { uris ->
+        val uri = uris.firstOrNull() ?: return@rememberLauncherForActivityResult
+
+        onNavigate(
+            ImageCropperScreenDestination(
+                imageUri = uri.toString(),
+                isVibrateEnabled = state.isVibrateEnabled,
+                isOpenWebPagesEnabled = state.isOpenWebPagesEnabled,
+                isChromeCustomTabsEnabled = state.isChromeCustomTabsEnabled
+            )
+        )
+    }
+
     Column(
         modifier = Modifier.padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -96,9 +114,7 @@ private fun ScannerScreenContent(
                 isFlashlightOn = isFlashlightOn,
                 isVibrateEnabled = state.isVibrateEnabled,
                 isOpenWebPagesEnabled = state.isOpenWebPagesEnabled,
-                isChromeCustomTabsEnabled = state.isChromeCustomTabsEnabled,
-                isSoundEffectsEnabled = state.isSoundEffectsEnabled,
-                selectedSound = state.selectedSound
+                isChromeCustomTabsEnabled = state.isChromeCustomTabsEnabled
             ) { encoded, decoded, mode ->
                 onNavigate(
                     QRCodeScreenDestination(
@@ -136,7 +152,9 @@ private fun ScannerScreenContent(
                 )
 
                 ScannerActionsContent(
-                    onGalleryClick = {},
+                    onGalleryClick = {
+                        photoPicker.launch("image/*")
+                    },
                     onFlashlightClick = {
                         isFlashlightOn = !isFlashlightOn
                     },

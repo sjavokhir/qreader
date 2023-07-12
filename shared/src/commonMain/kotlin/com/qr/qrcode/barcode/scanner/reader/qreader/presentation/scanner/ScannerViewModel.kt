@@ -26,9 +26,7 @@ class ScannerViewModel : KMMViewModel(), KoinComponent {
                 it.copy(
                     isVibrateEnabled = appStore.isVibrateEnabled(),
                     isOpenWebPagesEnabled = appStore.isOpenWebPagesEnabled(),
-                    isChromeCustomTabsEnabled = appStore.isChromeCustomTabsEnabled(),
-                    isSoundEffectsEnabled = appStore.isSoundEffectsEnabled(),
-                    selectedSound = appStore.getSelectedSound(),
+                    isChromeCustomTabsEnabled = appStore.isChromeCustomTabsEnabled()
                 )
             }
         }

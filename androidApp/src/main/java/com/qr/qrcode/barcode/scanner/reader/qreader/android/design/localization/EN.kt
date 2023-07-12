@@ -137,7 +137,6 @@ fun stringResourcesEn() = StringResources(
     selectTime = "Select time",
     settings = "Settings",
     socialMedia = "Social Media",
-    soundEffects = "Sound Effects",
     startDate = "Start date",
     startDateTime = "Start date and time",
     subject = "Subject",
@@ -174,5 +173,7 @@ fun stringResourcesEn() = StringResources(
     mUsername = "username",
     mDial = "Dial",
     viewAddress = "View address",
-    addToCalendar = "Add to calendar"
+    addToCalendar = "Add to calendar",
+    scanImage = "Scan image",
+    dragMarkers = "Drag the white markers till the barcode is detected"
 )

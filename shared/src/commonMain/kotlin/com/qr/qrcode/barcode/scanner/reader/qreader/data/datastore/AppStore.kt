@@ -73,20 +73,4 @@ class AppStore(private val settings: ObservableSettings) {
     fun setBatchScan(isEnabled: Boolean) {
         settings[Keys.IS_BATCH_SCAN] = isEnabled
     }
-
-    fun isSoundEffectsEnabled(): Boolean {
-        return settings.getBoolean(Keys.IS_SOUND_EFFECTS, false)
-    }
-
-    fun setSoundEffects(isEnabled: Boolean) {
-        settings[Keys.IS_SOUND_EFFECTS] = isEnabled
-    }
-
-    fun getSelectedSound(): Int {
-        return settings.getInt(Keys.SELECTED_SOUND, 1)
-    }
-
-    fun setSelectedSound(sound: Int) {
-        settings[Keys.SELECTED_SOUND] = sound
-    }
 }

@@ -46,7 +46,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LanguageScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ManagePermissionsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SoundEffectsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ThemeModeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsEvent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.settings.SettingsState
@@ -132,19 +131,6 @@ private fun ScanControlsContent(
     val strings = LocalStrings.current
 
     HeaderContent(title = strings.scanControls) {
-        NavigateContent(
-            title = strings.soundEffects,
-            hasSubscription = hasSubscription
-        ) {
-            if (hasSubscription) {
-                onNavigate(SoundEffectsScreenDestination)
-            } else {
-                onNavigate(PremiumScreenDestination)
-            }
-        }
-
-        DividerContent()
-
         SwitchContent(
             title = strings.vibrate,
             checked = state.isVibrateChecked,

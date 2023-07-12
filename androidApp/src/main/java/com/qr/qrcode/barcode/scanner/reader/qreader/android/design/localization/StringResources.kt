@@ -20,6 +20,7 @@ data class StringResources(
     val select: String,
     val selectLocation: String,
     val sendUs: String,
+    val telegramBot: String = "Telegram Bot",
     val share: String,
     val skip: String,
     val start: String,
@@ -142,7 +143,6 @@ data class StringResources(
     val selectTime: String,
     val settings: String,
     val socialMedia: String,
-    val soundEffects: String,
     val startDate: String,
     val startDateTime: String,
     val subject: String,
@@ -176,6 +176,8 @@ data class StringResources(
     val mDial: String,
     val viewAddress: String,
     val addToCalendar: String,
+    val scanImage: String,
+    val dragMarkers: String,
 ) {
 
     fun socialMediaChannel(channel: String): String {

@@ -16,9 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.openUrl
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.sendMail
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QROutlinedButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.Constants
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appVersion
@@ -68,6 +70,14 @@ fun FeedbackScreen() {
                             email = Constants.EMAIL,
                             subject = "Feedback regarding ${strings.appName} [$appVersion - $deviceVersion]"
                         )
+                    }
+                )
+            }
+            item {
+                QROutlinedButton(
+                    text = strings.telegramBot,
+                    onClick = {
+                        context.openUrl(Constants.SUPPORT_BOT)
                     }
                 )
             }

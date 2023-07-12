@@ -32,6 +32,7 @@ google-firebase-bom = "32.1.1"
 google-firebase-crashlytics = "2.9.2"
 google-mlkit-barcodescanning = "17.1.0"
 google-zxing = "3.5.1"
+google-photopicker = "1.0.0-alpha06"
 
 navigation = "1.9.42-beta"
 koin = "3.4.2"
@@ -79,6 +80,7 @@ google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlyti
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-mlkit-barcodescanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "google-mlkit-barcodescanning" }
 google-zxing = { module = "com.google.zxing:core", version.ref = "google-zxing" }
+google-photopicker = { module = "com.google.modernstorage:modernstorage-photopicker", version.ref = "google-photopicker" }
 
 navigation-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "navigation" }
 navigation-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "navigation" }
