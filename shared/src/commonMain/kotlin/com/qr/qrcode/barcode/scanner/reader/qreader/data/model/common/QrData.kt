@@ -5,4 +5,6 @@ interface QrData {
     fun encode(): String
 
     fun decode(): String
+
+    fun isNotBlank(): Boolean
 }

@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 fun HistoryDetailScreen(
     id: String,
     dateTime: String,
+    isScanned: Boolean,
     generateMode: GenerateMode,
     encoded: String,
     decoded: String,
@@ -56,6 +57,7 @@ fun HistoryDetailScreen(
                 viewModel.onEvent(
                     QRCodeEvent.Insert(
                         id = id,
+                        isScanned = isScanned,
                         mode = generateMode,
                         encoded = encodedContent,
                         decoded = decodedContent,
@@ -75,6 +77,7 @@ fun HistoryDetailScreen(
                 viewModel.onEvent(
                     QRCodeEvent.Insert(
                         id = id,
+                        isScanned = isScanned,
                         mode = generateMode,
                         encoded = encodedContent,
                         decoded = decodedContent,
@@ -110,7 +113,7 @@ fun HistoryDetailScreen(
                 viewModel.onEvent(QRCodeEvent.Delete(id))
 
                 coroutineScope.launch {
-                    delay(200L)
+                    delay(100L)
                     navigator.navigateUp()
                 }
             }

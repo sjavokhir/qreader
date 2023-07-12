@@ -90,7 +90,6 @@ dependencies {
     implementation(project(":qr-generator"))
 
     implementation(libs.kotlin.coroutines)
-    implementation(libs.kmm.viewmodel)
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
@@ -129,6 +128,9 @@ dependencies {
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+
+    implementation(libs.kmm.viewmodel)
+    implementation(libs.cropper)
 }
 
 secrets {

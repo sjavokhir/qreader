@@ -58,6 +58,10 @@ data class EventContentState(
             append("\n").append(description)
         }
     }
+
+    override fun isNotBlank(): Boolean {
+        return "$name$location$description$startDateTime$endDateTime".isNotEmpty()
+    }
 }
 
 fun String.toEventContent(): EventContentState? {

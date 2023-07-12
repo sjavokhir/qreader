@@ -23,6 +23,10 @@ data class EmailContentState(
             append("\n").append(message)
         }
     }
+
+    override fun isNotBlank(): Boolean {
+        return "$email$subject$message".isNotEmpty()
+    }
 }
 
 fun String.toEmailContent(): EmailContentState? {

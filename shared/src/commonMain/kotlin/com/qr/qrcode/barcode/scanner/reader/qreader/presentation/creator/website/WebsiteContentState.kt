@@ -11,4 +11,6 @@ data class WebsiteContentState(
     override fun encode(): String = website
 
     override fun decode(): String = encode()
+
+    override fun isNotBlank(): Boolean = website.isNotEmpty()
 }

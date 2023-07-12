@@ -26,14 +26,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.CameraView
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.GoProContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.scanner.ScannerState
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.scanner.ScannerViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.randomUUID
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -43,12 +50,16 @@ import com.ramcosta.composedestinations.spec.Direction
 @Destination
 @Composable
 fun ScannerScreen(
+    viewModel: ScannerViewModel = viewModel(),
     navigator: DestinationsNavigator
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val hasSubscription = LocalSubscription.current
 
     QRBackground {
         ScannerScreenContent(
+            state = state,
             hasSubscription = hasSubscription,
             onNavigate = navigator::navigate
         )
@@ -57,6 +68,7 @@ fun ScannerScreen(
 
 @Composable
 private fun ScannerScreenContent(
+    state: ScannerState,
     hasSubscription: Boolean,
     onNavigate: (Direction) -> Unit
 ) {
@@ -82,8 +94,22 @@ private fun ScannerScreenContent(
             CameraView(
                 modifier = Modifier.fillMaxSize(),
                 isFlashlightOn = isFlashlightOn,
-                onResult = {}
-            )
+                isVibrateEnabled = state.isVibrateEnabled,
+                isOpenWebPagesEnabled = state.isOpenWebPagesEnabled,
+                isChromeCustomTabsEnabled = state.isChromeCustomTabsEnabled,
+                isSoundEffectsEnabled = state.isSoundEffectsEnabled,
+                selectedSound = state.selectedSound
+            ) { encoded, decoded, mode ->
+                onNavigate(
+                    QRCodeScreenDestination(
+                        id = randomUUID(),
+                        isScanned = true,
+                        generateMode = mode,
+                        encoded = encoded,
+                        decoded = decoded
+                    )
+                )
+            }
 
             Column(
                 modifier = Modifier

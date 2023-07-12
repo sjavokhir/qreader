@@ -11,6 +11,8 @@ data class PhoneContentState(
     override fun encode(): String = "tel:$phone"
 
     override fun decode(): String = phone
+
+    override fun isNotBlank(): Boolean = phone.isNotEmpty()
 }
 
 fun String.toPhoneContent(): PhoneContentState? {

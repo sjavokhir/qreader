@@ -143,7 +143,7 @@ private fun HistoryScreenContent(
                     if (state.scannedHistory.isEmpty()) {
                         HistoryNotFoundContent(true, onBottomNavigateTo)
                     } else {
-                        HistoryContent(state.scannedHistory, onNavigate)
+                        HistoryContent(true, state.scannedHistory, onNavigate)
                     }
                 } else {
                     QRTextField(
@@ -158,7 +158,7 @@ private fun HistoryScreenContent(
                     if (state.createdHistory.isEmpty()) {
                         HistoryNotFoundContent(false, onBottomNavigateTo)
                     } else {
-                        HistoryContent(state.createdHistory, onNavigate)
+                        HistoryContent(false, state.createdHistory, onNavigate)
                     }
                 }
             }
@@ -168,6 +168,7 @@ private fun HistoryScreenContent(
 
 @Composable
 fun HistoryContent(
+    isScanned: Boolean,
     history: List<HistoryEntity>,
     onNavigate: (Direction) -> Unit
 ) {
@@ -187,6 +188,7 @@ fun HistoryContent(
                         HistoryDetailScreenDestination(
                             id = entity.id,
                             dateTime = entity.timestamp.timestampToDateTime().defaultDateTime,
+                            isScanned = isScanned,
                             generateMode = entity.generateMode.toGenerateMode(),
                             encoded = entity.encoded,
                             decoded = entity.decoded,

@@ -13,6 +13,9 @@ import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiNetworkSuggestion
 import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.widget.Toast
@@ -80,6 +83,26 @@ fun Context.dial(phone: String) {
             data = Uri.parse("tel:$phone")
         }
         startActivity(intent)
+    }
+}
+
+fun Context.vibrate(milliseconds: Long = 200) {
+    tryCatch {
+        val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager =
+                getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }
+
+        vibrator.vibrate(
+            VibrationEffect.createOneShot(
+                milliseconds,
+                VibrationEffect.DEFAULT_AMPLITUDE
+            )
+        )
     }
 }
 

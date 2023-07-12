@@ -12,6 +12,10 @@ data class LocationContentState(
     override fun encode(): String = "geo:$latitude,$longitude"
 
     override fun decode(): String = "$latitude, $longitude"
+
+    override fun isNotBlank(): Boolean {
+        return "$latitude$longitude".isNotEmpty()
+    }
 }
 
 fun String.toLocationContent(): LocationContentState? {

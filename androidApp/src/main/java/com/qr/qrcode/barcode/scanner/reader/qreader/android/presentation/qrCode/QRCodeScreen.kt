@@ -27,6 +27,7 @@ import com.ramcosta.composedestinations.result.ResultRecipient
 @Composable
 fun QRCodeScreen(
     id: String,
+    isScanned: Boolean,
     generateMode: GenerateMode,
     encoded: String,
     decoded: String,
@@ -55,6 +56,7 @@ fun QRCodeScreen(
         viewModel.onEvent(
             QRCodeEvent.Insert(
                 id = id,
+                isScanned = isScanned,
                 mode = generateMode,
                 encoded = encoded,
                 decoded = decoded,

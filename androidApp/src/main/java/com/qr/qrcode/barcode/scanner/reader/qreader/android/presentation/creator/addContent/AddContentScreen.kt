@@ -144,6 +144,7 @@ fun AddContentScreen(
                             navigator.navigate(
                                 QRCodeScreenDestination(
                                     id = id,
+                                    isScanned = false,
                                     generateMode = generateMode,
                                     encoded = encodedContent,
                                     decoded = decodedContent

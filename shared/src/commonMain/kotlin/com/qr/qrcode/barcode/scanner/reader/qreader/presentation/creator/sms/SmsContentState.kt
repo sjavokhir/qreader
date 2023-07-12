@@ -15,6 +15,10 @@ data class SmsContentState(
         $phone
         $message
     """.trimIndent()
+
+    override fun isNotBlank(): Boolean {
+        return "$phone$message".isNotEmpty()
+    }
 }
 
 fun String.toSmsContent(): SmsContentState? {

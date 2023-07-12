@@ -11,4 +11,6 @@ data class TextContentState(
     override fun encode(): String = text
 
     override fun decode(): String = encode()
+
+    override fun isNotBlank(): Boolean = text.isNotEmpty()
 }

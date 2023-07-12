@@ -27,7 +27,7 @@ google-services = "4.3.14"
 google-mapsplatform-secrets = "2.0.1"
 google-ps-maps = "18.1.0"
 google-ps-location = "21.0.1"
-google-ps-ads = "22.1.0"
+google-ps-ads = "22.2.0"
 google-firebase-bom = "32.1.1"
 google-firebase-crashlytics = "2.9.2"
 google-mlkit-barcodescanning = "17.1.0"
@@ -39,6 +39,7 @@ multiplatformsettings = "1.0.0"
 sqldelight = "2.0.0-alpha05"
 kmm-viewmodel = "1.0.0-ALPHA-4"
 kmm-coroutines = "1.0.0-ALPHA-5"
+cropper = "0.3.4"
 
 [libraries]
 
@@ -92,6 +93,7 @@ sqldelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", 
 
 multiplatformsettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformsettings" }
 kmm-viewmodel = { module = "com.rickclephas.kmm:kmm-viewmodel-core", version.ref = "kmm-viewmodel" }
+cropper = { module = "com.github.SmartToolFactory:Compose-Cropper", version.ref = "cropper" }
 
 [plugins]
 
