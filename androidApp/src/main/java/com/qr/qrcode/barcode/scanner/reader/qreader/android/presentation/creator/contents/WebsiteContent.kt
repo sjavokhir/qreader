@@ -26,9 +26,7 @@ fun WebsiteContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(WebsiteContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(WebsiteContentEvent.Encoded(encoded))
     }
 
     Column {

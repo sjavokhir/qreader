@@ -1,6 +1,7 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToString
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDT
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.toTimestamp
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.QrData
 
 data class EventContentState(
@@ -22,15 +23,15 @@ data class EventContentState(
         append("SUMMARY:$name\n")
 
         if (isAllDay) {
-            append("DTSTART;VALUE=DATE:${startTimestamp.timestampToString(isAllDay)}\n")
+            append("DTSTART;VALUE=DATE:${startTimestamp.timestampToDT(isAllDay)}\n")
         } else {
-            append("DTSTART:${startTimestamp.timestampToString(isAllDay)}\n")
+            append("DTSTART:${startTimestamp.timestampToDT(isAllDay)}\n")
         }
 
         if (isAllDay) {
-            append("DTEND;VALUE=DATE:${endTimestamp.timestampToString(isAllDay)}\n")
+            append("DTEND;VALUE=DATE:${endTimestamp.timestampToDT(isAllDay)}\n")
         } else {
-            append("DTEND:${endTimestamp.timestampToString(isAllDay)}\n")
+            append("DTEND:${endTimestamp.timestampToDT(isAllDay)}\n")
         }
 
         append("LOCATION:$location\n")
@@ -64,15 +65,38 @@ fun String.toEventContent(): EventContentState? {
         val nameMatch = Regex("SUMMARY:(.*?)\\n").find(this)
         val locationMatch = Regex("LOCATION:(.*?)\\n").find(this)
         val descriptionMatch = Regex("DESCRIPTION:(.*?)\\n").find(this)
+        val startDateTimeMatch = Regex("DTSTART:(.*?)\\n").find(this)
+        val startDateMatch = Regex("DTSTART;VALUE=DATE:(.*?)\\n").find(this)
+        val endDateTimeMatch = Regex("DTEND:(.*?)\\n").find(this)
+        val endDateMatch = Regex("DTEND;VALUE=DATE:(.*?)\\n").find(this)
 
         val name = nameMatch?.groupValues?.get(1)
         val location = locationMatch?.groupValues?.get(1)
         val description = descriptionMatch?.groupValues?.get(1)
+        val startDateTime = startDateTimeMatch?.groupValues?.get(1)
+        val startDate = startDateMatch?.groupValues?.get(1)
+        val endDateTime = endDateTimeMatch?.groupValues?.get(1)
+        val endDate = endDateMatch?.groupValues?.get(1)
+
+        val startTimestamp = if (!startDateTime.isNullOrEmpty()) {
+            startDateTime.toTimestamp(false)
+        } else if (!startDate.isNullOrEmpty()) {
+            startDate.toTimestamp(true)
+        } else 0L
+
+        val endTimestamp = if (!endDateTime.isNullOrEmpty()) {
+            endDateTime.toTimestamp(false)
+        } else if (!endDate.isNullOrEmpty()) {
+            endDate.toTimestamp(true)
+        } else 0L
 
         EventContentState(
             name = name.orEmpty(),
             location = location.orEmpty(),
-            description = description.orEmpty()
+            description = description.orEmpty(),
+            isAllDay = !startDate.isNullOrEmpty() || !endDate.isNullOrEmpty(),
+            startTimestamp = startTimestamp,
+            endTimestamp = endTimestamp,
         )
     } catch (_: Throwable) {
         null

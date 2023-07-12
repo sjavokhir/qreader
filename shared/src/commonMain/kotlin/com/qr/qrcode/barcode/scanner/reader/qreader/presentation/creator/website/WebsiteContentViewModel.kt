@@ -22,6 +22,8 @@ class WebsiteContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         onWebsiteChanged(value)
     }
 

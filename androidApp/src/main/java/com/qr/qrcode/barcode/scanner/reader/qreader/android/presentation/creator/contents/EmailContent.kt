@@ -31,9 +31,7 @@ fun EmailContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(EmailContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(EmailContentEvent.Encoded(encoded))
     }
 
     Column(

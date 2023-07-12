@@ -52,6 +52,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QR
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.rememberQRDrawable
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.currentTimestamp
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.biz.toBizContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.business.toBusinessContent
@@ -507,8 +508,15 @@ private fun EventContent(
     val content = remember(encoded) { encoded.toEventContent() }
 
     DecodeContent(decoded, dateTime) {
-        ContentActionButton(strings.viewAddress, R.drawable.ic_today) {
-            context.addToCalendar()
+        ContentActionButton(strings.addToCalendar, R.drawable.ic_today) {
+            context.addToCalendar(
+                name = content?.name.orEmpty(),
+                location = content?.location.orEmpty(),
+                description = content?.description.orEmpty(),
+                isAllDay = content?.isAllDay ?: false,
+                startMillis = content?.startTimestamp,
+                endMillis = content?.endTimestamp
+            )
         }
     }
 }

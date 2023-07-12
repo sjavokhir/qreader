@@ -47,9 +47,7 @@ fun LocationContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(LocationContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(LocationContentEvent.Encoded(encoded))
     }
 
     Column(

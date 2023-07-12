@@ -31,9 +31,7 @@ fun SmsContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(SmsContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(SmsContentEvent.Encoded(encoded))
     }
 
     Column(

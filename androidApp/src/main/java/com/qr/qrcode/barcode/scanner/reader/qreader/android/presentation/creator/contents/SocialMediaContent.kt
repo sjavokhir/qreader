@@ -33,9 +33,7 @@ fun SocialMediaContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(SocialMediaContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(SocialMediaContentEvent.Encoded(encoded))
     }
 
     Column(

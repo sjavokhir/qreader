@@ -13,9 +13,11 @@ import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiNetworkSuggestion
 import android.os.Build
+import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.toCalendarTimestamp
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.StringRes
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.WifiContentState
@@ -275,6 +277,44 @@ fun Context.connectToWifi(
     }
 }
 
-fun Context.addToCalendar() {
-    tryCatch { }
+fun Context.addToCalendar(
+    name: String,
+    location: String,
+    description: String,
+    isAllDay: Boolean,
+    startMillis: Long?,
+    endMillis: Long?
+) {
+    tryCatch {
+        val intent = Intent(Intent.ACTION_INSERT).apply {
+            data = CalendarContract.Events.CONTENT_URI
+
+            putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, isAllDay)
+
+            if (startMillis != null && startMillis != 0L) {
+                putExtra(
+                    CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                    startMillis.toCalendarTimestamp()
+                )
+            }
+
+            if (endMillis != null && endMillis != 0L) {
+                putExtra(
+                    CalendarContract.EXTRA_EVENT_END_TIME,
+                    endMillis.toCalendarTimestamp()
+                )
+            }
+
+            putExtra(CalendarContract.Events.TITLE, name)
+
+            if (description.isNotEmpty()) {
+                putExtra(CalendarContract.Events.DESCRIPTION, description)
+            }
+
+            if (location.isNotEmpty()) {
+                putExtra(CalendarContract.Events.EVENT_LOCATION, location)
+            }
+        }
+        startActivity(intent)
+    }
 }

@@ -35,16 +35,21 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 @Destination
 @Composable
 fun DateTimePickerScreen(
+    showTime: Boolean,
     resultNavigator: ResultBackNavigator<Long>
 ) {
     val strings = LocalStrings.current
 
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = currentTimestamp(),
-        initialDisplayMode = DisplayMode.Input
+        initialDisplayMode = if (showTime) {
+            DisplayMode.Input
+        } else {
+            DisplayMode.Picker
+        }
     )
     val timePickerState = rememberTimePickerState(
-        initialHour = 9,
+        initialHour = if (showTime) 9 else 0,
         is24Hour = true
     )
 
@@ -72,27 +77,30 @@ fun DateTimePickerScreen(
                         }
                     )
                 }
-                item {
-                    Text(
-                        text = strings.selectTime,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.padding(
-                            horizontal = 24.dp,
-                            vertical = 20.dp
+
+                if (showTime) {
+                    item {
+                        Text(
+                            text = strings.selectTime,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.padding(
+                                horizontal = 24.dp,
+                                vertical = 20.dp
+                            )
                         )
-                    )
-                }
-                item {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        TimePicker(state = timePickerState)
                     }
-                }
-                item {
-                    Spacer(modifier = Modifier.height(72.dp))
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            TimePicker(state = timePickerState)
+                        }
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(72.dp))
+                    }
                 }
             }
 

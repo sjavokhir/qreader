@@ -29,9 +29,7 @@ fun BusinessContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(BusinessContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(BusinessContentEvent.Encoded(encoded))
     }
 
     Column(

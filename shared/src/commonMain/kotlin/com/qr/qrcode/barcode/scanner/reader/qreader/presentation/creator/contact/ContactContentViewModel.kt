@@ -24,6 +24,8 @@ class ContactContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         val content = value.toContactContent() ?: return
 
         onValueChanged(
@@ -49,7 +51,8 @@ class ContactContentViewModel : KMMViewModel() {
                 phone = mPhone,
                 email = email ?: it.email,
                 address = address ?: it.address,
-                isEnabled = mName.isNotEmpty() && mPhone.isNotEmpty()
+                isEnabled = mName.isNotEmpty() && mPhone.isNotEmpty(),
+                isSetEncoded = true
             )
         }
     }

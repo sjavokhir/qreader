@@ -27,9 +27,7 @@ fun PhoneContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(PhoneContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(PhoneContentEvent.Encoded(encoded))
     }
 
     Column {

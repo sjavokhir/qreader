@@ -23,6 +23,8 @@ class SmsContentViewModel : KMMViewModel(), KoinComponent {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         val content = value.toSmsContent() ?: return
 
         onValueChanged(

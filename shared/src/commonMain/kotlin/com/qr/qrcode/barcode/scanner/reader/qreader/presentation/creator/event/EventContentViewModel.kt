@@ -27,12 +27,17 @@ class EventContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         val content = value.toEventContent() ?: return
 
         onValueChanged(
             name = content.name,
             location = content.location,
             description = content.description,
+            isAllDay = content.isAllDay,
+            startTimestamp = content.startTimestamp,
+            endTimestamp = content.endTimestamp,
         )
     }
 
@@ -41,26 +46,10 @@ class EventContentViewModel : KMMViewModel() {
     }
 
     private fun onDateTimeChanged(timestamp: Long) {
-        stateData.update {
-            if (state.value.isStart) {
-                it.copy(
-                    startTimestamp = timestamp,
-                    startDateTime = if (it.isAllDay) {
-                        timestamp.timestampToDateTime().defaultDate
-                    } else {
-                        timestamp.timestampToDateTime().defaultDateTime
-                    }
-                )
-            } else {
-                it.copy(
-                    endTimestamp = timestamp,
-                    endDateTime = if (it.isAllDay) {
-                        timestamp.timestampToDateTime().defaultDate
-                    } else {
-                        timestamp.timestampToDateTime().defaultDateTime
-                    }
-                )
-            }
+        if (state.value.isStart) {
+            onValueChanged(startTimestamp = timestamp)
+        } else {
+            onValueChanged(endTimestamp = timestamp)
         }
     }
 
@@ -68,17 +57,39 @@ class EventContentViewModel : KMMViewModel() {
         name: String? = null,
         location: String? = null,
         description: String? = null,
-        isAllDay: Boolean? = null
+        isAllDay: Boolean? = null,
+        startTimestamp: Long? = null,
+        endTimestamp: Long? = null,
     ) {
         stateData.update {
             val mName = name ?: it.name
+            val mIsAllDay = isAllDay ?: it.isAllDay
+            val mStartTimestamp = startTimestamp ?: it.startTimestamp
+            val mEndTimestamp = endTimestamp ?: it.endTimestamp
 
             it.copy(
                 name = mName,
                 location = location ?: it.location,
                 description = description ?: it.description,
-                isAllDay = isAllDay ?: it.isAllDay,
-                isEnabled = mName.isNotEmpty()
+                isAllDay = mIsAllDay,
+                startTimestamp = mStartTimestamp,
+                startDateTime = if (mStartTimestamp == 0L) {
+                    ""
+                } else if (mIsAllDay) {
+                    mStartTimestamp.timestampToDateTime().defaultDate
+                } else {
+                    mStartTimestamp.timestampToDateTime().defaultDateTime
+                },
+                endTimestamp = mEndTimestamp,
+                endDateTime = if (mEndTimestamp == 0L) {
+                    ""
+                } else if (mIsAllDay) {
+                    mEndTimestamp.timestampToDateTime().defaultDate
+                } else {
+                    mEndTimestamp.timestampToDateTime().defaultDateTime
+                },
+                isEnabled = mName.isNotEmpty() && mStartTimestamp != 0L,
+                isSetEncoded = true
             )
         }
     }

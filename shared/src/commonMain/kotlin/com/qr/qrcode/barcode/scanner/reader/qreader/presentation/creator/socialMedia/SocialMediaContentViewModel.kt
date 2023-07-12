@@ -24,6 +24,8 @@ class SocialMediaContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         tryCatch {
             detectSocialMedia(value)?.let { info ->
                 setGenerateMode(info.first)

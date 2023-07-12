@@ -29,9 +29,7 @@ fun ContactContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(ContactContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(ContactContentEvent.Encoded(encoded))
     }
 
     Column(

@@ -58,9 +58,7 @@ fun EventContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(EventContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(EventContentEvent.Encoded(encoded))
     }
 
     Column(
@@ -122,7 +120,7 @@ fun EventContent(
             modifier = Modifier.clickableSingle(
                 onClick = {
                     viewModel.onEvent(EventContentEvent.ShowPicker(true))
-                    onNavigate(DateTimePickerScreenDestination)
+                    onNavigate(DateTimePickerScreenDestination(!state.isAllDay))
                 },
                 hasIndication = false
             )
@@ -151,7 +149,7 @@ fun EventContent(
             modifier = Modifier.clickableSingle(
                 onClick = {
                     viewModel.onEvent(EventContentEvent.ShowPicker(false))
-                    onNavigate(DateTimePickerScreenDestination)
+                    onNavigate(DateTimePickerScreenDestination(!state.isAllDay))
                 },
                 hasIndication = false
             )
