@@ -38,7 +38,7 @@ fun Context.drawableId(name: String): Int? {
     }
 }
 
-fun Context.getActivity(): Activity? {
+fun Context.findActivity(): Activity? {
     var currentContext = this
     while (currentContext is ContextWrapper) {
         if (currentContext is Activity) {
@@ -50,7 +50,7 @@ fun Context.getActivity(): Activity? {
 }
 
 fun Context.restartApp() {
-    getActivity()?.let { activity ->
+    findActivity()?.let { activity ->
         val intent = activity.intent
         activity.finish()
         activity.startActivity(intent)
@@ -86,7 +86,7 @@ fun Context.dial(phone: String) {
     }
 }
 
-fun Context.vibrate(milliseconds: Long = 200) {
+fun Context.vibrate(milliseconds: Long = 300) {
     tryCatch {
         val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager =

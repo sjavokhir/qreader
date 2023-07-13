@@ -11,7 +11,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.Destination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FaqScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.FeedbackScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.HistoryDetailScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.HistoryScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ImageCropperScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LanguageScreenDestination
@@ -46,7 +45,6 @@ private fun Destination.topBarTitle(): String {
         FaqScreenDestination -> strings.faq
         FeedbackScreenDestination -> strings.feedback
         HistoryScreenDestination -> strings.history
-        HistoryDetailScreenDestination -> strings.qrCode
         LanguageScreenDestination -> strings.language
         ManagePermissionsScreenDestination -> strings.managePermissions
         OnBoardingScreenDestination -> ""

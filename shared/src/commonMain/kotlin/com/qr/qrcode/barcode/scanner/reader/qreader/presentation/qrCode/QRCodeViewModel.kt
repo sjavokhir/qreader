@@ -47,6 +47,8 @@ class QRCodeViewModel : KMMViewModel(), KoinComponent {
                 decoded = event.decoded,
                 customize = event.customize
             )
+
+            stateData.update { it.copy(isSaved = true) }
         }
     }
 

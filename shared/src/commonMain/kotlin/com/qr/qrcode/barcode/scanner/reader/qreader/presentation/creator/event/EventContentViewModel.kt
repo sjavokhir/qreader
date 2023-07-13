@@ -1,6 +1,7 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDateTime
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.toDefaultDate
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.toDefaultDateTime
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
@@ -76,17 +77,17 @@ class EventContentViewModel : KMMViewModel() {
                 startDateTime = if (mStartTimestamp == 0L) {
                     ""
                 } else if (mIsAllDay) {
-                    mStartTimestamp.timestampToDateTime().defaultDate
+                    mStartTimestamp.toDefaultDate()
                 } else {
-                    mStartTimestamp.timestampToDateTime().defaultDateTime
+                    mStartTimestamp.toDefaultDateTime()
                 },
                 endTimestamp = mEndTimestamp,
                 endDateTime = if (mEndTimestamp == 0L) {
                     ""
                 } else if (mIsAllDay) {
-                    mEndTimestamp.timestampToDateTime().defaultDate
+                    mEndTimestamp.toDefaultDate()
                 } else {
-                    mEndTimestamp.timestampToDateTime().defaultDateTime
+                    mEndTimestamp.toDefaultDateTime()
                 },
                 isEnabled = mName.isNotEmpty() && mStartTimestamp != 0L,
                 isSetEncoded = true

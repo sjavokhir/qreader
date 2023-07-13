@@ -2,7 +2,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
 
-fun stringResourcesUz() = StringResources(
+fun stringResourcesUzbek() = StringResources(
     cancel = "Bekor qilish",
     actionContinue = "Davom etish",
     create = "Yaratish",

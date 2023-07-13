@@ -28,10 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.camera.detector.QRDetector
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.defaultDateTime
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.randomUUID
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -86,10 +88,14 @@ private fun ImageCropperScreenContent(
                 onNavigate(
                     QRCodeScreenDestination(
                         id = randomUUID(),
+                        dateTime = defaultDateTime(),
                         isScanned = true,
                         generateMode = mode,
                         encoded = encoded,
-                        decoded = decoded
+                        decoded = decoded,
+                        customize = QRCustomizeModel(),
+                        isDeletable = false,
+                        isEditable = false
                     )
                 )
             }

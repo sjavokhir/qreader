@@ -3,7 +3,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 
-val LocalStrings = staticCompositionLocalOf { stringResourcesEn() }
+val LocalStrings = staticCompositionLocalOf { stringResourcesEnglish() }
 
 @Immutable
 data class StringResources(

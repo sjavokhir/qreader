@@ -1,6 +1,6 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.event
 
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDT
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.toDT
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.toTimestamp
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.common.QrData
 
@@ -23,15 +23,15 @@ data class EventContentState(
         append("SUMMARY:$name\n")
 
         if (isAllDay) {
-            append("DTSTART;VALUE=DATE:${startTimestamp.timestampToDT(isAllDay)}\n")
+            append("DTSTART;VALUE=DATE:${startTimestamp.toDT(isAllDay)}\n")
         } else {
-            append("DTSTART:${startTimestamp.timestampToDT(isAllDay)}\n")
+            append("DTSTART:${startTimestamp.toDT(isAllDay)}\n")
         }
 
         if (isAllDay) {
-            append("DTEND;VALUE=DATE:${endTimestamp.timestampToDT(isAllDay)}\n")
+            append("DTEND;VALUE=DATE:${endTimestamp.toDT(isAllDay)}\n")
         } else {
-            append("DTEND:${endTimestamp.timestampToDT(isAllDay)}\n")
+            append("DTEND:${endTimestamp.toDT(isAllDay)}\n")
         }
 
         append("LOCATION:$location\n")

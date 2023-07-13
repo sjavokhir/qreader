@@ -8,6 +8,18 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
+fun defaultDateTime(): String {
+    return currentTimestamp().toDateTime().defaultDateTime
+}
+
+fun Long.toDefaultDateTime(): String {
+    return toDateTime().defaultDateTime
+}
+
+fun Long.toDefaultDate(): String {
+    return toDateTime().defaultDate
+}
+
 fun currentTimestamp(): Long {
     return Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault())
@@ -25,7 +37,7 @@ fun Long?.actualDateMillis(hour: Int, minute: Int): Long {
     return this + hour * millisecondsPerHour + minute * millisecondsPerMinute
 }
 
-fun Long.timestampToDT(isAllDay: Boolean): String {
+fun Long.toDT(isAllDay: Boolean): String {
     val model = Instant.fromEpochMilliseconds(this).toDateTimeModel()
     return "${model.year.az()}${model.month.az()}${model.dayOfMonth.az()}" + if (!isAllDay) {
         "T${model.hour.az()}${model.minute.az()}${model.second.az()}"
@@ -39,7 +51,7 @@ fun Long.toCalendarTimestamp(): Long {
         .toEpochMilliseconds()
 }
 
-fun Long.timestampToDateTime(): DateTimeModel {
+fun Long.toDateTime(): DateTimeModel {
     return Instant.fromEpochMilliseconds(this).toDateTimeModel()
 }
 

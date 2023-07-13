@@ -25,7 +25,15 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.QRTheme
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.QRApp
@@ -36,6 +44,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.Event
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.EventChannel
 import org.koin.android.ext.android.inject
+import kotlin.random.Random
 
 class QRActivity : ComponentActivity() {
 
@@ -43,10 +52,17 @@ class QRActivity : ComponentActivity() {
 
     private val appStore by inject<AppStore>()
 
+    private var mInterstitialAd: InterstitialAd? = null
+    private var mRewardedAd: RewardedAd? = null
+
+    private var isAdShowed = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         MobileAds.initialize(this)
+        loadInterstitialAd()
+        loadRewardedAd()
 
         setContent {
             val hasAcknowledged = viewModel.hasAcknowledged.collectAsStateWithLifecycle().value
@@ -79,6 +95,12 @@ class QRActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onDestroy() {
+        removeInterstitialAd()
+        removeRewardedAd()
+        super.onDestroy()
     }
 
     @OptIn(ExperimentalLayoutApi::class)
@@ -115,5 +137,92 @@ class QRActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    fun showAds(hasSubscription: Boolean) {
+        if (!hasSubscription && !isAdShowed) {
+            if (Random.nextBoolean()) {
+                showRewardedAd()
+            } else {
+                showInterstitialAd()
+            }
+        }
+    }
+
+    private fun loadInterstitialAd() {
+        InterstitialAd.load(
+            this,
+            "ca-app-pub-9612143868526251/9749334951",
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(e: LoadAdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                }
+            }
+        )
+    }
+
+    private fun loadRewardedAd() {
+        RewardedAd.load(
+            this,
+            "ca-app-pub-9612143868526251/1703323976",
+            AdRequest.Builder().build(),
+            object : RewardedAdLoadCallback() {
+                override fun onAdFailedToLoad(e: LoadAdError) {
+                    mRewardedAd = null
+                }
+
+                override fun onAdLoaded(rewardedAd: RewardedAd) {
+                    mRewardedAd = rewardedAd
+                }
+            })
+    }
+
+    private fun showInterstitialAd() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdFailedToShowFullScreenContent(e: AdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdDismissedFullScreenContent() {
+                    mInterstitialAd = null
+
+                    loadInterstitialAd()
+                }
+            }
+            mInterstitialAd?.show(this)
+        }
+    }
+
+    private fun showRewardedAd() {
+        if (mRewardedAd != null) {
+            mRewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdFailedToShowFullScreenContent(e: AdError) {
+                    mRewardedAd = null
+                }
+
+                override fun onAdDismissedFullScreenContent() {
+                    mRewardedAd = null
+
+                    loadRewardedAd()
+                }
+            }
+            mRewardedAd?.show(this) {}
+        }
+    }
+
+    private fun removeInterstitialAd() {
+        mInterstitialAd?.fullScreenContentCallback = null
+        mInterstitialAd = null
+    }
+
+    private fun removeRewardedAd() {
+        mRewardedAd?.fullScreenContentCallback = null
+        mRewardedAd = null
     }
 }

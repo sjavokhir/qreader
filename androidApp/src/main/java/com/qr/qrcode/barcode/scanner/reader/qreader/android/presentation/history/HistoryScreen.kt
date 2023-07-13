@@ -49,9 +49,10 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.navigation.bottomNavigateTo
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.CreatorScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DirectionDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.HistoryDetailScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.timestampToDateTime
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.toDateTime
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.toDefaultDateTime
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.database.entity.HistoryEntity
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.toGenerateMode
@@ -185,14 +186,16 @@ fun HistoryContent(
                 isLastItem = index == history.lastIndex,
                 onClick = {
                     onNavigate(
-                        HistoryDetailScreenDestination(
+                        QRCodeScreenDestination(
                             id = entity.id,
-                            dateTime = entity.timestamp.timestampToDateTime().defaultDateTime,
+                            dateTime = entity.timestamp.toDefaultDateTime(),
                             isScanned = isScanned,
                             generateMode = entity.generateMode.toGenerateMode(),
                             encoded = entity.encoded,
                             decoded = entity.decoded,
-                            customize = entity.toModel()
+                            customize = entity.toModel(),
+                            isEditable = true,
+                            isDeletable = true
                         )
                     )
                 }
@@ -251,7 +254,7 @@ private fun HistoryContentItem(
             }
 
             Text(
-                text = entity.timestamp.timestampToDateTime().dateTime,
+                text = entity.timestamp.toDateTime().dateTime,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.outline,
             )

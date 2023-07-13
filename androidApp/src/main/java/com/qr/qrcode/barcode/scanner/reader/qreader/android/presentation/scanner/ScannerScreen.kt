@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.CameraView
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.GoProContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
@@ -41,6 +42,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSu
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ImageCropperScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.defaultDateTime
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.scanner.ScannerState
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.scanner.ScannerViewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.randomUUID
@@ -119,10 +121,14 @@ private fun ScannerScreenContent(
                 onNavigate(
                     QRCodeScreenDestination(
                         id = randomUUID(),
+                        dateTime = defaultDateTime(),
                         isScanned = true,
                         generateMode = mode,
                         encoded = encoded,
-                        decoded = decoded
+                        decoded = decoded,
+                        customize = QRCustomizeModel(),
+                        isEditable = false,
+                        isDeletable = false
                     )
                 )
             }
