@@ -34,6 +34,10 @@ data class ContactContentState(
             append("\n").append(address)
         }
     }
+
+    override fun isNotBlank(): Boolean {
+        return "$name$phone$email$address".isNotEmpty()
+    }
 }
 
 fun String.toContactContent(): ContactContentState? {

@@ -20,7 +20,7 @@ android {
         applicationId = "com.qr.qrcode.barcode.scanner.reader.qreader.android"
         minSdk = 27
         targetSdk = 33
-        versionCode = 2
+        versionCode = 4
         versionName = "1.0"
     }
 
@@ -90,7 +90,6 @@ dependencies {
     implementation(project(":qr-generator"))
 
     implementation(libs.kotlin.coroutines)
-    implementation(libs.kmm.viewmodel)
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
@@ -129,6 +128,9 @@ dependencies {
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+
+    implementation(libs.kmm.viewmodel)
+    implementation(libs.cropper)
 }
 
 secrets {

@@ -41,12 +41,14 @@ class QRCodeViewModel : KMMViewModel(), KoinComponent {
         viewModelScope.coroutineScope.launch {
             historyDao.insert(
                 id = event.id,
-                isScanned = false,
+                isScanned = event.isScanned,
                 generateMode = event.mode,
                 encoded = event.encoded,
                 decoded = event.decoded,
                 customize = event.customize
             )
+
+            stateData.update { it.copy(isSaved = true) }
         }
     }
 

@@ -2,7 +2,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
 
-fun stringResourcesUz() = StringResources(
+fun stringResourcesUzbek() = StringResources(
     cancel = "Bekor qilish",
     actionContinue = "Davom etish",
     create = "Yaratish",
@@ -136,8 +136,7 @@ fun stringResourcesUz() = StringResources(
     selectDateAndTime = "Sana va vaqtni tanlang",
     selectTime = "Vaqtni tanlang",
     settings = "Sozlamalar",
-    socialMedia = "Ijtimoiy tarmoq",
-    soundEffects = "Ovoz effektlari",
+    socialMedia = "Ijtimoiy tarmoqlar",
     startDate = "Boshlanish sanasi",
     startDateTime = "Boshlanish sanasi va vaqti",
     subject = "Mavzu",
@@ -174,5 +173,7 @@ fun stringResourcesUz() = StringResources(
     mUsername = "foydalanuvchi nomi",
     mDial = "Qo'ng'iroq qilish",
     viewAddress = "Manzilni ko'rsatish",
-    addToCalendar = "Kalendarga qo'shish"
+    addToCalendar = "Kalendarga qo'shish",
+    scanImage = "Rasmni skanerlash",
+    dragMarkers = "Shtrix-kod aniqlanmaguncha oq markerlarni torting",
 )

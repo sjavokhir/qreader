@@ -31,4 +31,6 @@ data class SocialMediaContentState(
     }
 
     override fun decode(): String = encode()
+
+    override fun isNotBlank(): Boolean = username.isNotEmpty()
 }

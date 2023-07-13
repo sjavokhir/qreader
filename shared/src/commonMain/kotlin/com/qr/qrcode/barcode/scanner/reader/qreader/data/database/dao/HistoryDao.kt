@@ -55,7 +55,9 @@ class HistoryDao(database: AppDatabase) {
             frame_hex = customize.frameHex,
             frame_dot_hex = customize.frameDotHex,
             selected_logo = customize.selectedLogo,
-            own_logo_path = customize.ownLogoPath
+            own_logo_path = customize.ownLogoPath,
+            latitude = 0.0,
+            longitude = 0.0,
         )
     }
 

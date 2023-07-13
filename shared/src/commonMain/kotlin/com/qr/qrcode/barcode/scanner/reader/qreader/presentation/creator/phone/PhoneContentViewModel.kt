@@ -21,6 +21,8 @@ class PhoneContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         val content = value.toPhoneContent() ?: return
 
         onPhoneChanged(content.phone)

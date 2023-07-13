@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.drawableId
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.EditContentModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRFilledButton
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
@@ -49,6 +50,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creator
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.DateTimePickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.LocationPickerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.defaultDateTime
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -144,9 +146,14 @@ fun AddContentScreen(
                             navigator.navigate(
                                 QRCodeScreenDestination(
                                     id = id,
+                                    dateTime = defaultDateTime(),
+                                    isScanned = false,
                                     generateMode = generateMode,
                                     encoded = encodedContent,
-                                    decoded = decodedContent
+                                    decoded = decodedContent,
+                                    customize = QRCustomizeModel(),
+                                    isEditable = false,
+                                    isDeletable = false
                                 )
                             )
                         }

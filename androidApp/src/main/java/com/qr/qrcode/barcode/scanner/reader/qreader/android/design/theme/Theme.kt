@@ -16,8 +16,19 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesEn
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesUz
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesArabic
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesChinese
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesEnglish
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesFrench
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesGerman
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesItalian
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesJapanese
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesKorean
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesPortuguese
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesRussian
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesSpanish
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesTurkish
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.stringResourcesUzbek
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.LanguageType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
 
@@ -100,8 +111,19 @@ fun QRTheme(
     content: @Composable () -> Unit
 ) {
     val stringResources = when (language) {
-        LanguageType.Uzbek -> stringResourcesUz()
-        else -> stringResourcesEn()
+        LanguageType.Uzbek -> stringResourcesUzbek()
+        LanguageType.Arabic -> stringResourcesArabic()
+        LanguageType.Turkish -> stringResourcesTurkish()
+        LanguageType.German -> stringResourcesGerman()
+        LanguageType.French -> stringResourcesFrench()
+        LanguageType.Japanese -> stringResourcesJapanese()
+        LanguageType.Korean -> stringResourcesKorean()
+        LanguageType.Portuguese -> stringResourcesPortuguese()
+        LanguageType.Spanish -> stringResourcesSpanish()
+        LanguageType.Italian -> stringResourcesItalian()
+        LanguageType.Russian -> stringResourcesRussian()
+        LanguageType.Chinese -> stringResourcesChinese()
+        else -> stringResourcesEnglish()
     }
 
     val darkMode = when (themeMode) {

@@ -13,9 +13,14 @@ import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiNetworkSuggestion
 import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
+import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.toCalendarTimestamp
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.helpers.StringRes
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.creator.wifi.WifiContentState
@@ -33,7 +38,7 @@ fun Context.drawableId(name: String): Int? {
     }
 }
 
-fun Context.getActivity(): Activity? {
+fun Context.findActivity(): Activity? {
     var currentContext = this
     while (currentContext is ContextWrapper) {
         if (currentContext is Activity) {
@@ -45,7 +50,7 @@ fun Context.getActivity(): Activity? {
 }
 
 fun Context.restartApp() {
-    getActivity()?.let { activity ->
+    findActivity()?.let { activity ->
         val intent = activity.intent
         activity.finish()
         activity.startActivity(intent)
@@ -78,6 +83,26 @@ fun Context.dial(phone: String) {
             data = Uri.parse("tel:$phone")
         }
         startActivity(intent)
+    }
+}
+
+fun Context.vibrate(milliseconds: Long = 300) {
+    tryCatch {
+        val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager =
+                getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }
+
+        vibrator.vibrate(
+            VibrationEffect.createOneShot(
+                milliseconds,
+                VibrationEffect.DEFAULT_AMPLITUDE
+            )
+        )
     }
 }
 
@@ -275,6 +300,44 @@ fun Context.connectToWifi(
     }
 }
 
-fun Context.addToCalendar() {
-    tryCatch { }
+fun Context.addToCalendar(
+    name: String,
+    location: String,
+    description: String,
+    isAllDay: Boolean,
+    startMillis: Long?,
+    endMillis: Long?
+) {
+    tryCatch {
+        val intent = Intent(Intent.ACTION_INSERT).apply {
+            data = CalendarContract.Events.CONTENT_URI
+
+            putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, isAllDay)
+
+            if (startMillis != null && startMillis != 0L) {
+                putExtra(
+                    CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                    startMillis.toCalendarTimestamp()
+                )
+            }
+
+            if (endMillis != null && endMillis != 0L) {
+                putExtra(
+                    CalendarContract.EXTRA_EVENT_END_TIME,
+                    endMillis.toCalendarTimestamp()
+                )
+            }
+
+            putExtra(CalendarContract.Events.TITLE, name)
+
+            if (description.isNotEmpty()) {
+                putExtra(CalendarContract.Events.DESCRIPTION, description)
+            }
+
+            if (location.isNotEmpty()) {
+                putExtra(CalendarContract.Events.EVENT_LOCATION, location)
+            }
+        }
+        startActivity(intent)
+    }
 }

@@ -29,9 +29,7 @@ fun TextContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(TextContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(TextContentEvent.Encoded(encoded))
     }
 
     Column {

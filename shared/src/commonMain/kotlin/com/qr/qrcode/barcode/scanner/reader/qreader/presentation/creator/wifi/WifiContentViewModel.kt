@@ -25,6 +25,8 @@ class WifiContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         val content = value.toWifiContent() ?: return
 
         onValueChanged(
@@ -62,7 +64,8 @@ class WifiContentViewModel : KMMViewModel() {
                     WifiContentState.Authentication.OPEN -> {
                         mNetworkName.isNotEmpty()
                     }
-                }
+                },
+                isSetEncoded = true
             )
         }
     }

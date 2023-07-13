@@ -49,6 +49,10 @@ data class WifiContentState(
             $password
         """.trimIndent()
     }
+
+    override fun isNotBlank(): Boolean {
+        return "$networkName$password".isNotEmpty()
+    }
 }
 
 fun String.toWifiContent(): WifiContentState? {

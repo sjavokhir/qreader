@@ -24,6 +24,8 @@ class EmailContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         val content = value.toEmailContent() ?: return
 
         onValueChanged(

@@ -33,7 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.getActivity
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.findActivity
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.restartApp
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.HyperlinkText
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
@@ -153,7 +153,7 @@ private fun PremiumScreenContent(
             QRFilledButton(
                 text = strings.actionContinue,
                 onClick = {
-                    context.getActivity()?.let {
+                    context.findActivity()?.let {
                         onEvent(PremiumEvent.Buy(it))
                     }
                 }

@@ -2,7 +2,7 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization
 
 import com.qr.qrcode.barcode.scanner.reader.qreader.shared.appUrl
 
-fun stringResourcesEn() = StringResources(
+fun stringResourcesEnglish() = StringResources(
     cancel = "Cancel",
     actionContinue = "Continue",
     create = "Create",
@@ -137,7 +137,6 @@ fun stringResourcesEn() = StringResources(
     selectTime = "Select time",
     settings = "Settings",
     socialMedia = "Social Media",
-    soundEffects = "Sound Effects",
     startDate = "Start date",
     startDateTime = "Start date and time",
     subject = "Subject",
@@ -160,7 +159,7 @@ fun stringResourcesEn() = StringResources(
     addContact = "Add contact",
     showLocation = "Show location",
     shareDescription = """
-        "QReader - Your all-in-one QR scanner and creator app for quick and effortless code scanning, creation, and customization. Unlock a world of information with a simple scan and easily generate personalized codes. Get QReader now!"
+         "QReader - Your all-in-one QR scanner and creator app for quick and effortless code scanning, creation, and customization. Unlock a world of information with a simple scan and easily generate personalized codes. Get QReader now!"
 
         $appUrl
     """.trimIndent(),
@@ -174,5 +173,7 @@ fun stringResourcesEn() = StringResources(
     mUsername = "username",
     mDial = "Dial",
     viewAddress = "View address",
-    addToCalendar = "Add to calendar"
+    addToCalendar = "Add to calendar",
+    scanImage = "Scan image",
+    dragMarkers = "Drag the white markers till the barcode is detected",
 )

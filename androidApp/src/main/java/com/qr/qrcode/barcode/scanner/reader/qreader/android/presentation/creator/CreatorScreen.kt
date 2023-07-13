@@ -2,7 +2,6 @@ package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.creato
 
 import android.content.Context
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,7 +38,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QR
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.AddContentScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateHeader
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.generateContents.GenerateContentsState
@@ -110,16 +108,12 @@ private fun GenerateContentsContent(
                             hasSubscription = hasSubscription,
                             isLastItem = index == content.value.lastIndex,
                             onClick = {
-                                if (!hasSubscription && mode.isPremium) {
-                                    onNavigate(PremiumScreenDestination)
-                                } else {
-                                    onNavigate(
-                                        AddContentScreenDestination(
-                                            id = randomUUID(),
-                                            generateMode = mode
-                                        )
+                                onNavigate(
+                                    AddContentScreenDestination(
+                                        id = randomUUID(),
+                                        generateMode = mode
                                     )
-                                }
+                                )
                             }
                         )
                     }
@@ -164,28 +158,9 @@ private fun GenerateContentItem(
             Text(
                 text = mode.title,
                 style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.weight(1f)
             )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            if (!hasSubscription && mode.isPremium) {
-                Text(
-                    text = strings.premium,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier
-                        .clip(MaterialTheme.shapes.small)
-                        .background(
-                            color = MaterialTheme.colorScheme.errorContainer,
-                            shape = MaterialTheme.shapes.small
-                        )
-                        .padding(
-                            horizontal = 4.dp,
-                            vertical = 2.dp
-                        )
-                )
-            }
 
             Image(
                 painter = painterResource(id = R.drawable.ic_chevron_right),

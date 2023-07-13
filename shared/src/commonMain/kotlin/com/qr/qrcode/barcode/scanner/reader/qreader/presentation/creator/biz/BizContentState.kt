@@ -53,6 +53,10 @@ data class BizContentState(
             append("\n").append(address)
         }
     }
+
+    override fun isNotBlank(): Boolean {
+        return "$firstName$lastName$company$job$phone$email$website$address".isNotEmpty()
+    }
 }
 
 fun String.toBizContent(): BizContentState? {

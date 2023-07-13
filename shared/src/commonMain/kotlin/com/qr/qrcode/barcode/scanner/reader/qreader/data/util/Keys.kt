@@ -13,6 +13,4 @@ internal object Keys {
     const val IS_OPEN_WEB_PAGES = "KEY_IS_OPEN_WEB_PAGES"
     const val IS_CHROME_CUSTOM_TABS = "KEY_IS_CHROME_CUSTOM_TABS"
     const val IS_BATCH_SCAN = "KEY_IS_BATCH_SCAN"
-    const val IS_SOUND_EFFECTS = "KEY_IS_SOUND_EFFECTS"
-    const val SELECTED_SOUND = "KEY_SELECTED_SOUND"
 }

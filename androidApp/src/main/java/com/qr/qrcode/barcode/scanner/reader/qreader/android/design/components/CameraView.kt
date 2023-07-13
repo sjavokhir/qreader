@@ -1,4 +1,4 @@
-package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.scanner
+package com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components
 
 import android.annotation.SuppressLint
 import androidx.camera.core.*
@@ -20,6 +20,7 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.camera.detector.QRDe
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.cameraPermission
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.helpers.locationPermissions
 import com.qr.qrcode.barcode.scanner.reader.qreader.core.extensions.tryCatch
+import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.GenerateMode
 import java.util.*
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume
@@ -32,7 +33,10 @@ private val executor = Executors.newSingleThreadExecutor()
 fun CameraView(
     modifier: Modifier,
     isFlashlightOn: Boolean,
-    onResult: () -> Unit
+    isVibrateEnabled: Boolean,
+    isOpenWebPagesEnabled: Boolean,
+    isChromeCustomTabsEnabled: Boolean,
+    onResult: (String, String, GenerateMode) -> Unit
 ) {
     val cameraPermissionState = rememberPermissionState(cameraPermission)
     val locationPermissionState = rememberMultiplePermissionsState(locationPermissions)
@@ -41,6 +45,9 @@ fun CameraView(
         CameraWithGrantedPermission(
             modifier = modifier,
             isFlashlightOn = isFlashlightOn,
+            isVibrateEnabled = isVibrateEnabled,
+            isOpenWebPagesEnabled = isOpenWebPagesEnabled,
+            isChromeCustomTabsEnabled = isChromeCustomTabsEnabled,
             onResult = onResult
         )
     } else {
@@ -56,7 +63,10 @@ fun CameraView(
 private fun CameraWithGrantedPermission(
     modifier: Modifier,
     isFlashlightOn: Boolean,
-    onResult: () -> Unit
+    isVibrateEnabled: Boolean,
+    isOpenWebPagesEnabled: Boolean,
+    isChromeCustomTabsEnabled: Boolean,
+    onResult: (String, String, GenerateMode) -> Unit
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -79,7 +89,15 @@ private fun CameraWithGrantedPermission(
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
     }
-    val detector = remember { QRDetector(context, onResult) }
+    val detector = remember {
+        QRDetector(
+            context = context,
+            isVibrateEnabled = isVibrateEnabled,
+            isOpenWebPagesEnabled = isOpenWebPagesEnabled,
+            isChromeCustomTabsEnabled = isChromeCustomTabsEnabled,
+            onResult = onResult
+        )
+    }
 
     LaunchedEffect(Unit) {
         imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(context)) {

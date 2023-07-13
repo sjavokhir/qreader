@@ -54,9 +54,7 @@ fun WifiContent(
     }
 
     LaunchedEffect(encoded) {
-        if (!state.isSetEncoded) {
-            viewModel.onEvent(WifiContentEvent.Encoded(encoded))
-        }
+        viewModel.onEvent(WifiContentEvent.Encoded(encoded))
     }
 
     Column(

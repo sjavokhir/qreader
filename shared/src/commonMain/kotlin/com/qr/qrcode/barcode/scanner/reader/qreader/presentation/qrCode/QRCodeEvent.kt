@@ -7,6 +7,7 @@ sealed class QRCodeEvent {
 
     data class Insert(
         val id: String,
+        val isScanned: Boolean,
         val mode: GenerateMode,
         val encoded: String,
         val decoded: String,

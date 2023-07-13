@@ -30,6 +30,8 @@ class LocationContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         val content = value.toLocationContent() ?: return
 
         onValueChanged(content.latitude, content.longitude)

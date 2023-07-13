@@ -19,7 +19,6 @@ import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destina
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ScannerScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SettingsScreenDestination
-import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.SoundEffectsScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ThemeModeScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.LanguageType
 import com.qr.qrcode.barcode.scanner.reader.qreader.data.model.type.ThemeMode
@@ -96,7 +95,6 @@ private val Destination.shouldShowBottomBar
         SettingsScreenDestination,
         ThemeModeScreenDestination,
         LanguageScreenDestination,
-        SoundEffectsScreenDestination,
         FeedbackScreenDestination,
         FaqScreenDestination,
         ManagePermissionsScreenDestination -> true

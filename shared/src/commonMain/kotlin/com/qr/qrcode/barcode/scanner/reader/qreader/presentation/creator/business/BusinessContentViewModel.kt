@@ -26,6 +26,8 @@ class BusinessContentViewModel : KMMViewModel() {
     }
 
     private fun onEncoded(value: String) {
+        if (state.value.isSetEncoded) return
+
         val content = value.toBusinessContent() ?: return
 
         onValueChanged(
@@ -58,7 +60,8 @@ class BusinessContentViewModel : KMMViewModel() {
                 email = email ?: it.email,
                 website = website ?: it.website,
                 address = address ?: it.address,
-                isEnabled = (mName.isNotEmpty() || mIndustry.isNotEmpty()) && mPhone.isNotEmpty()
+                isEnabled = (mName.isNotEmpty() || mIndustry.isNotEmpty()) && mPhone.isNotEmpty(),
+                isSetEncoded = true
             )
         }
     }

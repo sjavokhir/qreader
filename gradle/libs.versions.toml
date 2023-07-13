@@ -27,11 +27,12 @@ google-services = "4.3.14"
 google-mapsplatform-secrets = "2.0.1"
 google-ps-maps = "18.1.0"
 google-ps-location = "21.0.1"
-google-ps-ads = "22.1.0"
+google-ps-ads = "22.2.0"
 google-firebase-bom = "32.1.1"
 google-firebase-crashlytics = "2.9.2"
 google-mlkit-barcodescanning = "17.1.0"
 google-zxing = "3.5.1"
+google-photopicker = "1.0.0-alpha06"
 
 navigation = "1.9.42-beta"
 koin = "3.4.2"
@@ -39,6 +40,7 @@ multiplatformsettings = "1.0.0"
 sqldelight = "2.0.0-alpha05"
 kmm-viewmodel = "1.0.0-ALPHA-4"
 kmm-coroutines = "1.0.0-ALPHA-5"
+cropper = "0.3.4"
 
 [libraries]
 
@@ -78,6 +80,7 @@ google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlyti
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 google-mlkit-barcodescanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "google-mlkit-barcodescanning" }
 google-zxing = { module = "com.google.zxing:core", version.ref = "google-zxing" }
+google-photopicker = { module = "com.google.modernstorage:modernstorage-photopicker", version.ref = "google-photopicker" }
 
 navigation-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "navigation" }
 navigation-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "navigation" }
@@ -92,6 +95,7 @@ sqldelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", 
 
 multiplatformsettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformsettings" }
 kmm-viewmodel = { module = "com.rickclephas.kmm:kmm-viewmodel-core", version.ref = "kmm-viewmodel" }
+cropper = { module = "com.github.SmartToolFactory:Compose-Cropper", version.ref = "cropper" }
 
 [plugins]
 

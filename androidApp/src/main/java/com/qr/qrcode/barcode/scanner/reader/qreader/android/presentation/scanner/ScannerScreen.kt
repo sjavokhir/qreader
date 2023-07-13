@@ -1,5 +1,7 @@
 package com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.scanner
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,14 +28,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.R
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.extensions.clickableSingle
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.core.model.QRCustomizeModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.CameraView
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.GoProContent
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRBackground
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.components.QRIcon
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.localization.LocalStrings
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.design.theme.LocalSubscription
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.ImageCropperScreenDestination
 import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.PremiumScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.android.presentation.destinations.QRCodeScreenDestination
+import com.qr.qrcode.barcode.scanner.reader.qreader.core.datetime.defaultDateTime
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.scanner.ScannerState
+import com.qr.qrcode.barcode.scanner.reader.qreader.presentation.scanner.ScannerViewModel
+import com.qr.qrcode.barcode.scanner.reader.qreader.shared.randomUUID
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -43,12 +55,16 @@ import com.ramcosta.composedestinations.spec.Direction
 @Destination
 @Composable
 fun ScannerScreen(
+    viewModel: ScannerViewModel = viewModel(),
     navigator: DestinationsNavigator
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     val hasSubscription = LocalSubscription.current
 
     QRBackground {
         ScannerScreenContent(
+            state = state,
             hasSubscription = hasSubscription,
             onNavigate = navigator::navigate
         )
@@ -57,12 +73,28 @@ fun ScannerScreen(
 
 @Composable
 private fun ScannerScreenContent(
+    state: ScannerState,
     hasSubscription: Boolean,
     onNavigate: (Direction) -> Unit
 ) {
     val strings = LocalStrings.current
 
     var isFlashlightOn by remember { mutableStateOf(false) }
+
+    val photoPicker = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetMultipleContents()
+    ) { uris ->
+        val uri = uris.firstOrNull() ?: return@rememberLauncherForActivityResult
+
+        onNavigate(
+            ImageCropperScreenDestination(
+                imageUri = uri.toString(),
+                isVibrateEnabled = state.isVibrateEnabled,
+                isOpenWebPagesEnabled = state.isOpenWebPagesEnabled,
+                isChromeCustomTabsEnabled = state.isChromeCustomTabsEnabled
+            )
+        )
+    }
 
     Column(
         modifier = Modifier.padding(20.dp),
@@ -82,8 +114,24 @@ private fun ScannerScreenContent(
             CameraView(
                 modifier = Modifier.fillMaxSize(),
                 isFlashlightOn = isFlashlightOn,
-                onResult = {}
-            )
+                isVibrateEnabled = state.isVibrateEnabled,
+                isOpenWebPagesEnabled = state.isOpenWebPagesEnabled,
+                isChromeCustomTabsEnabled = state.isChromeCustomTabsEnabled
+            ) { encoded, decoded, mode ->
+                onNavigate(
+                    QRCodeScreenDestination(
+                        id = randomUUID(),
+                        dateTime = defaultDateTime(),
+                        isScanned = true,
+                        generateMode = mode,
+                        encoded = encoded,
+                        decoded = decoded,
+                        customize = QRCustomizeModel(),
+                        isEditable = false,
+                        isDeletable = false
+                    )
+                )
+            }
 
             Column(
                 modifier = Modifier
@@ -110,7 +158,9 @@ private fun ScannerScreenContent(
                 )
 
                 ScannerActionsContent(
-                    onGalleryClick = {},
+                    onGalleryClick = {
+                        photoPicker.launch("image/*")
+                    },
                     onFlashlightClick = {
                         isFlashlightOn = !isFlashlightOn
                     },
