@@ -194,6 +194,10 @@ class QRActivity : ComponentActivity() {
 
                     loadInterstitialAd()
                 }
+
+                override fun onAdShowedFullScreenContent() {
+                    isAdShowed = true
+                }
             }
             mInterstitialAd?.show(this)
         }
@@ -209,7 +213,11 @@ class QRActivity : ComponentActivity() {
                 override fun onAdDismissedFullScreenContent() {
                     mRewardedAd = null
 
-                    loadRewardedAd()
+                    loadInterstitialAd()
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    isAdShowed = true
                 }
             }
             mRewardedAd?.show(this) {}
